@@ -1,20 +1,13 @@
 using Godot;
 using System;
-
 using System.Threading.Tasks;
-using Amazon;
-using Amazon.Bedrock;
-using Amazon.Bedrock.Model;
-
-
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using Amazon;
-using Amazon.BedrockRuntime;
-using Amazon.BedrockRuntime.Model;
 using System.IO;
 
-namespace InvokeModel;
+using Amazon;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using Amazon.BedrockRuntime;
+using Amazon.BedrockRuntime.Model;
 
 /// <summary>
 /// Getting Started with Amazon Bedrock InvokeModel API
@@ -34,12 +27,12 @@ public partial class test : Node
 	// Called when the node enters the scene tree for the first time.
 	public override async void _Ready()
 	{
-		GD.Print("Hello World!");
-
-		await Main();
+		await AskLlama("In a single word, come up with a name for a dog");
+		GD.Print("---------------------------------------");
+		await AskLlama("what is the dog name that you chose?");
 	}
 
-	private static async Task Main()
+	private static async Task AskLlama(string prompt)
 	{
 		//-------------------
 		// 1. Configuration
@@ -51,12 +44,7 @@ public partial class test : Node
 
 		// Choose your model ID. Supported models can be found at:
 		// https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference-supported-models-features.html
-		const string modelId = "meta.llama3-2-1b-instruct-v1:0";
-
-		// Your prompt or question for the AI model
-		const string prompt = "Explain 'rubber duck debugging'";
-
-		GD.Print("Hello World!1");
+		const string modelId = "meta.llama3-8b-instruct-v1:0";
 
 		//-------------------
 		// 2. Client Setup
@@ -89,8 +77,6 @@ public partial class test : Node
 			max_gen_len = 500
 		});
 
-		GD.Print("Hello World!2");
-
 		// Configure the invoke model request
 		var request = new InvokeModelRequest()
 		{
@@ -103,8 +89,6 @@ public partial class test : Node
 		// 4. Send the Request
 		//----------------------
 
-		GD.Print("Hello World!3");
-
 		try
 		{
 			// Send the request and wait for the response
@@ -115,12 +99,10 @@ public partial class test : Node
 
 			// Extract and print the response text
 			var responseText = modelResponse["generation"] ?? "";
-			Console.WriteLine(responseText);
 			GD.Print(responseText);
 		}
 		catch (Exception ex)
 		{
-			Console.WriteLine($"\nError: {ex.Message}");
 			// In production, you should handle specific exceptions:
 			// - AccessDeniedException: Missing access permissions
 			// - ValidationException: Invalid request parameters
@@ -128,8 +110,6 @@ public partial class test : Node
 
 			GD.Print($"\nError: {ex.Message}");
 		}
-
-		GD.Print("Hello World!4");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
