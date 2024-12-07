@@ -3,3 +3,9 @@ https://docs.godotengine.org/en/stable/contributing/development/configuring_an_i
 
 To use Amazon Bedrock with .NET:
 https://aws.amazon.com/blogs/dotnet/getting-started-with-amazon-bedrock-in-net-applications/
+
+To install NuGet C# packages in VS Code:
+https://code.visualstudio.com/docs/csharp/package-management 
+
+Good code examples for .NET AWS Bedrock use:
+https://github.com/DennisTraub/bedrock-for-all/tree/main

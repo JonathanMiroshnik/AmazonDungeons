@@ -10,8 +10,9 @@ config_version=5
 
 [application]
 
-config/name="New Game Project"
-config/features=PackedStringArray("4.3", "Forward Plus")
+config/name="AWSChallenge"
+run/main_scene="res://scenes/main_ui.tscn"
+config/features=PackedStringArray("4.3", "C#", "Forward Plus")
 config/icon="res://textures/icon.svg"
 
 [dotnet]
