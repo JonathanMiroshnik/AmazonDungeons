@@ -1,21 +1,16 @@
 
 
 {
-"Name": "Kaelith Sunblaze",
-"Age": 32,
-"Occupation": "Warrior",
+"Name": "Gorthok the Unyielding",
+"Age": 42,
 "Species": "Human",
-"Height": 6.2,
-"Weight": 220,
-"Hair": "Blonde",
-"Eye": "Blue",
-"Personality": "Confident",
-"Skills": ["Swordsmanship", "Shield Wall", "Tactics"],
+"Occupation": "Warrior",
+"Skills": ["Swordsmanship", "Shield Wall", "Tactical Awareness"],
 "Equipment": {
-"Primary": "Greatsword",
-"Secondary": "Shield",
-"Armor": "Leather",
-"Helmet": "Steel"
+"Primary Weapon": "Longsword",
+"Secondary Weapon": "Shield",
+"Armor": "Leather and Chainmail"
 },
-"Background": "Born in a small village, Kaelith was trained by his father, a skilled warrior, from a young age. He has fought in many battles and has earned a reputation as a formidable opponent."
+"Personality": "Fearless, Loyal, and Disciplined",
+"Background": "Born in a small village, Gorthok was trained in combat from a young age. He has fought in numerous battles and has earned a reputation as a formidable warrior."
 }

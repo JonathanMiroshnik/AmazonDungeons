@@ -1,0 +1,52 @@
+[gd_scene load_steps=7 format=3 uid="uid://bplnut3jd0dps"]
+
+[ext_resource type="Script" path="res://DiceThrowerMechanism.cs" id="1_aabmn"]
+[ext_resource type="PackedScene" uid="uid://dwvibv7qx40di" path="res://models/DiceModel/Cube.gltf" id="2_of32t"]
+[ext_resource type="Script" path="res://Dice.cs" id="2_sfgtd"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8my02"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qbhw4"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_6mik8"]
+
+[node name="DiceThrower" type="Node3D" node_paths=PackedStringArray("TopSide")]
+script = ExtResource("1_aabmn")
+TopSide = NodePath("Dice/1")
+
+[node name="Dice" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47944, 0)
+script = ExtResource("2_sfgtd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Dice"]
+shape = SubResource("BoxShape3D_8my02")
+
+[node name="1" type="Node3D" parent="Dice"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+
+[node name="6" type="Node3D" parent="Dice"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+
+[node name="5" type="Node3D" parent="Dice"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 0)
+
+[node name="2" type="Node3D" parent="Dice"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0)
+
+[node name="3" type="Node3D" parent="Dice"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
+
+[node name="4" type="Node3D" parent="Dice"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+
+[node name="DiceMesh" parent="Dice" instance=ExtResource("2_of32t")]
+transform = Transform3D(-2.22928e-08, 0, 0.51, 0, 0.51, 0, -0.51, 0, -2.22928e-08, 0, 0, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 0.5, 0, 0, 0, 4, 0.0482824, -0.927621, 0.0168691)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("BoxShape3D_qbhw4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("BoxMesh_6mik8")
