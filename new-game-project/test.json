@@ -1,0 +1,21 @@
+
+
+{
+"Name": "Kaelith Sunblaze",
+"Age": 32,
+"Occupation": "Warrior",
+"Species": "Human",
+"Height": 6.2,
+"Weight": 220,
+"Hair": "Blonde",
+"Eye": "Blue",
+"Personality": "Confident",
+"Skills": ["Swordsmanship", "Shield Wall", "Tactics"],
+"Equipment": {
+"Primary": "Greatsword",
+"Secondary": "Shield",
+"Armor": "Leather",
+"Helmet": "Steel"
+},
+"Background": "Born in a small village, Kaelith was trained by his father, a skilled warrior, from a young age. He has fought in many battles and has earned a reputation as a formidable opponent."
+}

@@ -20,7 +20,7 @@ namespace testName {
 			await AskLlama("what is the dog name that you chose?");
 		}
 
-		public static async Task AskLlama(string prompt)
+		public static async Task<string> AskLlama(string prompt)
 		{
 			//-------------------
 			// 1. Configuration
@@ -86,8 +86,10 @@ namespace testName {
 				var modelResponse = await JsonNode.ParseAsync(response.Body);
 
 				// Extract and print the response text
-				var responseText = modelResponse["generation"] ?? "";
+				string responseText = (string) modelResponse["generation"] ?? "";
 				GD.Print(responseText);
+
+				return responseText;
 			}
 			catch (Exception ex)
 			{
@@ -97,6 +99,8 @@ namespace testName {
 				// - etc.
 
 				GD.Print($"\nError: {ex.Message}");
+
+				return null;
 			}
 		}
 
