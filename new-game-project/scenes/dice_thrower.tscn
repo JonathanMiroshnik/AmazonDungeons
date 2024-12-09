@@ -10,16 +10,23 @@
 
 [sub_resource type="BoxMesh" id="BoxMesh_6mik8"]
 
-[node name="DiceThrower" type="Node3D" node_paths=PackedStringArray("TopSide")]
+[node name="DiceThrower" type="Node3D" node_paths=PackedStringArray("dice")]
+transform = Transform3D(1, 0.000694491, 0.000161217, -0.000694531, 1, 0.000234311, -0.000161045, -0.000234429, 1, 0.00150108, 9.53674e-07, 0.032465)
 script = ExtResource("1_aabmn")
-TopSide = NodePath("Dice/1")
+dice = NodePath("Dice")
 
-[node name="Dice" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.47944, 0)
+[node name="Dice" type="RigidBody3D" parent="." node_paths=PackedStringArray("Sides")]
+transform = Transform3D(1, 8.73115e-11, 9.45874e-11, -2.41229e-11, 0.468007, 0.883725, 2.91038e-11, -0.883725, 0.468007, -0.785228, 4.11605, 2.02738)
+mass = 0.01
+linear_damp_mode = 1
 script = ExtResource("2_sfgtd")
+Sides = [NodePath("1"), NodePath("2"), NodePath("3"), NodePath("4"), NodePath("5"), NodePath("6")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Dice"]
 shape = SubResource("BoxShape3D_8my02")
+
+[node name="DiceMesh" parent="Dice/CollisionShape3D" instance=ExtResource("2_of32t")]
+transform = Transform3D(-2.18557e-08, 3.56537e-12, 0.5, -2.9218e-08, 0.5, -3.56665e-12, -0.5, -2.9218e-08, -2.18557e-08, 0, 0, 0)
 
 [node name="1" type="Node3D" parent="Dice"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
@@ -39,14 +46,58 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 [node name="4" type="Node3D" parent="Dice"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
 
-[node name="DiceMesh" parent="Dice" instance=ExtResource("2_of32t")]
-transform = Transform3D(-2.22928e-08, 0, 0.51, 0, 0.51, 0, -0.51, 0, -2.22928e-08, 0, 0, 0)
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, -5.62605e-05, 8.21812e-05, 1.7452e-05, 0.911377, 0.411573, -9.80631e-05, -0.411573, 0.911377, 0.721356, 4.60219, 6.9603)
+current = true
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 0.5, 0, 0, 0, 4, 0.0482824, -0.927621, 0.0168691)
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+[node name="Basket" type="Node3D" parent="."]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+
+[node name="Base" type="StaticBody3D" parent="Basket"]
+transform = Transform3D(10, 9.55716e-11, 1.16415e-10, 3.40862e-10, 1, 2.32831e-10, 1.16415e-10, 0, 10, 0, -1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Basket/Base"]
+transform = Transform3D(1, 3.73674e-11, 0, 1.50507e-10, 1, -4.36557e-11, -1.45519e-11, -2.91038e-11, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_qbhw4")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Basket/Base/CollisionShape3D"]
+transform = Transform3D(1, 2.07055e-10, -2.07884e-11, -2.07055e-10, 1, -2.91038e-11, 2.07884e-11, 2.91038e-11, 1, 0, 0, 0)
 mesh = SubResource("BoxMesh_6mik8")
+skeleton = NodePath("../..")
+
+[node name="BasketSide" type="StaticBody3D" parent="Basket"]
+transform = Transform3D(1, -2.38444e-10, -1.16415e-09, 3.40634e-11, 7, 0, 1.16415e-10, -2.77585e-20, 10, -4.5, 3, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Basket/BasketSide"]
+transform = Transform3D(1, 3.73674e-11, 0, 1.50507e-10, 1, -4.36557e-11, -1.45519e-11, -2.91038e-11, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_qbhw4")
+
+[node name="BasketSide2" type="StaticBody3D" parent="Basket"]
+transform = Transform3D(1, -2.38444e-10, -1.16415e-09, 3.40634e-11, 7, 0, 1.16415e-10, -2.77585e-20, 10, 4.5, 3, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Basket/BasketSide2"]
+transform = Transform3D(1, 3.73674e-11, 0, 1.50507e-10, 1, -4.36557e-11, -1.45519e-11, -2.91038e-11, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_qbhw4")
+
+[node name="BasketSide3" type="StaticBody3D" parent="Basket"]
+transform = Transform3D(8, -2.38444e-10, -1.16415e-10, 2.72507e-10, 7, 0, 9.31323e-10, -2.77585e-20, 1, 0, 3, 4.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Basket/BasketSide3"]
+transform = Transform3D(1, 3.73674e-11, 0, 1.50507e-10, 1, -4.36557e-11, -1.45519e-11, -2.91038e-11, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_qbhw4")
+
+[node name="BasketSide4" type="StaticBody3D" parent="Basket"]
+transform = Transform3D(8, -2.38444e-10, -1.16415e-10, 2.72507e-10, 7, 0, 9.31323e-10, -2.77585e-20, 1, 0, 3, -4.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Basket/BasketSide4"]
+transform = Transform3D(1, 3.73674e-11, 0, 1.50507e-10, 1, -4.36557e-11, -1.45519e-11, -2.91038e-11, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_qbhw4")
+
+[node name="Top" type="StaticBody3D" parent="Basket"]
+transform = Transform3D(10, 9.55716e-11, 1.16415e-10, 3.40862e-10, 1, 2.32831e-10, 1.16415e-10, 0, 10, 0, 7, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Basket/Top"]
+transform = Transform3D(1, 3.73674e-11, 0, 1.50507e-10, 1, -4.36557e-11, -1.45519e-11, -2.91038e-11, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_qbhw4")

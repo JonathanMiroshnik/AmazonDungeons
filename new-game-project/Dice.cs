@@ -1,7 +1,8 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
-public partial class Dice : Node
+public partial class Dice : RigidBody3D
 {
 	[Export]
     public Node3D[] Sides { get; set; }
@@ -13,20 +14,23 @@ public partial class Dice : Node
 		int NUM_OF_SIDES = 6;
 		// TODO: raise exception/error
 		if (Sides.Length < NUM_OF_SIDES) return;
+
+		//await testSide();
 	}
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
+	private async Task testSide() {
+		await Task.Delay(3000);
+		GD.Print(WhichSideUp().ToString());
 	}
 
 	public int WhichSideUp() {
 		// Each side has a name which is an int, find the highest side(by y value) and return the number by its name
-		int highestSide = -1;
-		Node3D highestSideNode = null;
+		float highestSide = Sides[0].GlobalPosition.Y;
+		Node3D highestSideNode = Sides[0];
+
 		foreach (Node3D side in Sides) {
-			if (side.Position.Y > highestSide) {
-				highestSide = (int)side.Position.Y;
+			if (side.GlobalPosition.Y > highestSide) {
+				highestSide = side.GlobalPosition.Y;
 				highestSideNode = side;
 			}
 		}
