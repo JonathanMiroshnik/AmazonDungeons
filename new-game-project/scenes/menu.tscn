@@ -1,0 +1,44 @@
+[gd_scene load_steps=2 format=3 uid="uid://dlge21n36tbmn"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_xgrmf"]
+font_size = 180
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 0
+offset_left = 286.0
+offset_top = 153.0
+offset_right = 1413.0
+offset_bottom = 399.0
+scale = Vector2(0.52, 0.52)
+text = "Main Menu"
+label_settings = SubResource("LabelSettings_xgrmf")
+
+[node name="StartGameButton" type="Button" parent="Panel"]
+layout_mode = 0
+offset_left = 407.0
+offset_top = 310.0
+offset_right = 497.0
+offset_bottom = 341.0
+scale = Vector2(2.56, 2.56)
+text = "Play Game"
+
+[node name="ExitGameButton" type="Button" parent="Panel"]
+offset_left = 407.0
+offset_top = 413.0
+offset_right = 497.0
+offset_bottom = 444.0
+scale = Vector2(2.56, 2.56)
+text = "Exit"
