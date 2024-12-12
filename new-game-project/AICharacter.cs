@@ -3,22 +3,27 @@ using System;
 
 public partial class AICharacter : Character
 {
-    public string Personality { get; set; }
-
-    public AICharacter(string name, int strength, int reflex, int intelligence, string personality)
-        : base(name, strength, reflex, intelligence)
+    public AICharacter(string name, string personality, int strength, int reflex, int intelligence)
+        : base(name, personality, strength, reflex, intelligence)
     {
-        Personality = personality;
     }
+    
+    // public string Personality { get; set; }
 
-    public void TakeTurn(DungeonMaster dm)
-    {
-        string task = "Perform a daring leap";
-        int challengeLevel = dm.AssignChallengeLevel(task);
+    // public AICharacter(string name, int strength, int reflex, int intelligence, string personality)
+    //     : base(name, personality, strength, reflex, intelligence)
+    // {
+    //     Personality = personality;
+    // }
 
-        GD.Print($"{Name} ({Personality}) attempts to {task}. Challenge Level: {challengeLevel}");
-        int diceRolls = RollDice();
-        GD.Print($"{Name} rolls: {diceRolls} wins");
-        dm.InterpretResult(this, diceRolls, challengeLevel);
-    }
+    // public void TakeTurn(DungeonMaster dm)
+    // {
+    //     string task = "Perform a daring leap";
+    //     int challengeLevel = dm.AssignChallengeLevel(task);
+
+    //     GD.Print($"{Name} ({Personality}) attempts to {task}. Challenge Level: {challengeLevel}");
+    //     int diceRolls = RollDice();
+    //     GD.Print($"{Name} rolls: {diceRolls} wins");
+    //     dm.InterpretResult(this, diceRolls, challengeLevel);
+    // }
 }

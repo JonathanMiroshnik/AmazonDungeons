@@ -1,36 +1,37 @@
 using Godot;
-using System;
+using GodotPlugins.Game;
+using System.Text.Json;
 
-// TODO: fix magic numbers
-
-public partial class Character : Node
+public partial class Character
 {
-    public int Strength { get; set; }
-    public int Reflex { get; set; }
-    public int Intelligence { get; set; }
-    public int BaseDice { get; set; } = 3;
+    // Core Skills
+    // TODO: should be up to 2
+    public static int MAX_CORE_SKILL_LEVEL = 2;
+    public int Strength { get; set; } = 0;
+    public int Reflex { get; set; } = 0;
+    public int Intelligence { get; set; } = 0;
 
-    public Character(string name, int strength, int reflex, int intelligence)
+    // Character Lore
+    public string Name { get; set; }
+    public string Personality { get; set; } = "";  // Contains personality/morality/history/goals
+
+    // Character Base Aspects
+    public int HealthPoints { get; set; } = 8;
+    public int BaseDiceNumber { get; set; } = 3;
+
+    public Character(string name, string personality = "", int strength = 0, int reflex = 0, int intelligence = 0)
     {
         Name = name;
+        Personality = personality;
+
         Strength = strength;
         Reflex = reflex;
         Intelligence = intelligence;
     }
 
-    public int RollDice(int bonusDice = 0)
+    public string JSONSerialize()
     {
-        Random rand = new Random();
-        int totalDice = BaseDice + Strength + Reflex + Intelligence + bonusDice;
-        int wins = 0;
-
-        for (int i = 0; i < totalDice; i++)
-        {
-            int roll = rand.Next(1, 7); // Simulates a D6 roll
-            if (roll >= 4)
-                wins++;
-        }
-
-        return wins;
+        // returns a string of a JSON representing the Character object
+        return JsonSerializer.Serialize(this);
     }
 }

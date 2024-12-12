@@ -1,0 +1,45 @@
+[gd_scene load_steps=2 format=3 uid="uid://ccqigl050o47l"]
+
+[ext_resource type="Script" path="res://scenes/character_creation/SkillContainer.cs" id="1_pe7pn"]
+
+[node name="SkillContainer" type="MarginContainer" node_paths=PackedStringArray("SkillLabel", "Levels")]
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_right = 10
+script = ExtResource("1_pe7pn")
+SkillLabel = NodePath("HSkillContainer/Label")
+Levels = [NodePath("HSkillContainer/Level1"), NodePath("HSkillContainer/Level2")]
+filledColor = Color(0.907761, 0.890359, 0.934926, 1)
+emptyColor = Color(0.826426, 0, 0.346662, 1)
+
+[node name="HSkillContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Label" type="Label" parent="HSkillContainer"]
+layout_mode = 2
+text = "CoreSkill
+"
+
+[node name="Level1" type="ColorRect" parent="HSkillContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+color = Color(0.366595, 0.366595, 0.366595, 1)
+
+[node name="Level2" type="ColorRect" parent="HSkillContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+color = Color(0.366595, 0.366595, 0.366595, 1)
+
+[node name="AddButton" type="Button" parent="HSkillContainer"]
+layout_mode = 2
+text = " + "
+
+[node name="SubtractButton" type="Button" parent="HSkillContainer"]
+layout_mode = 2
+text = " - "
+
+[connection signal="pressed" from="HSkillContainer/AddButton" to="." method="_on_add_button_pressed"]
+[connection signal="pressed" from="HSkillContainer/SubtractButton" to="." method="_on_subtract_button_pressed"]

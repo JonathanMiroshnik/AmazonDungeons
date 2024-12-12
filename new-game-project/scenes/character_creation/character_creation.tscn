@@ -1,0 +1,66 @@
+[gd_scene load_steps=5 format=3 uid="uid://bd8x1ir4ic430"]
+
+[ext_resource type="Script" path="res://scenes/testObject.cs" id="1_amay0"]
+[ext_resource type="Script" path="res://scenes/character_creation/CoreSkillsSetter.cs" id="2_wkhhl"]
+[ext_resource type="PackedScene" uid="uid://ccqigl050o47l" path="res://scenes/character_creation/skill_container.tscn" id="3_buskf"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_8l5co"]
+font_size = 40
+
+[node name="CharacterCreation" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_amay0")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="MenuContainer" type="MarginContainer" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_top = 50
+
+[node name="TitleContainer" type="MarginContainer" parent="Background/MenuContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="Title" type="Label" parent="Background/MenuContainer/TitleContainer"]
+layout_mode = 2
+text = "Character Creation"
+label_settings = SubResource("LabelSettings_8l5co")
+
+[node name="CoreSkillsPresentationContainer" type="MarginContainer" parent="Background"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -45.0
+offset_top = -40.0
+offset_right = 45.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.00607, 1)
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("2_wkhhl")
+
+[node name="VButtonsContainer" type="VBoxContainer" parent="Background/CoreSkillsPresentationContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="SkillContainer" parent="Background/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
+layout_mode = 2
