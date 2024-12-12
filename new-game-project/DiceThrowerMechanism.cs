@@ -58,8 +58,10 @@ public partial class DiceThrowerMechanism : Node
 		for (int i = 0; i < numDice; i++)
 		{
 			instDice[i] = dice.Instantiate<Dice>();
-			instDice[i].GlobalPosition = diceSpawnPos.GlobalPosition;
 			AddChild(instDice[i]);
+			
+			// Notice: the global position show only be set AFTER the object is already in the global tree, given by AddChild
+			instDice[i].GlobalPosition = diceSpawnPos.GlobalPosition;
 		}
 	}
 
@@ -118,8 +120,6 @@ public partial class DiceThrowerMechanism : Node
 				num_of_victor_dice++;
 			}
 		}
-
-		DeleteDice();
 
 		return num_of_victor_dice;
 	}

@@ -11,7 +11,7 @@
 transform = Transform3D(1, 0.000694491, 0.000161217, -0.000694531, 1, 0.000234311, -0.000161045, -0.000234429, 1, 0.00150108, 9.53674e-07, 0.032465)
 script = ExtResource("1_aabmn")
 dice = ExtResource("2_i4hhk")
-numDice = 10
+numDice = 13
 diceSpawnPos = NodePath("DiceSpawnPos")
 
 [node name="DiceSpawnPos" type="Node3D" parent="."]
