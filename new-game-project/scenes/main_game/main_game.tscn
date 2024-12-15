@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://dbkejq42vjbjs"]
+
+[ext_resource type="PackedScene" uid="uid://dfq1qqj6cqgyq" path="res://models/mahogany_table/scene.gltf" id="1_fke0y"]
+[ext_resource type="PackedScene" uid="uid://cx0av00sw1tjh" path="res://models/sitting_clap/guy_sitting.tscn" id="1_rl7nh"]
+[ext_resource type="PackedScene" uid="uid://crjb45mbr3xcm" path="res://models/sitting_bernie_ar_meme/scene.gltf" id="2_hbngf"]
+[ext_resource type="PackedScene" uid="uid://bdnumqa7jgfqm" path="res://models/astronomic_map/scene.gltf" id="4_5vxs8"]
+[ext_resource type="PackedScene" uid="uid://bplnut3jd0dps" path="res://scenes/dice_throwing/dice_thrower.tscn" id="5_ng526"]
+
+[node name="MainGame" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 11.4513, 10.2323, -0.0773547)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.258819, 0.965926, 0, -0.965926, -0.258819, -4.24786, 23.5244, -3.13561)
+
+[node name="DiceThrower" parent="." instance=ExtResource("5_ng526")]
+transform = Transform3D(0.1, 6.94493e-05, 1.61208e-05, -6.94531e-05, 0.1, 2.34317e-05, -1.61045e-05, -2.34429e-05, 0.1, 4.48992, 6.62716, -0.551199)
+
+[node name="Table" parent="." instance=ExtResource("1_fke0y")]
+
+[node name="GuySitting2" parent="." instance=ExtResource("1_rl7nh")]
+transform = Transform3D(-1.74846e-07, 0, 4, 0, 4, 0, -4, 0, -1.74846e-07, -11.1998, 0.176342, 0.298835)
+
+[node name="Bernie" parent="." instance=ExtResource("2_hbngf")]
+transform = Transform3D(13.1, 0, 0, 0, 13.1, 0, 0, 0, 13.1, -0.0339451, 4.29473, 9.67457)
+
+[node name="GuySitting" parent="." instance=ExtResource("1_rl7nh")]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -0.364574, 0.788514, -8.63176)
+
+[node name="GameMap" parent="." instance=ExtResource("4_5vxs8")]
+transform = Transform3D(8, 3.30543e-05, -0.000614243, -3.16565e-05, 7.99998, 0.0180013, 0.000614317, -0.0180013, 7.99998, -0.5136, 6.53192, -0.243926)

@@ -1,20 +1,21 @@
 [gd_scene load_steps=5 format=3 uid="uid://bd8x1ir4ic430"]
 
-[ext_resource type="Script" path="res://scenes/testObject.cs" id="1_amay0"]
+[ext_resource type="Script" path="res://scenes/character_creation/CharacterCreation.cs" id="1_k25fp"]
 [ext_resource type="Script" path="res://scenes/character_creation/CoreSkillsSetter.cs" id="2_wkhhl"]
 [ext_resource type="PackedScene" uid="uid://ccqigl050o47l" path="res://scenes/character_creation/skill_container.tscn" id="3_buskf"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_8l5co"]
 font_size = 40
 
-[node name="CharacterCreation" type="Control"]
+[node name="CharacterCreation" type="Control" node_paths=PackedStringArray("coreSkillsSetter")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_amay0")
+script = ExtResource("1_k25fp")
+coreSkillsSetter = NodePath("Background/CoreSkillsPresentationContainer")
 
 [node name="Background" type="Panel" parent="."]
 layout_mode = 0
@@ -30,37 +31,157 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_top = 50
 
-[node name="TitleContainer" type="MarginContainer" parent="Background/MenuContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/MenuContainer"]
+layout_mode = 2
+
+[node name="TitleContainer" type="MarginContainer" parent="Background/MenuContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 
-[node name="Title" type="Label" parent="Background/MenuContainer/TitleContainer"]
+[node name="Title" type="Label" parent="Background/MenuContainer/VBoxContainer/TitleContainer"]
 layout_mode = 2
 text = "Character Creation"
 label_settings = SubResource("LabelSettings_8l5co")
 
-[node name="CoreSkillsPresentationContainer" type="MarginContainer" parent="Background"]
+[node name="CharacterTypeContainer" type="MarginContainer" parent="Background/MenuContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+
+[node name="CharacterType" type="Label" parent="Background/MenuContainer/VBoxContainer/CharacterTypeContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Type: "
+label_settings = SubResource("LabelSettings_8l5co")
+
+[node name="CoreSkillsPresentationContainer" type="MarginContainer" parent="Background" node_paths=PackedStringArray("skillContainers")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -45.0
-offset_top = -40.0
-offset_right = 45.0
-offset_bottom = 40.0
+offset_left = -86.0
+offset_top = -50.5
+offset_right = 86.0
+offset_bottom = 50.5
 grow_horizontal = 2
 grow_vertical = 2
 scale = Vector2(1.00607, 1)
 size_flags_horizontal = 4
 size_flags_vertical = 4
+theme_override_constants/margin_bottom = 100
 script = ExtResource("2_wkhhl")
+skillContainers = [NodePath("VButtonsContainer/StrengthContainer"), NodePath("VButtonsContainer/ReflexContainer"), NodePath("VButtonsContainer/IntelligenceContainer")]
 
 [node name="VButtonsContainer" type="VBoxContainer" parent="Background/CoreSkillsPresentationContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="SkillContainer" parent="Background/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
+[node name="StrengthContainer" parent="Background/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
 layout_mode = 2
+
+[node name="SkillLabel" parent="Background/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer/HSkillContainer" index="0"]
+text = "      Strength
+"
+
+[node name="ReflexContainer" parent="Background/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
+layout_mode = 2
+coreSkill = 1
+
+[node name="SkillLabel" parent="Background/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer/HSkillContainer" index="0"]
+text = "          Reflex
+"
+horizontal_alignment = 1
+
+[node name="IntelligenceContainer" parent="Background/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
+layout_mode = 2
+coreSkill = 2
+
+[node name="SkillLabel" parent="Background/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer/HSkillContainer" index="0"]
+text = "Intelligence
+"
+
+[node name="NextButtonContainer" type="MarginContainer" parent="Background"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -185.0
+offset_bottom = 184.0
+grow_horizontal = 0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+
+[node name="NextCharacterButton" type="Button" parent="Background/NextButtonContainer"]
+layout_mode = 2
+tooltip_text = "Move to the next character"
+text = "Next"
+
+[node name="SaveContainer" type="MarginContainer" parent="Background"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -185.0
+offset_top = -184.0
+grow_horizontal = 0
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="SaveButton" type="Button" parent="Background/SaveContainer"]
+layout_mode = 2
+tooltip_text = "Save the current character"
+text = "Save"
+
+[node name="PromptContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -250.0
+offset_top = -200.0
+offset_right = 250.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PromptContainer"]
+layout_mode = 2
+
+[node name="PromptLabel" type="Label" parent="PromptContainer/VBoxContainer"]
+layout_mode = 2
+text = "LLM Character Prompt:"
+label_settings = SubResource("LabelSettings_8l5co")
+
+[node name="PromptText" type="TextEdit" parent="PromptContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+tooltip_text = "Text that will define how the character will be presented to the Large Language Model.
+You may change anything within, but be aware that it might break the game!"
+placeholder_text = "hello"
+
+[connection signal="AddLevel" from="Background/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer" to="Background/CoreSkillsPresentationContainer" method="_on_add_button_pressed"]
+[connection signal="SubtractLevel" from="Background/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer" to="Background/CoreSkillsPresentationContainer" method="_on_subtract_button_pressed"]
+[connection signal="AddLevel" from="Background/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer" to="Background/CoreSkillsPresentationContainer" method="_on_add_button_pressed"]
+[connection signal="SubtractLevel" from="Background/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer" to="Background/CoreSkillsPresentationContainer" method="_on_subtract_button_pressed"]
+[connection signal="AddLevel" from="Background/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer" to="Background/CoreSkillsPresentationContainer" method="_on_add_button_pressed"]
+[connection signal="SubtractLevel" from="Background/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer" to="Background/CoreSkillsPresentationContainer" method="_on_subtract_button_pressed"]
+[connection signal="pressed" from="Background/NextButtonContainer/NextCharacterButton" to="." method="_on_next_character_button_pressed"]
+[connection signal="pressed" from="Background/SaveContainer/SaveButton" to="." method="_on_save_button_pressed"]
+
+[editable path="Background/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer"]
+[editable path="Background/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer"]
+[editable path="Background/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer"]

@@ -1,0 +1,11 @@
+Model Information:
+* title:	Sitting Bernie AR meme
+* source:	https://sketchfab.com/3d-models/sitting-bernie-ar-meme-00a3b89492f04fefa8b0cc1dda0a5f95
+* author:	alban (https://sketchfab.com/alban)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Sitting Bernie AR meme" (https://sketchfab.com/3d-models/sitting-bernie-ar-meme-00a3b89492f04fefa8b0cc1dda0a5f95) by alban (https://sketchfab.com/alban) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

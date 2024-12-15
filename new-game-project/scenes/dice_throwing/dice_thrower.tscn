@@ -1,0 +1,68 @@
+[gd_scene load_steps=5 format=3 uid="uid://bplnut3jd0dps"]
+
+[ext_resource type="Script" path="res://scenes/dice_throwing/DiceThrowerMechanism.cs" id="1_ykfwl"]
+[ext_resource type="PackedScene" uid="uid://fgq2ae11m7rp" path="res://scenes/dice_throwing/dice.tscn" id="2_vrhd6"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qbhw4"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_6mik8"]
+
+[node name="DiceThrower" type="Node3D"]
+transform = Transform3D(1, 0.000694491, 0.000161217, -0.000694531, 1, 0.000234311, -0.000161045, -0.000234429, 1, 0, 0, 0)
+script = ExtResource("1_ykfwl")
+dice = ExtResource("2_vrhd6")
+numDice = 5
+
+[node name="DiceSpawnPos" type="Node3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(1, -2.10001e-11, 0, 9.22675e-11, 1, -2.91038e-11, 2.91038e-11, 0, 1, -3.49246e-10, 7.86741, 0)
+
+[node name="Basket" type="Node3D" parent="."]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0, 0, 0)
+
+[node name="Base" type="StaticBody3D" parent="Basket"]
+transform = Transform3D(10, 9.55716e-11, 1.16415e-10, 3.40862e-10, 1, 2.32831e-10, 1.16415e-10, 0, 10, 0, -1, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Basket/Base"]
+transform = Transform3D(1, 3.73674e-11, 0, 1.50507e-10, 1, -4.36557e-11, -1.45519e-11, -2.91038e-11, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_qbhw4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Basket/Base/CollisionShape3D"]
+transform = Transform3D(1, 2.07055e-10, -2.07884e-11, -2.07055e-10, 1, -2.91038e-11, 2.07884e-11, 2.91038e-11, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_6mik8")
+skeleton = NodePath("../..")
+
+[node name="BasketSide" type="StaticBody3D" parent="Basket"]
+transform = Transform3D(1, -4.08761e-10, -1.16415e-09, 3.40634e-11, 12, 6.46235e-26, 1.16415e-10, -4.7586e-20, 10, -4.5, 5.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Basket/BasketSide"]
+transform = Transform3D(1, 3.73674e-11, 0, 1.50507e-10, 1, -4.36557e-11, -1.45519e-11, -2.91038e-11, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_qbhw4")
+
+[node name="BasketSide2" type="StaticBody3D" parent="Basket"]
+transform = Transform3D(1, -4.08761e-10, -1.16415e-09, 3.40634e-11, 12, 6.46235e-26, 1.16415e-10, -4.7586e-20, 10, 4.5, 5.5, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Basket/BasketSide2"]
+transform = Transform3D(1, 3.73674e-11, 0, 1.50507e-10, 1, -4.36557e-11, -1.45519e-11, -2.91038e-11, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_qbhw4")
+
+[node name="BasketSide3" type="StaticBody3D" parent="Basket"]
+transform = Transform3D(8, -4.0876e-10, -1.16415e-10, 2.72507e-10, 12, -6.30121e-27, 9.31323e-10, -4.75859e-20, 1, 0, 5.5, 4.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Basket/BasketSide3"]
+transform = Transform3D(1, 3.73674e-11, 0, 1.50507e-10, 1, -4.36557e-11, -1.45519e-11, -2.91038e-11, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_qbhw4")
+
+[node name="BasketSide4" type="StaticBody3D" parent="Basket"]
+transform = Transform3D(8, -4.0876e-10, -1.16415e-10, 2.72507e-10, 12, -6.30121e-27, 9.31323e-10, -4.75859e-20, 1, 0, 5.5, -4.5)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Basket/BasketSide4"]
+transform = Transform3D(1, 3.73674e-11, 0, 1.50507e-10, 1, -4.36557e-11, -1.45519e-11, -2.91038e-11, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_qbhw4")
+
+[node name="Top" type="StaticBody3D" parent="Basket"]
+transform = Transform3D(10, 9.55716e-11, 1.16415e-10, 3.40862e-10, 1, 2.32831e-10, 1.16415e-10, 0, 10, 4.77858e-10, 12, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Basket/Top"]
+transform = Transform3D(1, 3.73674e-11, 0, 1.50507e-10, 1, -4.36557e-11, -1.45519e-11, -2.91038e-11, 1, 0, 0, 0)
+shape = SubResource("BoxShape3D_qbhw4")
