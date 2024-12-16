@@ -1,5 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://dbkejq42vjbjs"]
+[gd_scene load_steps=7 format=3 uid="uid://dbkejq42vjbjs"]
 
+[ext_resource type="Script" path="res://CameraMover.cs" id="1_c3gf3"]
 [ext_resource type="PackedScene" uid="uid://dfq1qqj6cqgyq" path="res://models/mahogany_table/scene.gltf" id="1_fke0y"]
 [ext_resource type="PackedScene" uid="uid://cx0av00sw1tjh" path="res://models/sitting_clap/guy_sitting.tscn" id="1_rl7nh"]
 [ext_resource type="PackedScene" uid="uid://crjb45mbr3xcm" path="res://models/sitting_bernie_ar_meme/scene.gltf" id="2_hbngf"]
@@ -8,8 +9,10 @@
 
 [node name="MainGame" type="Node3D"]
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("Positions")]
 transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 11.4513, 10.2323, -0.0773547)
+script = ExtResource("1_c3gf3")
+Positions = [NodePath("../Positions/Pos1"), NodePath("../Positions/Pos2"), NodePath("../Positions/Pos3"), NodePath("../Positions/OriginalCameraPos")]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.258819, 0.965926, 0, -0.965926, -0.258819, -4.24786, 23.5244, -3.13561)
@@ -30,3 +33,17 @@ transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -0.364574, 0.788514, -8.63176
 
 [node name="GameMap" parent="." instance=ExtResource("4_5vxs8")]
 transform = Transform3D(8, 3.30543e-05, -0.000614243, -3.16565e-05, 7.99998, 0.0180013, 0.000614317, -0.0180013, 7.99998, -0.5136, 6.53192, -0.243926)
+
+[node name="Positions" type="Node" parent="."]
+
+[node name="Pos1" type="Node3D" parent="Positions"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 0)
+
+[node name="Pos2" type="Node3D" parent="Positions"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 10, 0)
+
+[node name="Pos3" type="Node3D" parent="Positions"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 10, 0)
+
+[node name="OriginalCameraPos" type="Node3D" parent="Positions"]
+transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 11.4513, 10.2323, -0.0773547)

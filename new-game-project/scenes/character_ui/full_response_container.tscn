@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://bfwgur1hbvjyv"]
+
+[ext_resource type="Script" path="res://scenes/character_ui/FullResponseContainer.cs" id="1_pu375"]
+
+[node name="FullResponseContainer" type="MarginContainer"]
+script = ExtResource("1_pu375")
+
+[node name="VFullResponseContainer" type="VBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="UserLabelContainer" type="MarginContainer" parent="VFullResponseContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="CharacterNamePanel" type="Panel" parent="VFullResponseContainer/UserLabelContainer"]
+layout_mode = 2
+
+[node name="CharacterNameLabel" type="Label" parent="VFullResponseContainer/UserLabelContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 4
+text = "CharacterNameOrDM"
+horizontal_alignment = 1
+
+[node name="ResponseContainer" type="MarginContainer" parent="VFullResponseContainer"]
+layout_mode = 2
+
+[node name="ResponsePanel" type="Panel" parent="VFullResponseContainer/ResponseContainer"]
+layout_mode = 2
+
+[node name="ResponseRichLabel" type="RichTextLabel" parent="VFullResponseContainer/ResponseContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+bbcode_enabled = true
+text = "response"

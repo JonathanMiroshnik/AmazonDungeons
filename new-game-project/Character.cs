@@ -4,7 +4,8 @@ using System.Collections.Generic;
 public enum CharacterType
 {
     Player,
-    AI
+    AI,
+    DungeonMaster
 }
 
 public partial class Character
