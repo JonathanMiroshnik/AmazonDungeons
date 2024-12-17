@@ -44,12 +44,12 @@ layout_mode = 2
 text = "Character Creation"
 label_settings = SubResource("LabelSettings_8l5co")
 
-[node name="CharacterTypeContainer" type="MarginContainer" parent="Background/MenuContainer/VBoxContainer"]
+[node name="GameEntityTypeContainer" type="MarginContainer" parent="Background/MenuContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 
-[node name="CharacterType" type="Label" parent="Background/MenuContainer/VBoxContainer/CharacterTypeContainer"]
+[node name="GameEntityType" type="Label" parent="Background/MenuContainer/VBoxContainer/GameEntityTypeContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Type: "

@@ -8,7 +8,8 @@ public partial class CharacterCreation : Control
 	public CoreSkillsSetter coreSkillsSetter;
 	private int characterIndex = 0;
 
-	//do ready
+	// TODO: when do the characters get created really? is the character creation screen just a character "editing" screen? 
+	//  same num of characters always?
 	public override void _Ready() {
 		if (GameManager.Instance.characters.Count <= 0) return; // TODO: raise error?
 	}
@@ -17,7 +18,7 @@ public partial class CharacterCreation : Control
 		if (character == null) return;
 
 		coreSkillsSetter.SetSkillsByCharacter(character);
-		GetNode<Label>("%CharacterType").Text = "Type: " + character.CharacterType.ToString();
+		GetNode<Label>("%GameEntityType").Text = "Type: " + character.GameEntityType.ToString();
 	}
 
 	public void _on_next_character_button_pressed() {

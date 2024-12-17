@@ -1,13 +1,22 @@
-[gd_scene load_steps=7 format=3 uid="uid://dbkejq42vjbjs"]
+[gd_scene load_steps=9 format=3 uid="uid://dbkejq42vjbjs"]
 
 [ext_resource type="Script" path="res://CameraMover.cs" id="1_c3gf3"]
 [ext_resource type="PackedScene" uid="uid://dfq1qqj6cqgyq" path="res://models/mahogany_table/scene.gltf" id="1_fke0y"]
+[ext_resource type="Script" path="res://Game.cs" id="1_ifjqk"]
 [ext_resource type="PackedScene" uid="uid://cx0av00sw1tjh" path="res://models/sitting_clap/guy_sitting.tscn" id="1_rl7nh"]
+[ext_resource type="PackedScene" uid="uid://dqyvcyelmjhed" path="res://scenes/character_ui/character_ui.tscn" id="2_dug5a"]
 [ext_resource type="PackedScene" uid="uid://crjb45mbr3xcm" path="res://models/sitting_bernie_ar_meme/scene.gltf" id="2_hbngf"]
 [ext_resource type="PackedScene" uid="uid://bdnumqa7jgfqm" path="res://models/astronomic_map/scene.gltf" id="4_5vxs8"]
 [ext_resource type="PackedScene" uid="uid://bplnut3jd0dps" path="res://scenes/dice_throwing/dice_thrower.tscn" id="5_ng526"]
 
 [node name="MainGame" type="Node3D"]
+
+[node name="GameObject" type="Node" parent="." node_paths=PackedStringArray("cameraMover", "characterUI")]
+script = ExtResource("1_ifjqk")
+cameraMover = NodePath("../Camera3D")
+characterUI = NodePath("../CharacterUI")
+
+[node name="CharacterUI" parent="." instance=ExtResource("2_dug5a")]
 
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("Positions")]
 transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 11.4513, 10.2323, -0.0773547)

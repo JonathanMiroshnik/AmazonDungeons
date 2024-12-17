@@ -14,12 +14,12 @@ public partial class CameraMover : Camera3D
 	public override async void _Ready()
 	{
 		// Examples of movement over the indeces of positions in the list
-		await MoveCameraByIndex(0, 2);
-		await MoveCameraByIndex(1, 2);
-		await MoveCameraByIndex(2, 2);
+		// await MoveCameraByIndex(0, 2);
+		// await MoveCameraByIndex(1, 2);
+		// await MoveCameraByIndex(2, 2);
 
 		// Example of movement with the name of the position in the lsit
-		await MoveCameraByString("OriginalCameraPos", 4);
+		// await MoveCameraByString("OriginalCameraPos", 4);
 	}
 
 	// SOURCE: https://easings.net/#easeInOutQuad // Amazon Q

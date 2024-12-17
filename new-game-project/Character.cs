@@ -1,14 +1,7 @@
 using System.Text.Json;
 using System.Collections.Generic;
 
-public enum CharacterType
-{
-    Player,
-    AI,
-    DungeonMaster
-}
-
-public partial class Character
+public partial class Character : GameEntity
 {
     // Core Skills
     // TODO: should be up to 2
@@ -20,8 +13,6 @@ public partial class Character
     public string Name { get; set; }
     public string Personality { get; set; } = "";  // Contains personality/morality/history/goals
 
-    public CharacterType CharacterType;
-
     // Items
     public List<string> Items { get; set; }
 
@@ -29,7 +20,9 @@ public partial class Character
     public int HealthPoints { get; set; } = 8;
     public int BaseDiceNumber { get; set; } = 3;
 
-    public Character(string name, string personality = "", int strength = 0, int reflex = 0, int intelligence = 0, CharacterType characterType = CharacterType.AI)
+    // constructor that takes into consideration the constructor of GameEntity
+    public Character(string name, string personality = "", int strength = 0, 
+                    int reflex = 0, int intelligence = 0, GameEntityType gameEntityType = GameEntityType.AI) : base(gameEntityType)
     {
         Name = name;
         Personality = personality;
@@ -40,8 +33,6 @@ public partial class Character
             { CoreSkill.Reflex, reflex },
             { CoreSkill.Intelligence, intelligence }
         };
-
-        CharacterType = characterType;
     }
 
     // TODO: notice that some of the variables should not be serialized in a JSON that is given to the LLM, or maybe not use JSON like this anyways?

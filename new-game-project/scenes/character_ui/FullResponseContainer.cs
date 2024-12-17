@@ -1,15 +1,16 @@
 using Godot;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public partial class FullResponseContainer : MarginContainer
 {
 	public Character character;
 
-	private Dictionary<CharacterType, Color> characterTypeColor = new Dictionary<CharacterType, Color>()
+	private Dictionary<GameEntityType, Color> gameEntityTypeColor = new Dictionary<GameEntityType, Color>()
 	{
-		{ CharacterType.AI, Colors.Red },
-		{ CharacterType.Player, Colors.Blue },
-		{ CharacterType.DungeonMaster, Colors.Green }
+		{ GameEntityType.AI, Colors.Red },
+		{ GameEntityType.Player, Colors.Blue },
+		{ GameEntityType.DungeonMaster, Colors.Green }
 	};
 
 	private Label characterNameLabel;
@@ -27,8 +28,10 @@ public partial class FullResponseContainer : MarginContainer
 		if (userLabelContainer == null) return; // FIXME: raise error
 	}
 
-	public async void ShowResponse(string response)
+	public async Task ShowResponse(string response)
 	{
+		float TIME_TO_SHOW = 3f;
+
 		if (character == null) {
 			userLabelContainer.Visible = false;
 			userLabelContainer.SetProcess(false);
@@ -37,9 +40,9 @@ public partial class FullResponseContainer : MarginContainer
 			userLabelContainer.SetProcess(true);
 			userLabelContainer.Visible = true;
 			characterNameLabel.Text = character.Name;
-			characterNameLabel.AddThemeColorOverride("font_color", characterTypeColor[character.CharacterType]);
+			characterNameLabel.AddThemeColorOverride("font_color", gameEntityTypeColor[character.GameEntityType]);
 		}
 
-		GlobalStringLibrary.TypeWriteOverDuration(response, responseRichLabel, 3);
+		await GlobalStringLibrary.TypeWriteOverDuration(response, responseRichLabel, TIME_TO_SHOW);
 	}
 }
