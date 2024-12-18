@@ -3,6 +3,8 @@
 [ext_resource type="Script" path="res://scenes/character_ui/FullResponseContainer.cs" id="1_pu375"]
 
 [node name="FullResponseContainer" type="MarginContainer"]
+offset_right = 800.0
+offset_bottom = 127.0
 script = ExtResource("1_pu375")
 
 [node name="VFullResponseContainer" type="VBoxContainer" parent="."]
@@ -36,3 +38,4 @@ custom_minimum_size = Vector2(300, 100)
 layout_mode = 2
 bbcode_enabled = true
 text = "response"
+fit_content = true

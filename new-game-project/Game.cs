@@ -2,6 +2,9 @@ using System.Runtime.Versioning;
 using System.Security.Cryptography;
 using Godot;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+
+using System.Text.Json;
 
 public partial class Game : Node
 {
@@ -11,12 +14,14 @@ public partial class Game : Node
 	public CharacterUI characterUI;
 
 	[Export]
-	public int NumberOfRounds = 2;
+	public int NumberOfRounds = 1;
 
 	public string worldDescription = "";
 
 	public override async void _Ready()
 	{
+		await GameManager.Instance.IsLoaded();
+
 		if (cameraMover == null || characterUI == null) return; // FIXME: raise error
 
 		// DoPrelude();
@@ -47,15 +52,31 @@ public partial class Game : Node
 
 			// Choose the next character
 			Character character = GameManager.Instance.characters[i];
+			// make a list of the ShortenedDescriptions of the other characters // Amazon Q
+			string otherCharactersStr = "";
+			foreach (Character otherCharacter in GameManager.Instance.characters) {
+				if (otherCharacter == character) continue;
+				otherCharactersStr += " The name: " + otherCharacter.Name + " The description: " + otherCharacter.ShortenedDescription + ", ";
+			}
 
 			// Move to that Character
 			await cameraMover.MoveCameraByIndex(i, TIME_TO_MOVE); // FIXME: maybe character number is not the same as index in the moveCamera?
 
 			// First response from DM to character
-			 // testStr = await AskLlama(DM_PREFIX + LOCATION_PREFIX + ALL_PLAYER_PREFIX + OTHER_CHARACTER_PREFIX + 
-        //                          CURRENT_CHARACTER_PREFIX + EXAMPLE_CHARACTER + JSON_RESPONSE_TYPE);
-			retStr = await GameManager.AskLlama(character.Personality); // TODO: prompt
-			await characterUI.AddResponse(retStr, character);
+			retStr = await GameManager.AskLlama(LLMLibrary.DM_PREFIX + LLMLibrary.DM_JOB_PREFIX + 
+												LLMLibrary.LOCATION_PREFIX + character.Location +
+												LLMLibrary.ALL_PLAYER_PREFIX + otherCharactersStr + 
+												LLMLibrary.CURRENT_CHARACTER_PREFIX + character.GetDescription() + 
+												LLMLibrary.JSON_DM_RESPONSE_TYPE + 
+												"\nWrite a short response of up to 100 words.");
+			
+			// Accessing JSON output
+			var jsonObject = JsonSerializer.Deserialize<JsonElement>(retStr);
+			var retText = jsonObject.GetProperty("text").GetString();
+			int retScore = jsonObject.GetProperty("score").GetInt32();
+			GD.Print(retScore);
+
+			await characterUI.AddResponse(retText, character);
 
 			// TODO: Response from character to DM
 
@@ -87,7 +108,7 @@ public partial class Game : Node
 	}
 	
 	// TODO:
-	public async void FinalRound() {
-		return;
-	}
+	// public async void FinalRound() {
+	// 	return;
+	// }
 }

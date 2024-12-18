@@ -1,5 +1,6 @@
 using Godot;
 using System.Threading.Tasks;
+using System;
 
 public partial class GlobalStringLibrary : GodotObject
 {
@@ -30,5 +31,10 @@ public partial class GlobalStringLibrary : GodotObject
             await Task.Delay(10);
         }
         label.VisibleRatio = 1;
+    }
+
+    public static int NumberOfWords(string inputStr) {
+        char[] delimiters = new char[] {' ', '\r', '\n' };
+        return inputStr.Split(delimiters, StringSplitOptions.RemoveEmptyEntries).Length;
     }
 }
