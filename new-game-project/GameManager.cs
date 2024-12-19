@@ -4,11 +4,12 @@ using System.Threading.Tasks;
 using System.IO;
 
 using Amazon;
-using System.Text.Json;
 using System.Text.Json.Nodes;
 using Amazon.BedrockRuntime;
 using Amazon.BedrockRuntime.Model;
 using System.Collections.Generic;
+using Newtonsoft.Json;
+
 
 public enum CoreSkill
 {
@@ -26,8 +27,9 @@ public partial class GameManager : Node
 	public List<Character> characters;
 	// TODO: add dungeon master
 
-    public string testStr = ""; // TODO: delete this
+    // A description of the DnD-like world
     public string worldDescription = "";
+    // The location of the hero party
     public string location = "";
 
     public override async void _Ready()
@@ -38,36 +40,36 @@ public partial class GameManager : Node
 		//create new character
 		characters = new List<Character>();
 
-        string retStr = await AskLlama("Write a description Dungeons and Dragons world, " + 
+        string worldSerializedJSON = await AskLlama("Write a description Dungeons and Dragons world, " + 
                                           "with different locations and small bits of lore\n " + 
                                           "Write it as a JSON with only two categories. " +
                                           "The first category is world, which contains the description of the world and "+
                                           "the second is location, which contains a very short description(or just name) of the place the characters are placed in the world.\n" +
                                           "respond only with the JSON and with nothing else." +
-                                          "Make sure the JSON file that is outputted is of depth 1 and no more.\n" + // FIXME: problems with this depth thing
-                                          "Write all of this in 200 words or fewer.");
-        GD.Print(retStr);
-        var jsonObject = JsonSerializer.Deserialize<JsonElement>(retStr);
-        worldDescription = jsonObject.GetProperty("world").GetString();
-        GD.Print("WORLD " + worldDescription);
-        location = jsonObject.GetProperty("location").GetString();
+                                          "The input in the categories are only string, not lists, not anything else.\n" + // FIXME: problems with this depth thing
+                                          "Don't write something long but make sure that the JSON is valid and closed properly.");
+        
+        var resultWorld = JsonConvert.DeserializeObject<JSONWorld>(worldSerializedJSON);
+        
+        worldDescription = resultWorld.world;
+        location = resultWorld.location;
 
         string personalityTest = await AskLlama("Write a Dungeons and Dragons character description.\n " + 
                                                 LLMLibrary.JSON_CHARACTER_CREATION_TYPE +
-                                                "Make sure the JSON file that is outputted is of depth 1 and no more.\n" +
-                                                "Write all of this in 200 words or fewer.");
+                                                "The input in the categories are only string, not lists, not anything else.\n" +
+                                                "Don't write something long but make sure that the JSON is valid and closed properly.");
         GD.Print(personalityTest);
-        jsonObject = JsonSerializer.Deserialize<JsonElement>(personalityTest);
-        var charName = jsonObject.GetProperty("world").GetString();
-        var personality = jsonObject.GetProperty("location").GetString();
-        var shortDesc = jsonObject.GetProperty("short").GetString();
 
-        GD.Print("wew1");
-		Character character = new Character(charName, personality, shortDesc, location, 2);
+        var resultChar = JsonConvert.DeserializeObject<JSONCharacter>(personalityTest);
+
+        var charName = resultChar.name;
+        var personality = resultChar.personality;
+        var shortDesc = resultChar.shortdesc;
+        
+		Character character = new Character(charName, personality, shortDesc, 2);
 		characters.Add(character);
-        GD.Print("wew2");
 
-
+        
         // IMPORTANT, must be kept at the end of this Ready function 
         //  because other parts of the game rely on it through the IsLoaded function
         Loaded = true;
@@ -133,7 +135,7 @@ public partial class GameManager : Node
                             """;
         
         // Format the request using the model's native payload structure
-        var nativeRequest = JsonSerializer.Serialize(new
+        var nativeRequest = System.Text.Json.JsonSerializer.Serialize(new
         {
             // Add the formatted prompt
             prompt = formattedPrompt,

@@ -64,7 +64,7 @@ public partial class Game : Node
 
 			// First response from DM to character
 			retStr = await GameManager.AskLlama(LLMLibrary.DM_PREFIX + LLMLibrary.DM_JOB_PREFIX + 
-												LLMLibrary.LOCATION_PREFIX + character.Location +
+												LLMLibrary.LOCATION_PREFIX + GameManager.Instance.location +
 												LLMLibrary.ALL_PLAYER_PREFIX + otherCharactersStr + 
 												LLMLibrary.CURRENT_CHARACTER_PREFIX + character.GetDescription() + 
 												LLMLibrary.JSON_DM_RESPONSE_TYPE + 
@@ -87,7 +87,7 @@ public partial class Game : Node
 	}
 
 	public async void DoPrelude() {
-		var worldStr = await GameManager.AskLlama(LLMLibrary.WORLD_CREATION + LLMLibrary.PRESENT_AS_POEM);
+		var worldStr = await GameManager.AskLlama(LLMLibrary.WORLD_CREATION + LLMLibrary.PRESENT_AS_POEM); // TODO: world is made in gamemanager
         GD.Print(worldStr);
 
 		SeparatorPrint("Rewriting world description...");

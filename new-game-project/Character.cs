@@ -12,7 +12,6 @@ public partial class Character : GameEntity
     // Character Lore
     public string Name { get; set; }
     public string Personality { get; set; } = "";  // Contains personality/morality/history/goals
-    public string Location { get; set; } = "";
     public string ShortenedDescription { get; set; } = "";
 
     // Items
@@ -23,12 +22,11 @@ public partial class Character : GameEntity
     public int BaseDiceNumber { get; set; } = 3;
 
     // constructor that takes into consideration the constructor of GameEntity
-    public Character(string name, string personality = "", string location = "", string shortenedDescription = "", int strength = 0, 
+    public Character(string name, string personality = "", string shortenedDescription = "", int strength = 0, 
                     int reflex = 0, int intelligence = 0, GameEntityType gameEntityType = GameEntityType.AI) : base(gameEntityType)
     {
         Name = name;
         Personality = personality;
-        Location = location;
         ShortenedDescription = shortenedDescription;
 
         CoreSkills = new Dictionary<CoreSkill, int>
@@ -41,7 +39,7 @@ public partial class Character : GameEntity
 
     public string GetDescription()
     {
-        return $"Name: {Name}\nPersonality: {Personality}\nLocation: {Location}\nCore Skills: {CoreSkills}\nItems: {Items}\nHealth Points: {HealthPoints}\nBase Dice Number: {BaseDiceNumber}";
+        return $"Name: {Name}\nPersonality: {Personality}\nCore Skills: {CoreSkills}\nItems: {Items}\nHealth Points: {HealthPoints}\nBase Dice Number: {BaseDiceNumber}";
     }
 
     // TODO: notice that some of the variables should not be serialized in a JSON that is given to the LLM, or maybe not use JSON like this anyways?

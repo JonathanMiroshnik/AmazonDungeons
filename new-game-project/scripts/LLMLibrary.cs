@@ -34,7 +34,7 @@ public partial class LLMLibrary : Node
                                         "Respond only with a JSON in which there are three categories:\n " +
                                         "1. name - the name of the character\n" + 
                                         "2. personality - the personality, goals, history of the character\n" +
-                                        "3. short - a shortened description of the character of 30 words or fewer\n";
+                                        "3. shortdesc - a shortened description of the character of 30 words or fewer\n";
 
     // NOTICE: when it is short text responses, it doesn't do anything creative enough(often only one big tag), so use this for long strings of text output
     public static string BBCODE_ADDITION = "To the text output part, format it with BBCode to emphasise it in any way you want, especially with colors. "; 
