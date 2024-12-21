@@ -21,7 +21,7 @@ characterUI = NodePath("../CharacterUI")
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("Positions")]
 transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 11.4513, 10.2323, -0.0773547)
 script = ExtResource("1_c3gf3")
-Positions = [NodePath("../Positions/Pos1"), NodePath("../Positions/Pos2"), NodePath("../Positions/Pos3"), NodePath("../Positions/OriginalCameraPos")]
+Positions = []
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.258819, 0.965926, 0, -0.965926, -0.258819, -4.24786, 23.5244, -3.13561)
