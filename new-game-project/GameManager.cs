@@ -47,8 +47,10 @@ public partial class GameManager : Node
                                           "the second is location, which contains a very short description(or just name) of the place the characters are placed in the world.\n" +
                                           "respond only with the JSON and with nothing else." +
                                           "The input in the categories are only string, not lists, not anything else.\n" + // FIXME: problems with this depth thing
-                                          "Don't write something long but make sure that the JSON is valid and closed properly.");
-        
+                                          "Don't write something long but make sure that the JSON is valid and closed properly.",
+                                          0.5f, 1000);
+        worldSerializedJSON = GlobalStringLibrary.JSONStringBrackets(worldSerializedJSON);
+        GD.Print(worldSerializedJSON);
         var resultWorld = JsonConvert.DeserializeObject<JSONWorld>(worldSerializedJSON);
         
         worldDescription = resultWorld.world;
@@ -57,7 +59,9 @@ public partial class GameManager : Node
         string personalityTest = await AskLlama("Write a Dungeons and Dragons character description.\n " + 
                                                 LLMLibrary.JSON_CHARACTER_CREATION_TYPE +
                                                 "The input in the categories are only string, not lists, not anything else.\n" +
-                                                "Don't write something long but make sure that the JSON is valid and closed properly.");
+                                                "Don't write something long but make sure that the JSON is valid and closed properly.",
+                                                0.5f, 1000);
+        personalityTest = GlobalStringLibrary.JSONStringBrackets(personalityTest);
         GD.Print(personalityTest);
 
         var resultChar = JsonConvert.DeserializeObject<JSONCharacter>(personalityTest);
@@ -98,7 +102,7 @@ public partial class GameManager : Node
 		}
 	}
 
-	public static async Task<string> AskLlama(string prompt)
+	public static async Task<string> AskLlama(string prompt, float temperature = 0.5f, int max_gen_len = 500)
     {
         // GD.Print("Ask Llama began");
 
@@ -141,8 +145,8 @@ public partial class GameManager : Node
             prompt = formattedPrompt,
             
             // Optional: Configure inference parameters
-            temperature = 0.5,
-            max_gen_len = 500
+            temperature = temperature,
+            max_gen_len = max_gen_len
         });
 
         // Configure the invoke model request

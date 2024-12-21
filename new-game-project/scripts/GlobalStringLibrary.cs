@@ -56,4 +56,16 @@ public partial class GlobalStringLibrary : GodotObject
 
         return inputStr;
     }
+
+    public static string JSONStringBrackets(string JSONString) {
+        // Checks if the string is missing a final closign curly bracket, if it does, it adds it and returns the final string
+        // Checking the final character that isn't a space or a tab
+        while (JSONString[JSONString.Length - 1] == ' ' || JSONString[JSONString.Length - 1] == '\t') {
+            JSONString = JSONString.Remove(JSONString.Length - 1);
+        }
+        if (JSONString[JSONString.Length - 1] != '}') {
+            JSONString += "}";
+        }
+        return JSONString;
+    }
 }
