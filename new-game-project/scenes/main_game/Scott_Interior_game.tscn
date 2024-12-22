@@ -1,0 +1,46 @@
+[gd_scene load_steps=8 format=3 uid="uid://6s4jwca2o6sq"]
+
+[ext_resource type="PackedScene" uid="uid://c8vq4a0408n08" path="res://models/Room/Room base.glb" id="1_8j3d6"]
+[ext_resource type="PackedScene" uid="uid://cumdvs8e1uxbx" path="res://models/Room/Tabel.glb" id="2_d406x"]
+[ext_resource type="PackedScene" uid="uid://bdk4y1616wm37" path="res://models/Room/Chair.glb" id="3_yl7tg"]
+[ext_resource type="PackedScene" uid="uid://bfwy4n5gndyvd" path="res://models/Room/Square Drawrs.glb" id="4_3vjp0"]
+[ext_resource type="PackedScene" uid="uid://k7qvotta4bhc" path="res://models/Room/BookShelf.glb" id="5_tctxt"]
+[ext_resource type="PackedScene" uid="uid://c8ilxeckj4g26" path="res://models/Room/Small drawer.glb" id="6_rusjm"]
+[ext_resource type="PackedScene" uid="uid://dkix22hlnvcp" path="res://models/Room/Workbench.glb" id="7_pnheh"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Room base" parent="." instance=ExtResource("1_8j3d6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.435855, 0, 0.470311)
+
+[node name="Tabel" parent="." instance=ExtResource("2_d406x")]
+
+[node name="Chair" parent="." instance=ExtResource("3_yl7tg")]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.584375, 0, 7.68841)
+
+[node name="Chair2" parent="." instance=ExtResource("3_yl7tg")]
+transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 0.488227, 0, -9.08291)
+
+[node name="Chair3" parent="." instance=ExtResource("3_yl7tg")]
+transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 16.7894, 0, -0.162191)
+
+[node name="Square Drawrs" parent="." instance=ExtResource("4_3vjp0")]
+transform = Transform3D(0.974668, 0, -0.223658, 0, 1, 0, 0.223658, 0, 0.974668, 20.2971, 0, -32.0084)
+
+[node name="BookShelf2" parent="." instance=ExtResource("5_tctxt")]
+transform = Transform3D(-0.987549, 0, -0.157313, 0, 1, 0, 0.157313, 0, -0.987549, 28.3329, 0, 33.4886)
+
+[node name="BookShelf" parent="." instance=ExtResource("5_tctxt")]
+transform = Transform3D(0.99476, 0, 0.102237, 0, 1, 0, -0.102237, 0, 0.99476, -9.33988, 0, -32.1237)
+
+[node name="Small drawer3" parent="." instance=ExtResource("6_rusjm")]
+transform = Transform3D(-0.606141, 0, -0.795357, 0, 1, 0, 0.795357, 0, -0.606141, -26.3376, 0, 25.1202)
+
+[node name="Small drawer2" parent="." instance=ExtResource("6_rusjm")]
+transform = Transform3D(0.953101, 0, -0.302653, 0, 1, 0, 0.302653, 0, 0.953101, 57.9256, 0, 9.04631)
+
+[node name="Small drawer" parent="." instance=ExtResource("6_rusjm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 62.0575, 0, -20.1392)
+
+[node name="Workbench2" parent="." instance=ExtResource("7_pnheh")]
+transform = Transform3D(0.998879, 0, -0.0473331, 0, 1, 0, 0.0473331, 0, 0.998879, 0, 0, 34.5148)
