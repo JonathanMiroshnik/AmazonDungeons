@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 
 public enum CoreSkill
 {
-    Strength,
+	Strength,
 	Reflex,
 	Intelligence
 }
@@ -22,174 +22,176 @@ public partial class GameManager : Node
 {
 	public static GameManager Instance { get; private set; }
 
-    public bool Loaded = false;
+	public bool Loaded = false;
 
 	public List<Character> characters;
 	// TODO: add dungeon master
 
-    // A description of the DnD-like world
-    public string worldDescription = "";
-    // The location of the hero party
-    public string location = "";
+	// A description of the DnD-like world
+	public string worldDescription = "";
+	// The location of the hero party
+	public string location = "";
 
-    public override async void _Ready()
-    {
-        Instance = this;
+	public override async void _Ready()
+	{
+		Instance = this;
 
 		// TODO: DELETE THIS CODE, TEST CODE
 		//create new character
 		characters = new List<Character>();
 
-        string worldSerializedJSON = await AskLlama("Write a description Dungeons and Dragons world, " + 
-                                          "with different locations and small bits of lore\n " + 
-                                          "Write it as a JSON with only two categories. " +
-                                          "The first category is world, which contains the description of the world and "+
-                                          "the second is location, which contains a very short description(or just name) of the place the characters are placed in the world.\n" +
-                                          "respond only with the JSON and with nothing else." +
-                                          "The input in the categories are only string, not lists, not anything else.\n" + // FIXME: problems with this depth thing
-                                          "Don't write something long but make sure that the JSON is valid and closed properly.",
-                                          0.5f, 1000);
-        worldSerializedJSON = GlobalStringLibrary.JSONStringBrackets(worldSerializedJSON);
-        GD.Print(worldSerializedJSON);
-        var resultWorld = JsonConvert.DeserializeObject<JSONWorld>(worldSerializedJSON);
-        
-        worldDescription = resultWorld.world;
-        location = resultWorld.location;
+		string worldSerializedJSON = await AskLlama("Write a description Dungeons and Dragons world, " + 
+										  "with different locations and small bits of lore\n " + 
+										  "Write it as a JSON with only two categories. " +
+										  "The first category is world, which contains the description of the world and "+
+										  "the second is location, which contains a very short description(or just name) of the place the characters are placed in the world.\n" +
+										  "respond only with the JSON and with nothing else." +
+										  "The input in the categories are only string, not lists, not anything else.\n" + // FIXME: problems with this depth thing
+										  "Don't write something long but make sure that the JSON is valid and closed properly.",
+										  0.5f, 1000);
+		worldSerializedJSON = GlobalStringLibrary.JSONStringBrackets(worldSerializedJSON);
+		GD.Print(worldSerializedJSON);
+		var resultWorld = JsonConvert.DeserializeObject<JSONWorld>(worldSerializedJSON);
+		
+		worldDescription = resultWorld.world;
+		location = resultWorld.location;
 
-        string personalityTest = await AskLlama("Write a Dungeons and Dragons character description.\n " + 
-                                                LLMLibrary.JSON_CHARACTER_CREATION_TYPE +
-                                                "The input in the categories are only string, not lists, not anything else.\n" +
-                                                "Don't write something long but make sure that the JSON is valid and closed properly.",
-                                                0.5f, 1000);
-        personalityTest = GlobalStringLibrary.JSONStringBrackets(personalityTest);
-        GD.Print(personalityTest);
+		string personalityTest = await AskLlama("Write a Dungeons and Dragons character description.\n " + 
+												LLMLibrary.JSON_CHARACTER_CREATION_TYPE +
+												"The input in the categories are only string, not lists, not anything else.\n" +
+												"Don't write something long but make sure that the JSON is valid and closed properly.",
+												0.5f, 1000);
+		personalityTest = GlobalStringLibrary.JSONStringBrackets(personalityTest);
+		GD.Print(personalityTest);
 
-        var resultChar = JsonConvert.DeserializeObject<JSONCharacter>(personalityTest);
+		var resultChar = JsonConvert.DeserializeObject<JSONCharacter>(personalityTest);
 
-        var charName = resultChar.name;
-        var personality = resultChar.personality;
-        var shortDesc = resultChar.shortdesc;
-        
+		var charName = resultChar.name;
+		var personality = resultChar.personality;
+		var shortDesc = resultChar.shortdesc;
+		
 		Character character = new Character(charName, personality, shortDesc, 2);
 		characters.Add(character);
 
-        
-        // IMPORTANT, must be kept at the end of this Ready function 
-        //  because other parts of the game rely on it through the IsLoaded function
-        Loaded = true;
-    }
-    
-    // Used by parts of the game that need the GameManager to be loaded before they begin their activation
-    public async Task<bool> IsLoaded() {
-        while (!Loaded) {
-            // GD.Print("Waiting for GameManager to load...");
-            await Task.Delay(1000);
-        }
+		
+		// IMPORTANT, must be kept at the end of this Ready function 
+		//  because other parts of the game rely on it through the IsLoaded function
+		Loaded = true;
+	}
+	
+	// Used by parts of the game that need the GameManager to be loaded before they begin their activation
+	public async Task<bool> IsLoaded() {
+		while (!Loaded) {
+			// GD.Print("Waiting for GameManager to load...");
+			await Task.Delay(1000);
+		}
 
-        return true;
-    }
+		return true;
+	}
 
-    public override void _Notification(int what)
+	public override void _Notification(int what)
 	{
 		if (what == NotificationWMCloseRequest) {
-            GD.Print();
-            GD.Print();
+			GD.Print();
+			GD.Print();
 			GD.Print("Total number of LLM tokens(input and output string words) used for this game: " + LLMLibrary.TotalTokens.ToString());
-            GD.Print("Total number of requests to the LLM: " + LLMLibrary.TotalNumberOfRequests.ToString());
-            GD.Print("Average number of tokens per request: " + ((float)(LLMLibrary.TotalTokens / LLMLibrary.TotalNumberOfRequests)).ToString());
-            GD.Print();
-            GD.Print();
+			GD.Print("Total number of requests to the LLM: " + LLMLibrary.TotalNumberOfRequests.ToString());
+			GD.Print("Average number of tokens per request: " + ((float)(LLMLibrary.TotalTokens / LLMLibrary.TotalNumberOfRequests)).ToString());
+			GD.Print();
+			GD.Print();
 		}
 	}
 
 	public static async Task<string> AskLlama(string prompt, float temperature = 0.5f, int max_gen_len = 500)
-    {
-        // GD.Print("Ask Llama began");
+	{
+		return "";
 
-        //-------------------
-        // 1. Configuration
-        //-------------------
+		// GD.Print("Ask Llama began");
 
-        // Specify an AWS region
-        // Note: Make sure Bedrock is supported in your chosen region
-        var region = RegionEndpoint.USEast1;
+		//-------------------
+		// 1. Configuration
+		//-------------------
 
-        // Choose your model ID. Supported models can be found at:
-        // https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference-supported-models-features.html
-        const string modelId = "meta.llama3-8b-instruct-v1:0";
+		// Specify an AWS region
+		// Note: Make sure Bedrock is supported in your chosen region
+		var region = RegionEndpoint.USEast1;
 
-        //-------------------
-        // 2. Client Setup
-        //-------------------
+		// Choose your model ID. Supported models can be found at:
+		// https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference-supported-models-features.html
+		const string modelId = "meta.llama3-8b-instruct-v1:0";
 
-        // Initialize the Bedrock Runtime Client
-        // The client will use your configured AWS credentials automatically
-        using var client = new AmazonBedrockRuntimeClient(region);
+		//-------------------
+		// 2. Client Setup
+		//-------------------
 
-        //-------------------
-        // 3. Request Setup
-        //-------------------
-        
-        // Embed the prompt in Llama 3's instruction format
-        var formattedPrompt = $"""
-                            <|begin_of_text|><|start_header_id|>user<|end_header_id|>
-                            {prompt}
-                            <|eot_id|>
-                            <|start_header_id|>assistant<|end_header_id|>
-                            """;
-        
-        // Format the request using the model's native payload structure
-        var nativeRequest = System.Text.Json.JsonSerializer.Serialize(new
-        {
-            // Add the formatted prompt
-            prompt = formattedPrompt,
-            
-            // Optional: Configure inference parameters
-            temperature = temperature,
-            max_gen_len = max_gen_len
-        });
+		// Initialize the Bedrock Runtime Client
+		// The client will use your configured AWS credentials automatically
+		using var client = new AmazonBedrockRuntimeClient(region);
 
-        // Configure the invoke model request
-        var request = new InvokeModelRequest()
-        {
-            ModelId = modelId,
-            Body = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(nativeRequest)),
-            ContentType = "application/json"
-        };
+		//-------------------
+		// 3. Request Setup
+		//-------------------
+		
+		// Embed the prompt in Llama 3's instruction format
+		var formattedPrompt = $"""
+							<|begin_of_text|><|start_header_id|>user<|end_header_id|>
+							{prompt}
+							<|eot_id|>
+							<|start_header_id|>assistant<|end_header_id|>
+							""";
+		
+		// Format the request using the model's native payload structure
+		var nativeRequest = System.Text.Json.JsonSerializer.Serialize(new
+		{
+			// Add the formatted prompt
+			prompt = formattedPrompt,
+			
+			// Optional: Configure inference parameters
+			temperature = temperature,
+			max_gen_len = max_gen_len
+		});
 
-        //----------------------
-        // 4. Send the Request
-        //----------------------
+		// Configure the invoke model request
+		var request = new InvokeModelRequest()
+		{
+			ModelId = modelId,
+			Body = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(nativeRequest)),
+			ContentType = "application/json"
+		};
 
-        try
-        {
-            // Send the request and wait for the response
-            var response = await client.InvokeModelAsync(request);
-            
-            // Decode the model's native response payload
-            var modelResponse = await JsonNode.ParseAsync(response.Body);
+		//----------------------
+		// 4. Send the Request
+		//----------------------
 
-            // Extract and print the response text
-            string responseText = (string) modelResponse["generation"] ?? "";
-            // GD.Print(responseText);
+		try
+		{
+			// Send the request and wait for the response
+			var response = await client.InvokeModelAsync(request);
+			
+			// Decode the model's native response payload
+			var modelResponse = await JsonNode.ParseAsync(response.Body);
 
-            // Adding to the total number of tokens(words) in this game
-            LLMLibrary.TotalTokens +=  GlobalStringLibrary.NumberOfWords(prompt) + GlobalStringLibrary.NumberOfWords(responseText);
-            LLMLibrary.TotalNumberOfRequests++;
+			// Extract and print the response text
+			string responseText = (string) modelResponse["generation"] ?? "";
+			// GD.Print(responseText);
 
-            // GD.Print("Finished Llama request: " + responseText);
-            return responseText;
-        }
-        catch (Exception ex)
-        {
-            // In production, you should handle specific exceptions:
-            // - AccessDeniedException: Missing access permissions
-            // - ValidationException: Invalid request parameters
-            // - etc.
+			// Adding to the total number of tokens(words) in this game
+			LLMLibrary.TotalTokens +=  GlobalStringLibrary.NumberOfWords(prompt) + GlobalStringLibrary.NumberOfWords(responseText);
+			LLMLibrary.TotalNumberOfRequests++;
 
-            GD.Print($"\nError: {ex.Message}");
+			// GD.Print("Finished Llama request: " + responseText);
+			return responseText;
+		}
+		catch (Exception ex)
+		{
+			// In production, you should handle specific exceptions:
+			// - AccessDeniedException: Missing access permissions
+			// - ValidationException: Invalid request parameters
+			// - etc.
 
-            return null;
-        }
-    }
+			GD.Print($"\nError: {ex.Message}");
+
+			return null;
+		}
+	}
 }

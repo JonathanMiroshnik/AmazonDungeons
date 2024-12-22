@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System;
 using System.Text;
 
+// TODO: rename library to GlobalGeneralLibrary
 public partial class GlobalStringLibrary : GodotObject
 {
 	// async function that takes string and label or RichTextLabel and a duration and increases the visible ratio from 0 to 1 over that duration // Amazon Q

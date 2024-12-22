@@ -24,6 +24,8 @@ public partial class DiceThrowerMechanism : Node3D
 
 	// Value of a die to be considered a victorious dice
 	private int MIN_WINNING_DICE = 4;
+	private float START_DICE_MASS = 0.1f;
+	private float END_DICE_MASS = 100f;
 
 
 	public override async void _Ready() {
@@ -58,8 +60,11 @@ public partial class DiceThrowerMechanism : Node3D
 			AddChild(instDice[i]);
 			
 			// Notice: the global position show only be set AFTER the object is already in the global tree, given by AddChild	
-			instDice[i].GetChild<CollisionShape3D>(0).GlobalScale(this.Scale);
+			// instDice[i].GetChild<CollisionShape3D>(0).GlobalScale(this.Scale);
+			instDice[i].GetChild<CollisionShape3D>(0).Scale = this.Scale;
 			instDice[i].LinearVelocity = Vector3.Zero;			
+			instDice[i].AngularVelocity = Vector3.Zero;
+			instDice[i].Mass = START_DICE_MASS;
 			instDice[i].GlobalPosition = GetNode<Node3D>("%DiceSpawnPos").GlobalPosition;			
 		}
 	}
@@ -68,8 +73,18 @@ public partial class DiceThrowerMechanism : Node3D
 	private void PhysicallyThrowToMiddle(RigidBody3D curDice) {
 		Random curRand = new Random();
 
-		curDice.ApplyForce(new Vector3(curRand.NextInt64(0, 30), curRand.NextInt64(0, 30), curRand.NextInt64(0, 30)));
-		curDice.ApplyTorqueImpulse(new Vector3(curRand.NextInt64(0, 30), curRand.NextInt64(0, 30), curRand.NextInt64(0, 30)));
+		float MAX_FORCE = 50;
+
+		// curDice.ApplyForce(new Vector3((float) curRand.NextDouble() * MAX_FORCE, (float) curRand.NextDouble() * MAX_FORCE, (float) curRand.NextDouble() * MAX_FORCE));
+		curDice.ApplyImpulse(new Vector3((float) (2 * curRand.NextDouble() - 1)  * MAX_FORCE,
+		 								 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE, 
+										 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE));
+		curDice.ApplyTorqueImpulse(new Vector3((float) (2 * curRand.NextDouble() - 1) * MAX_FORCE * 25, 
+												(float) (2 * curRand.NextDouble() - 1) * MAX_FORCE * 25, 
+												(float) (2 * curRand.NextDouble() - 1) * MAX_FORCE* 25));
+		curDice.ApplyCentralImpulse(new Vector3((float) (2 * curRand.NextDouble() - 1) * MAX_FORCE,
+		 								 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE, 
+										 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE));
 	}
 
 	// Throws dice and gets the number of victourious dice	
@@ -109,6 +124,7 @@ public partial class DiceThrowerMechanism : Node3D
 				milliseconds -= MILLISECS_REDUCTION_EACH_CHECK;
 			}
 		}
+	
 
 		// Finding how many of the dice are victorious
 		int num_of_victor_dice = 0;
@@ -118,6 +134,10 @@ public partial class DiceThrowerMechanism : Node3D
 			if (curSide >= MIN_WINNING_DICE) {
 				num_of_victor_dice++;
 			}
+
+			instDice[i].Mass = END_DICE_MASS;
+			instDice[i].LinearVelocity = Vector3.Zero;			
+			instDice[i].AngularVelocity = Vector3.Zero;
 		}
 
 		return num_of_victor_dice;
