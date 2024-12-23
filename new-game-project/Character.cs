@@ -21,6 +21,9 @@ public partial class Character : GameEntity
     public int HealthPoints { get; set; } = 8;
     public int BaseDiceNumber { get; set; } = 3;
 
+    // Includes all the conversations between the character and the others(specifically the DM) in chronological order
+    public List<CharacterInteraction> conversation = new List<CharacterInteraction>();
+
     // constructor that takes into consideration the constructor of GameEntity
     public Character(string name, string personality = "", string shortenedDescription = "", int strength = 0, 
                     int reflex = 0, int intelligence = 0, GameEntityType gameEntityType = GameEntityType.AI) : base(gameEntityType)
@@ -39,7 +42,39 @@ public partial class Character : GameEntity
 
     public string GetDescription()
     {
-        return $"Name: {Name}\nPersonality: {Personality}\nCore Skills: {CoreSkills}\nItems: {Items}\nHealth Points: {HealthPoints}\nBase Dice Number: {BaseDiceNumber}";
+        string retStr = "";
+
+        retStr += $"Name: {Name}\n Personality: {Personality}\nCore Skills: {GetCoreSkillsString()}\n";
+        if (Items != null) {
+            if (Items.Count > 0) {
+                retStr += $"Items: {GetItemsString()}\n";
+            }
+        }
+        
+        retStr += "Health Points: {HealthPoints}\nBase Dice Number: {BaseDiceNumber}\n";
+        
+        return retStr;
+    }
+
+    private string GetCoreSkillsString() // Amazon Q figured it out instantly for me without me needing to even ask it
+    {
+        string coreSkillsString = "";
+        foreach (var coreSkill in CoreSkills)
+        {
+            coreSkillsString += $"{coreSkill.Key}: {coreSkill.Value}\n";
+        }
+        return coreSkillsString;
+    }
+
+    // get items string
+    private string GetItemsString()
+    {
+        string itemsString = "";
+        foreach (string item in Items)
+        {
+            itemsString += $"{item}\n";
+        }
+        return itemsString;
     }
 
     // TODO: notice that some of the variables should not be serialized in a JSON that is given to the LLM, or maybe not use JSON like this anyways?

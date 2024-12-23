@@ -94,9 +94,13 @@ public partial class GameManager : Node
 		if (what == NotificationWMCloseRequest) {
 			GD.Print();
 			GD.Print();
-			GD.Print("Total number of LLM tokens(input and output string words) used for this game: " + LLMLibrary.TotalTokens.ToString());
+			GD.Print("Total number of input LLM tokens used for this game: " + LLMLibrary.TotalInputTokens.ToString());
+			GD.Print("Total number of output LLM tokens used for this game: " + LLMLibrary.TotalOutputTokens.ToString());
+			GD.Print("Total number of LLM tokens(input and output string words) used for this game: " + 
+			(LLMLibrary.TotalInputTokens + LLMLibrary.TotalOutputTokens).ToString());
 			GD.Print("Total number of requests to the LLM: " + LLMLibrary.TotalNumberOfRequests.ToString());
-			GD.Print("Average number of tokens per request: " + ((float)(LLMLibrary.TotalTokens / LLMLibrary.TotalNumberOfRequests)).ToString());
+			GD.Print("Average number of tokens per request: " + 
+						((float)(LLMLibrary.TotalInputTokens + LLMLibrary.TotalOutputTokens / LLMLibrary.TotalNumberOfRequests)).ToString());
 			GD.Print();
 			GD.Print();
 		}
@@ -104,7 +108,7 @@ public partial class GameManager : Node
 
 	public static async Task<string> AskLlama(string prompt, float temperature = 0.5f, int max_gen_len = 500)
 	{
-		return "";
+		// return "";
 
 		// GD.Print("Ask Llama began");
 
@@ -176,7 +180,8 @@ public partial class GameManager : Node
 			// GD.Print(responseText);
 
 			// Adding to the total number of tokens(words) in this game
-			LLMLibrary.TotalTokens +=  GlobalStringLibrary.NumberOfWords(prompt) + GlobalStringLibrary.NumberOfWords(responseText);
+			LLMLibrary.TotalInputTokens += GlobalStringLibrary.NumberOfWords(prompt);
+			LLMLibrary.TotalOutputTokens += GlobalStringLibrary.NumberOfWords(responseText);
 			LLMLibrary.TotalNumberOfRequests++;
 
 			// GD.Print("Finished Llama request: " + responseText);

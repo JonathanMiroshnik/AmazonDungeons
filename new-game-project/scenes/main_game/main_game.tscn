@@ -11,17 +11,18 @@
 
 [node name="MainGame" type="Node3D"]
 
-[node name="GameObject" type="Node" parent="." node_paths=PackedStringArray("cameraMover", "characterUI")]
+[node name="GameObject" type="Node" parent="." node_paths=PackedStringArray("cameraMover", "characterUI", "diceThrowerMechanism")]
 script = ExtResource("1_ifjqk")
 cameraMover = NodePath("../Camera3D")
 characterUI = NodePath("../CharacterUI")
+diceThrowerMechanism = NodePath("../DiceThrower")
 
 [node name="CharacterUI" parent="." instance=ExtResource("2_dug5a")]
 
 [node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("Positions")]
 transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 11.4513, 10.2323, -0.0773547)
 script = ExtResource("1_c3gf3")
-Positions = [NodePath("../Positions/Pos1"), NodePath("../Positions/Pos2"), NodePath("../Positions/Pos3"), NodePath("../Positions/OriginalCameraPos")]
+Positions = [NodePath("../Positions/Pos1"), NodePath("../Positions/Pos2"), NodePath("../Positions/Pos3"), NodePath("../Positions/OriginalCameraPos"), NodePath("../Positions/DicePos")]
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -0.258819, 0.965926, 0, -0.965926, -0.258819, -4.24786, 23.5244, -3.13561)
@@ -53,6 +54,9 @@ transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 10,
 
 [node name="OriginalCameraPos" type="Node3D" parent="Positions"]
 transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 11.4513, 10.2323, -0.0773547)
+
+[node name="DicePos" type="Node3D" parent="Positions"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 15.8985, 15.1723, -17.7835)
 
 [node name="DiceThrower" parent="." instance=ExtResource("5_ng526")]
 transform = Transform3D(1, 0.000694493, 0.000161208, -0.000694531, 1, 0.000234317, -0.000161045, -0.000234429, 1, 13.943, 6.86846, -17.4995)

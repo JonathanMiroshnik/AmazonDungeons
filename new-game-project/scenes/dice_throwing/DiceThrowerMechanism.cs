@@ -28,12 +28,12 @@ public partial class DiceThrowerMechanism : Node3D
 	private float END_DICE_MASS = 100f;
 
 
-	public override async void _Ready() {
-		ResetDice();
-		int final = await ThrowDice();
+	// public override async void _Ready() {
+	// 	ResetDice();
+	// 	int final = await ThrowDice();
 
-		GD.Print("FINAL " + final.ToString());
-	}
+	// 	GD.Print("FINAL " + final.ToString());
+	// }
 
 	// Deletes the currently existing dice
 	private void DeleteDice() {
@@ -42,6 +42,7 @@ public partial class DiceThrowerMechanism : Node3D
 		// for loop over instDice deleting each one
 		for (int i = 0; i < instDice.Length; i++)
 		{
+			if (instDice[i] == null) continue;
 			instDice[i].QueueFree();
 		}
 
@@ -89,6 +90,7 @@ public partial class DiceThrowerMechanism : Node3D
 
 	// Throws dice and gets the number of victourious dice	
 	public async Task<int> ThrowDice() {
+		ResetDice();
 		if (instDice == null) return -1;
 
 		// Throwing the dice randomly
