@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://6s4jwca2o6sq"]
+[gd_scene load_steps=9 format=3 uid="uid://6s4jwca2o6sq"]
 
 [ext_resource type="PackedScene" uid="uid://c8vq4a0408n08" path="res://models/Room/Room base.glb" id="1_8j3d6"]
 [ext_resource type="PackedScene" uid="uid://cumdvs8e1uxbx" path="res://models/Room/Tabel.glb" id="2_d406x"]
@@ -7,6 +7,15 @@
 [ext_resource type="PackedScene" uid="uid://k7qvotta4bhc" path="res://models/Room/BookShelf.glb" id="5_tctxt"]
 [ext_resource type="PackedScene" uid="uid://c8ilxeckj4g26" path="res://models/Room/Small drawer.glb" id="6_rusjm"]
 [ext_resource type="PackedScene" uid="uid://dkix22hlnvcp" path="res://models/Room/Workbench.glb" id="7_pnheh"]
+
+[sub_resource type="Environment" id="Environment_ixvu5"]
+sdfgi_enabled = true
+sdfgi_read_sky_light = false
+glow_enabled = true
+glow_normalized = true
+glow_blend_mode = 0
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.011
 
 [node name="Node3D" type="Node3D"]
 
@@ -44,3 +53,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 62.0575, 0, -20.1392)
 
 [node name="Workbench2" parent="." instance=ExtResource("7_pnheh")]
 transform = Transform3D(0.998879, 0, -0.0473331, 0, 1, 0, 0.0473331, 0, 0.998879, 0, 0, 34.5148)
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_ixvu5")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 36.8745, 0)
+light_color = Color(0.832118, 0.720644, 0.593199, 1)
+omni_range = 95.644
