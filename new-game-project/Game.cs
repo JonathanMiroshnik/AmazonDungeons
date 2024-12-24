@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System.Text.Json;
 using Amazon.BedrockAgentRuntime.Model.Internal.MarshallTransformations;
 using Amazon.Runtime.Internal;
+using System.Data;
 
 public partial class Game : Node
 {
@@ -17,24 +18,60 @@ public partial class Game : Node
 	public CharacterUI characterUI;
 	[Export]
 	public DiceThrowerMechanism diceThrowerMechanism;
-
 	[Export]
 	public int NumberOfRounds = 1;
 
-	// Represents the Dungeon Master for the game, of which there is only one per game
-	private GameEntity DungeonMaster = new GameEntity(GameEntityType.DungeonMaster);
-
 	// Time it will take for the Camera to move from one position to another(in seconds)
-	private float TIME_TO_MOVE = 2f;
+	private const float TIME_TO_MOVE = 2f;
+
+	private List<string> GAME_ENTITIES_POS = new List<string> { "MainCharacter", "RightCharacter", "ForwardCharacterDM", "LeftCharacter" };
+
+	private Node3D DICE_POS;
 
 	public override async void _Ready()
 	{
 		await GameManager.Instance.IsLoaded();
+		GameManager.Instance.RegisterGame(this);
 
 		if (cameraMover == null || characterUI == null || diceThrowerMechanism == null) return; // FIXME: raise error
 
+		// TODO: weird check that isn't appropriate in GameManager but also weird here as it combines both of these....
+
+		// Connecting between the Game Entities and the Camera positions
+		if (GameManager.Instance.gameEntities == null || GAME_ENTITIES_POS == null) return;
+		if (GameManager.Instance.gameEntities.Count != GameManager.NUMBER_OF_GAME_ENTITIES) {
+			GD.Print("Error: the number of game entities in the game is not correct");
+			return;
+		}
+		if (GAME_ENTITIES_POS.Count != GameManager.NUMBER_OF_GAME_ENTITIES) {
+			GD.Print("Error: the number of game entity positions in the game is not correct");
+			return;
+		}
+
+		for (int i = 0; i < GameManager.Instance.gameEntities.Count; i++) {
+			if (GameManager.Instance.gameEntities[i] == null) {
+				GD.Print("Error: a character in the game is null");
+				return;
+			}
+
+			GameManager.Instance.gameEntities[i].worldSpacePosition = GetNodeOrNull<Node3D>("%" + GAME_ENTITIES_POS[i]);
+			if (GameManager.Instance.gameEntities[i].worldSpacePosition == null) {
+				GD.Print("Error: a corresponding Node3D position has not been found for " + GAME_ENTITIES_POS[i]);
+				return;
+			}
+		}
+
+		// Finding the Dice camera position
+		DICE_POS = GetNodeOrNull<Node3D>("%DicePos");
+		if (DICE_POS == null) {
+			GD.Print("Error: a corresponding Node3D position has not been found for DicePos");
+			return;
+		}
+
+		// DM describes the world to the players before the start of the actual game
 		// DoPrelude();
 		
+		// Main Game loop
 		characterUI.ClearResponses();
 		for (int i = 0; i < NumberOfRounds; i++) {
 			characterUI.ClearResponses();
@@ -53,12 +90,18 @@ public partial class Game : Node
 	}
 
 	public async Task DoRound() {
-		for (int i = 0; i < GameManager.Instance.characters.Count; i++) {
+		for (int i = 0; i < GameManager.Instance.gameEntities.Count; i++) {
+			if (GameManager.Instance.gameEntities[i] == null) {
+				GD.Print("Error: a character in the game is null");
+				return;
+			}
+			if (GameManager.Instance.gameEntities[i] is not Character) continue;
+
 			// Clear previous character responses
 			characterUI.ClearResponses();
 
 			// Choose the next character
-			Character character = GameManager.Instance.characters[i];
+			Character character = (Character) GameManager.Instance.gameEntities[i];
 
 			// Move to that Character
 			await cameraMover.MoveCameraByIndex(i, TIME_TO_MOVE); // FIXME: maybe character number is not the same as index in the moveCamera?
@@ -158,19 +201,22 @@ public partial class Game : Node
 			retStr += LLMLibrary.CHARACTER_PREFIX;
 		}
 
-		if (GameManager.Instance.characters == null) return retStr; // TODO: maybe instead we write "there are no characters" ?
-		if (GameManager.Instance.characters.Count == 0) return retStr; // TODO: maybe raise error?
+		if (GameManager.Instance.gameEntities == null) return retStr; // TODO: maybe instead we write "there are no characters" ?
+		if (GameManager.Instance.gameEntities.Count == 0) return retStr; // TODO: maybe raise error?
 
 		// Adds the location
-		retStr += LLMLibrary.LOCATION_PREFIX + GameManager.Instance.location;
+		retStr += LLMLibrary.LOCATION_PREFIX + GameManager.Instance.worldDesc.location;
 
 		// If there is only one character, there is no need to add the other characters' descriptions
-		if (GameManager.Instance.characters.Count > 1) {
+		if (GameManager.Instance.gameEntities.Count > 1) {
 			// make a list of the ShortenedDescriptions of the other characters // Amazon Q
 			string otherCharactersStr = "";
-			foreach (Character otherCharacter in GameManager.Instance.characters) {
+			foreach (GameEntity otherCharacter in GameManager.Instance.gameEntities) {
+				if (otherCharacter is not Character) continue;
+				Character otherCharDown = (Character) otherCharacter;
 				if (otherCharacter == character) continue;
-				otherCharactersStr += " The name: " + otherCharacter.Name + " The description: " + otherCharacter.ShortenedDescription + ", ";
+
+				otherCharactersStr += " The name: " + otherCharDown.Name + " The description: " + otherCharDown.ShortenedDescription + ", ";
 			}
 
 			// Adding the other characters' descriptions
@@ -193,7 +239,7 @@ public partial class Game : Node
 					foreach (CharacterInteraction resp in character.conversation) {
 						// TODO: notice that currently we don't know exactly who is responding to whom etc, only who is responding
 						// We are interested in the conversations between the DM and the character
-						if (resp.responderGameEntity == DungeonMaster) {
+						if (resp.responderGameEntity == GameManager.Instance.DungeonMaster) {
 							DMCharacterResponse curResp = (DMCharacterResponse) resp;
 
 							retStr += "Dungeon Master: " + curResp.dmResponse.text + "\n";
@@ -243,14 +289,22 @@ public partial class Game : Node
 
 	public async void DoPrelude() {
 		GD.Print("Describing the world....\n\n");
-		GD.Print(GameManager.Instance.worldDescription + "\n\n");
+		GD.Print(GameManager.Instance.worldDesc.world + "\n\n");
 
 		SeparatorPrint("Describing the characters....\n\n");
-		foreach (Character character in GameManager.Instance.characters) {
-			GD.Print(character.ShortenedDescription + "\n");
+		foreach (GameEntity curGameEntity in GameManager.Instance.gameEntities) {
+			if (curGameEntity is not Character) continue;
+			Character curCharDown = (Character) curGameEntity;
+
+			GD.Print(curCharDown.ShortenedDescription + "\n");
 		}
 	}
 	
+	// TODO: the next action should always be ready for execution
+	public void NextAction() {
+		GD.Print("Next action");
+	}
+
 	// TODO:
 	// public async void FinalRound() {
 	// 	return;

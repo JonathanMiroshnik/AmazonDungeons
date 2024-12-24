@@ -8,12 +8,17 @@ public enum GameEntityType
     DungeonMaster
 }
 
-public partial class GameEntity : Node
+public partial class GameEntity : GodotObject
 {
-    public GameEntityType GameEntityType;
+    public GameEntityType GameEntityType { get; set; }
+    public string Name { get; set; }
 
-    public GameEntity(GameEntityType gameEntityType)
+    // Camera position pointed at this GameEntity in the game
+    public Node3D worldSpacePosition;
+
+    public GameEntity(string name, GameEntityType gameEntityType)
     {
-        GameEntityType =  gameEntityType;
+        Name = name;
+        GameEntityType = gameEntityType;
     }
 }

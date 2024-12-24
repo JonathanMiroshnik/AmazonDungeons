@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Collections.Generic;
+using Godot;
 
 public partial class Character : GameEntity
 {
@@ -10,7 +11,6 @@ public partial class Character : GameEntity
     public Dictionary<CoreSkill, int> CoreSkills { get; set; }
 
     // Character Lore
-    public string Name { get; set; }
     public string Personality { get; set; } = "";  // Contains personality/morality/history/goals
     public string ShortenedDescription { get; set; } = "";
 
@@ -26,7 +26,7 @@ public partial class Character : GameEntity
 
     // constructor that takes into consideration the constructor of GameEntity
     public Character(string name, string personality = "", string shortenedDescription = "", int strength = 0, 
-                    int reflex = 0, int intelligence = 0, GameEntityType gameEntityType = GameEntityType.AI) : base(gameEntityType)
+                    int reflex = 0, int intelligence = 0, GameEntityType gameEntityType = GameEntityType.AI) : base(name, gameEntityType)
     {
         Name = name;
         Personality = personality;

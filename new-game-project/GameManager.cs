@@ -24,22 +24,65 @@ public partial class GameManager : Node
 
 	public bool Loaded = false;
 
-	public List<Character> characters;
-	// TODO: add dungeon master
+	// The game that is currently running
+	public Game game;
 
-	// A description of the DnD-like world
-	public string worldDescription = "";
-	// The location of the hero party
-	public string location = "";
+	public List<GameEntity> gameEntities;
+
+	// Represents the Dungeon Master for the game, of which there is only one per game
+	public GameEntity DungeonMaster = new GameEntity("Dungeon Master", GameEntityType.DungeonMaster);
+
+	// Description of the DnD-like world
+	public JSONWorld worldDesc;
+
+	// Total numbers of characters in the game
+	public const int NUMBER_OF_AI_CHARACTERS = 2;
+	public const int NUMBER_OF_DMS = 1;
+	public const int NUMBER_OF_PLAYERS = 1;
+	
+	public const int NUMBER_OF_CHARACTERS = NUMBER_OF_AI_CHARACTERS + NUMBER_OF_PLAYERS;
+	public const int NUMBER_OF_GAME_ENTITIES = NUMBER_OF_AI_CHARACTERS + NUMBER_OF_DMS + NUMBER_OF_PLAYERS;
+
+	[Signal]
+	public delegate void NextActionEventHandler();
+
 
 	public override async void _Ready()
 	{
 		Instance = this;
 
 		// TODO: DELETE THIS CODE, TEST CODE
-		//create new character
-		characters = new List<Character>();
+		gameEntities = new List<GameEntity>();
 
+		// Creating the world
+		worldDesc = await CreateWorldDesc();
+
+		// Creating Main Player character
+		gameEntities.Add(new Character("Player", "write personality here", "write shortened description here", 0, 0, 0, GameEntityType.Player));
+
+		// Creating the AI characters
+		// for (int i = 0; i < NUMBER_OF_AI_CHARACTERS; i++) { // FIXME:
+		// 	await CreateGameCharacter();
+		// }
+
+		await CreateGameCharacter();
+
+		// Create new dungeon master
+		DungeonMaster = new GameEntity("Dungeon Master", GameEntityType.DungeonMaster);
+		gameEntities.Add(DungeonMaster);
+
+		await CreateGameCharacter();
+
+		GD.Print("EW " + gameEntities.Count);
+		
+		// IMPORTANT, must be kept at the end of this Ready function 
+		//  because other parts of the game rely on it through the IsLoaded function
+		Loaded = true;
+	}
+
+	public async Task<JSONWorld> CreateWorldDesc()
+	{
+		// Creating a fictionary DnD-like world description
 		string worldSerializedJSON = await AskLlama("Write a description Dungeons and Dragons world, " + 
 										  "with different locations and small bits of lore\n " + 
 										  "Write it as a JSON with only two categories. " +
@@ -51,11 +94,12 @@ public partial class GameManager : Node
 										  0.5f, 1000);
 		worldSerializedJSON = GlobalStringLibrary.JSONStringBrackets(worldSerializedJSON);
 		GD.Print(worldSerializedJSON);
-		var resultWorld = JsonConvert.DeserializeObject<JSONWorld>(worldSerializedJSON);
-		
-		worldDescription = resultWorld.world;
-		location = resultWorld.location;
 
+		return JsonConvert.DeserializeObject<JSONWorld>(worldSerializedJSON);
+	}
+
+	public async Task<Character> CreateGameCharacter() {
+		// create new character
 		string personalityTest = await AskLlama("Write a Dungeons and Dragons character description.\n " + 
 												LLMLibrary.JSON_CHARACTER_CREATION_TYPE +
 												"The input in the categories are only string, not lists, not anything else.\n" +
@@ -71,12 +115,9 @@ public partial class GameManager : Node
 		var shortDesc = resultChar.shortdesc;
 		
 		Character character = new Character(charName, personality, shortDesc, 2);
-		characters.Add(character);
+		gameEntities.Add(character);
 
-		
-		// IMPORTANT, must be kept at the end of this Ready function 
-		//  because other parts of the game rely on it through the IsLoaded function
-		Loaded = true;
+		return character;
 	}
 	
 	// Used by parts of the game that need the GameManager to be loaded before they begin their activation
@@ -87,6 +128,17 @@ public partial class GameManager : Node
 		}
 
 		return true;
+	}
+
+	// Makes the given game the current game that is effected by the actions of the GameManager
+	public void RegisterGame(Game game) {
+		this.game = game;
+		this.NextAction += game.NextAction;
+	}
+
+	// Called by certain buttons and hotkeys in the game to indicate to the Game to continue on to the next action in line
+	public void PerformNextAction() {
+		EmitSignal(SignalName.NextAction);
 	}
 
 	public override void _Notification(int what)

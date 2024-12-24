@@ -32,7 +32,17 @@ public partial class CharacterUI : Control
 		FullResponseContainer container = fullResponseContainer.Instantiate<FullResponseContainer>();
 		vContainer.AddChild(container);
 		container.character = character;
+
+		container.ReplyToResponse += ActivatedReply;
+
 		await container.ShowResponse(response);
+		await Task.Delay(1000);
+		
+	}
+
+	public void ActivatedReply(string response)
+	{
+		GD.Print("ReplyToResponse " + response);
 	}
 
 	public void ClearResponses()

@@ -48,6 +48,18 @@ public partial class CameraMover : Camera3D
 		await MoveCamera(this, node, duration);
 	}
 
+	// Move the Camera with the name of the Position if that node exists in world space with that Unique name
+	public async Task MoveCameraByWorldString(string name, float duration)
+	{
+		Node3D relevantNode = GetNodeOrNull<Node3D>("%" + name);
+		if (relevantNode == null) {
+			GD.Print("Node not found in world space: " + name);
+			return;
+		}
+
+		await MoveCamera(this, relevantNode, duration);
+	}
+
 	// Async function that takes Camera3D and Node3D and moves the Camera from its current position to the Node3D position with the easeInOutQuad function instead of lerp // Amazon Q
 	private async Task<bool> MoveCamera(Camera3D camera, Node3D node, float duration)
 	{

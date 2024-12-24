@@ -11,7 +11,7 @@ public partial class CharacterCreation : Control
 	// TODO: when do the characters get created really? is the character creation screen just a character "editing" screen? 
 	//  same num of characters always?
 	public override void _Ready() {
-		if (GameManager.Instance.characters.Count <= 0) return; // TODO: raise error?
+		if (GameManager.Instance.gameEntities.Count <= 0) return; // TODO: raise error?
 	}
 
 	public void ShowCharacter(Character character) {
@@ -22,17 +22,20 @@ public partial class CharacterCreation : Control
 	}
 
 	public void _on_next_character_button_pressed() {
-		if (GameManager.Instance.characters.Count <= 0) return;
+		if (GameManager.Instance.gameEntities.Count <= 0) return;
 
 		characterIndex++;
-		characterIndex %= GameManager.Instance.characters.Count;
-		ShowCharacter(GameManager.Instance.characters[characterIndex]);
+		characterIndex %= GameManager.Instance.gameEntities.Count;
+		// ShowCharacter(GameManager.Instance.characters[characterIndex]); // FIXME:
 	}
 
 	public void _on_save_button_pressed() {
-		if (GameManager.Instance.characters.Count <= 0) return;
+		if (GameManager.Instance.gameEntities.Count <= 0) return;
 
-		var character = GameManager.Instance.characters[characterIndex];
+		GameEntity gameEntity = GameManager.Instance.gameEntities[characterIndex];
+		if (gameEntity is not Character) return;
+		Character character = (Character) gameEntity;
+
 		foreach (var container in coreSkillsSetter.skillContainers) {
 			character.CoreSkills[container.coreSkill] = container.skillPoints;
 		}
