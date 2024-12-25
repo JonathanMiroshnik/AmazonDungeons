@@ -28,6 +28,9 @@ public partial class Game : Node
 
 	private Node3D DICE_POS;
 
+	// Indicates the current character that is being interacted with
+	private int indexCurrentCharacter = 0;
+
 	public override async void _Ready()
 	{
 		await GameManager.Instance.IsLoaded();
@@ -73,10 +76,9 @@ public partial class Game : Node
 		
 		// Main Game loop
 		characterUI.ClearResponses();
-		for (int i = 0; i < NumberOfRounds; i++) {
-			characterUI.ClearResponses();
-			await DoRound();
-		}
+		DoDMConvo(GameManager.Instance.gameEntities[indexCurrentCharacter]); // FIXME: need to figure out what connects characters in chain
+
+		// TODO: stop after NumberOfRounds, or get to final round?
 	}
 
 	private void SeparatorPrint(string inner = "") {
@@ -89,66 +91,39 @@ public partial class Game : Node
 		GD.Print();
 	}
 
-	public async Task DoRound() {
-		for (int i = 0; i < GameManager.Instance.gameEntities.Count; i++) {
-			if (GameManager.Instance.gameEntities[i] == null) {
-				GD.Print("Error: a character in the game is null");
-				return;
-			}
-			if (GameManager.Instance.gameEntities[i] is not Character) continue;
-
-			// Clear previous character responses
-			characterUI.ClearResponses();
-
-			// Choose the next character
-			Character character = (Character) GameManager.Instance.gameEntities[i];
-
-			// Move to that Character
-			await cameraMover.MoveCameraByIndex(i, TIME_TO_MOVE); // FIXME: maybe character number is not the same as index in the moveCamera?
-
-			// --------------------------------------------------------------------------------------------------- 23.12.24
-			JSONDMResponse result = await DM_response(character);
-
-			if (result.score > 0) {
-				bool won = await PlayDice(result.score);
-
-				// Move back to the Character
-				await cameraMover.MoveCameraByIndex(i, TIME_TO_MOVE); // FIXME: maybe character number is not the same as index in the moveCamera?
-				if (won) {
-					
-				}
-				else {
-
-				}
-			}	
-
-			// TODO: Response from character to DM
-
-			// TODO: Possible dice roll
-
-			// TODO: DM Responds to dice roll
+	// TODO: absolutely terrible code, need "NextCharacter" function or something like that.
+	public void MoveToNextCharacter() { // TODO: notice problem between GameEntity and character definitons here!
+		indexCurrentCharacter++;
+		if (indexCurrentCharacter >= GameManager.NUMBER_OF_GAME_ENTITIES) {
+			indexCurrentCharacter = 0;
 		}
+
+		if (GameManager.Instance.gameEntities[indexCurrentCharacter] is not Character) {
+			indexCurrentCharacter++;
+			if (indexCurrentCharacter >= GameManager.NUMBER_OF_GAME_ENTITIES) {
+				indexCurrentCharacter = 0;
+			}
+		}
+
+		DoDMConvo(GameManager.Instance.gameEntities[indexCurrentCharacter]); // FIXME: need to figure out what connects characters in chain
+	}
+
+	// TODO: change func name
+	public async void DoDMConvo(GameEntity gameEntity) {
+		// Move to that Character
+		await cameraMover.MoveCameraByNode3D(gameEntity.worldSpacePosition, GameManager.TIME_TO_MOVE_CAMERA_POSITIONS);
+
+		// Creating the conversation between the DM and the character
+		DMCharacterResponse resp = new DMCharacterResponse(); // TODO: very bad code and structure
+		resp.responderGameEntity = GameManager.Instance.DungeonMaster;
+		resp.respondeeGameEntity = gameEntity;
+
+		await characterUI.DoDMConversation(resp);
 	}
 
 	public async Task<JSONDMResponse> DM_response(Character character) {
-		// // make a list of the ShortenedDescriptions of the other characters // Amazon Q
-		// string otherCharactersStr = "";
-		// foreach (Character otherCharacter in GameManager.Instance.characters) {
-		// 	if (otherCharacter == character) continue;
-		// 	otherCharactersStr += " The name: " + otherCharacter.Name + " The description: " + otherCharacter.ShortenedDescription + ", ";
-		// }
-		
 		// Construct the input for the LLM
 		string input = ConstructLLMInput(true, true, false, character);
-		// string other = LLMLibrary.DM_PREFIX + LLMLibrary.DM_JOB_PREFIX + 
-		// 									LLMLibrary.LOCATION_PREFIX + GameManager.Instance.location +
-		// 									LLMLibrary.ALL_PLAYER_PREFIX + otherCharactersStr + 
-		// 									LLMLibrary.CURRENT_CHARACTER_PREFIX + character.GetDescription() + 
-		// 									LLMLibrary.CHARACTER_DM_HISTORY_PREFIX + "" +
-		// 									LLMLibrary.JSON_DM_RESPONSE_TYPE + 
-		// 									"\nWrite a short response of up to 100 words.";
-		// GD.Print("Input to LLM: \n" + input);
-		// GD.Print("Input to LLM 2: \n" + other);
 
 		string retStr = await GameManager.AskLlama(input);
 		retStr = GlobalStringLibrary.JSONStringBrackets(retStr);

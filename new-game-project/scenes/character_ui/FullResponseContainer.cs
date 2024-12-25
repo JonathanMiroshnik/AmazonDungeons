@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 public partial class FullResponseContainer : MarginContainer
 {
-	public Character character;
+	public GameEntity gameEntity;
 
 	private Dictionary<GameEntityType, Color> gameEntityTypeColor = new Dictionary<GameEntityType, Color>()
 	{
@@ -13,7 +13,7 @@ public partial class FullResponseContainer : MarginContainer
 		{ GameEntityType.DungeonMaster, Colors.Green }
 	};
 
-	private Label characterNameLabel;
+	private Label gameEntityNameLabel;
 	private RichTextLabel responseRichLabel;
 	private MarginContainer userLabelContainer;
 
@@ -30,8 +30,8 @@ public partial class FullResponseContainer : MarginContainer
 	{
 		responseRichLabel = GetNode<RichTextLabel>("%ResponseRichLabel");
 		if (responseRichLabel == null) return; // FIXME: raise error
-		characterNameLabel = GetNode<Label>("%CharacterNameLabel");
-		if (characterNameLabel == null) return; // FIXME: raise error
+		gameEntityNameLabel = GetNode<Label>("%GameEntityNameLabel");
+		if (gameEntityNameLabel == null) return; // FIXME: raise error
 		userLabelContainer = GetNode<MarginContainer>("%UserLabelContainer");
 		if (userLabelContainer == null) return; // FIXME: raise error
 
@@ -48,24 +48,33 @@ public partial class FullResponseContainer : MarginContainer
 	{
 		float TIME_TO_SHOW = 3f;
 
-		if (character == null) {
+		if (gameEntity == null) {
 			userLabelContainer.Visible = false;
 			userLabelContainer.SetProcess(false);
 		}
 		else {
 			userLabelContainer.SetProcess(true);
 			userLabelContainer.Visible = true;
-			characterNameLabel.Text = character.Name;
-			characterNameLabel.AddThemeColorOverride("font_color", gameEntityTypeColor[character.GameEntityType]);
+			gameEntityNameLabel.Text = gameEntity.Name;
+			gameEntityNameLabel.AddThemeColorOverride("font_color", gameEntityTypeColor[gameEntity.GameEntityType]);
 		}
 
 		// Writing the text
 		await GlobalStringLibrary.TypeWriteOverDuration(response, responseRichLabel, TIME_TO_SHOW);
 
+		if (gameEntity == null) return; // TODO: have the same if statmenet above, combine these
+
 		// After the text is written, we show the reply container
 		replyContainer.Visible = true;
+		replyEdit.Editable = false;
+
+		// If the gameEntity is not the player, it should not be able to allow changing of the text // TODO: or maybe it should be allowed?
+		if (gameEntity.GameEntityType == GameEntityType.Player) {
+			replyEdit.Editable = true;
+		}
 	}
 
+	// TODO: these two buttons should not be in this container, but in the one above, characteUI
 	public void _on_reply_button_pressed() {
 		EmitSignal(SignalName.ReplyToResponse, replyContainer);
 		replyButton.Text = "Sent!";

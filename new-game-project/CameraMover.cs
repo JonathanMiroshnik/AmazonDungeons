@@ -60,8 +60,15 @@ public partial class CameraMover : Camera3D
 		await MoveCamera(this, relevantNode, duration);
 	}
 
+	// Move the Camera to the node in duration seconds
+	public async Task MoveCameraByNode3D(Node3D node, float duration)
+	{
+		if (node == null) return;
+		await MoveCamera(this, node, duration);
+	}
+
 	// Async function that takes Camera3D and Node3D and moves the Camera from its current position to the Node3D position with the easeInOutQuad function instead of lerp // Amazon Q
-	private async Task<bool> MoveCamera(Camera3D camera, Node3D node, float duration)
+	private async Task<bool> MoveCamera(Camera3D camera, Node3D node, float duration = 1f)
 	{
 		var start = camera.GlobalPosition;
 		var end = node.GlobalPosition;

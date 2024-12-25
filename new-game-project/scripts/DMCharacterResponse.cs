@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 // NOTICE: If the DM response has a score of 0, dice do not need to be thrown and are thus irrelevant(for that condition)
-public partial class DMCharacterResponse : CharacterInteraction
+public partial class DMCharacterResponse : CharacterResponse
 {
     // The DM response that it represents
     public JSONDMResponse dmResponse;

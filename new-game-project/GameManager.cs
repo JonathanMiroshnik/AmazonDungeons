@@ -43,6 +43,9 @@ public partial class GameManager : Node
 	public const int NUMBER_OF_CHARACTERS = NUMBER_OF_AI_CHARACTERS + NUMBER_OF_PLAYERS;
 	public const int NUMBER_OF_GAME_ENTITIES = NUMBER_OF_AI_CHARACTERS + NUMBER_OF_DMS + NUMBER_OF_PLAYERS;
 
+	// Other constants
+	public const float TIME_TO_MOVE_CAMERA_POSITIONS = 2f;
+
 	[Signal]
 	public delegate void NextActionEventHandler();
 
