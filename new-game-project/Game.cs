@@ -105,6 +105,8 @@ public partial class Game : Node
 			}
 		}
 
+		GD.Print("ewew");
+
 		DoDMConvo(GameManager.Instance.gameEntities[indexCurrentCharacter]); // FIXME: need to figure out what connects characters in chain
 	}
 
@@ -132,8 +134,6 @@ public partial class Game : Node
 		JSONDMResponse result = JsonConvert.DeserializeObject<JSONDMResponse>(retStr);
 
 		GD.Print("DM Response: " + result.text + " Dice number: " + result.score);
-
-		await characterUI.AddResponse(result.text, character);
 
 		return result;
 	}
@@ -274,11 +274,7 @@ public partial class Game : Node
 			GD.Print(curCharDown.ShortenedDescription + "\n");
 		}
 	}
-	
-	// TODO: the next action should always be ready for execution
-	public void NextAction() {
-		GD.Print("Next action");
-	}
+
 
 	// TODO:
 	// public async void FinalRound() {

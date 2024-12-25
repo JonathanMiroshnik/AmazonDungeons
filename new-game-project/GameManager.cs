@@ -58,7 +58,12 @@ public partial class GameManager : Node
 		gameEntities = new List<GameEntity>();
 
 		// Creating the world
-		worldDesc = await CreateWorldDesc();
+		// worldDesc = await CreateWorldDesc();
+
+		// TODO: delete this part and replace with above in real-game
+		worldDesc = new JSONWorld();
+		worldDesc.world = LLMLibrary.EXAMPLE_WORLD;
+		worldDesc.location = LLMLibrary.EXAMPLE_LOCATION;
 
 		// Creating Main Player character
 		gameEntities.Add(new Character("Player", "write personality here", "write shortened description here", 0, 0, 0, GameEntityType.Player));
@@ -68,15 +73,15 @@ public partial class GameManager : Node
 		// 	await CreateGameCharacter();
 		// }
 
-		await CreateGameCharacter();
+		// await CreateGameCharacter(); // TODO: delete this part and replace with above in real-game
+		CreateExampleCharacter(LLMLibrary.EXAMPLE_CHARACTER_1[0], LLMLibrary.EXAMPLE_CHARACTER_1[1], LLMLibrary.EXAMPLE_CHARACTER_1[2]);
 
 		// Create new dungeon master
 		DungeonMaster = new GameEntity("Dungeon Master", GameEntityType.DungeonMaster);
 		gameEntities.Add(DungeonMaster);
 
-		await CreateGameCharacter();
-
-		GD.Print("EW " + gameEntities.Count);
+		// await CreateGameCharacter(); // TODO: delete this part and replace with above in real-game
+		CreateExampleCharacter(LLMLibrary.EXAMPLE_CHARACTER_2[0], LLMLibrary.EXAMPLE_CHARACTER_2[1], LLMLibrary.EXAMPLE_CHARACTER_2[2]);
 		
 		// IMPORTANT, must be kept at the end of this Ready function 
 		//  because other parts of the game rely on it through the IsLoaded function
@@ -122,6 +127,13 @@ public partial class GameManager : Node
 
 		return character;
 	}
+
+	public Character CreateExampleCharacter(string charName, string personality, string shortDesc) {
+		Character character = new Character(charName, personality, shortDesc, 2);
+		gameEntities.Add(character);
+
+		return character;
+	}
 	
 	// Used by parts of the game that need the GameManager to be loaded before they begin their activation
 	public async Task<bool> IsLoaded() {
@@ -136,7 +148,8 @@ public partial class GameManager : Node
 	// Makes the given game the current game that is effected by the actions of the GameManager
 	public void RegisterGame(Game game) {
 		this.game = game;
-		this.NextAction += game.NextAction;
+		// TODO: should be a universal state machine at some point
+		// this.NextAction += game.MoveToNextCharacter;
 	}
 
 	// Called by certain buttons and hotkeys in the game to indicate to the Game to continue on to the next action in line
@@ -155,7 +168,7 @@ public partial class GameManager : Node
 			(LLMLibrary.TotalInputTokens + LLMLibrary.TotalOutputTokens).ToString());
 			GD.Print("Total number of requests to the LLM: " + LLMLibrary.TotalNumberOfRequests.ToString());
 			GD.Print("Average number of tokens per request: " + 
-						((float)(LLMLibrary.TotalInputTokens + LLMLibrary.TotalOutputTokens / LLMLibrary.TotalNumberOfRequests)).ToString());
+						((float) (LLMLibrary.TotalInputTokens + LLMLibrary.TotalOutputTokens) / LLMLibrary.TotalNumberOfRequests).ToString());
 			GD.Print();
 			GD.Print();
 		}

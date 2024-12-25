@@ -42,6 +42,7 @@ theme_override_constants/separation = 30
 
 [node name="DiceContainer" type="MarginContainer" parent="MainContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 
@@ -52,13 +53,14 @@ text = "Roll Dice"
 
 [node name="NextContainer" type="MarginContainer" parent="MainContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 
 [node name="NextButton" type="Button" parent="MainContainer/VBoxContainer/HBoxContainer/NextContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Roll Dice"
+text = "Next"
 
 [connection signal="pressed" from="MainContainer/VBoxContainer/HBoxContainer/DiceContainer/DiceButton" to="." method="_on_dice_button_pressed"]
-[connection signal="pressed" from="MainContainer/VBoxContainer/HBoxContainer/NextContainer/NextButton" to="." method="_on_dice_button_pressed"]
+[connection signal="pressed" from="MainContainer/VBoxContainer/HBoxContainer/NextContainer/NextButton" to="." method="_on_next_button_pressed"]

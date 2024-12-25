@@ -19,8 +19,8 @@ public partial class FullResponseContainer : MarginContainer
 
 	// Reply to responses part
 	private MarginContainer replyContainer;
-	private TextEdit replyEdit;
-	private Button replyButton;
+	public TextEdit replyEdit;
+	// private Button replyButton;
 
 	[Signal]
 	public delegate void ReplyToResponseEventHandler(string reply);
@@ -40,8 +40,8 @@ public partial class FullResponseContainer : MarginContainer
 		if (replyContainer == null) return; // FIXME: raise error
 		replyEdit = GetNode<TextEdit>("%ReplyEdit");
 		if (replyEdit == null) return; // FIXME: raise error
-		replyButton = GetNode<Button>("%ReplyButton");
-		if (replyButton == null) return; // FIXME: raise error
+		// replyButton = GetNode<Button>("%ReplyButton");
+		// if (replyButton == null) return; // FIXME: raise error
 	}
 
 	public async Task ShowResponse(string response)
@@ -75,9 +75,9 @@ public partial class FullResponseContainer : MarginContainer
 	}
 
 	// TODO: these two buttons should not be in this container, but in the one above, characteUI
-	public void _on_reply_button_pressed() {
-		EmitSignal(SignalName.ReplyToResponse, replyContainer);
-		replyButton.Text = "Sent!";
-		replyButton.Disabled = true;
-	}
+	// public void _on_reply_button_pressed() {
+	// 	EmitSignal(SignalName.ReplyToResponse, replyContainer);
+	// 	replyButton.Text = "Sent!";
+	// 	replyButton.Disabled = true;
+	// }
 }

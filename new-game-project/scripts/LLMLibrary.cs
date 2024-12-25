@@ -57,8 +57,13 @@ public partial class LLMLibrary : Node
     // Examples to be used in demos
     public static string OTHER_CHARACTER_PREFIX = "Moab is a fox. " + "Jojo is a thunklishiss butch of a man.\n ";
     public static string EXAMPLE_CHARACTER = "Zoob is an elf, he has a shield, a hoe, is very physically strong and has a bad attitude.\n ";
+    public static string EXAMPLE_WORLD = "the world is nice.\n ";
+    public static string EXAMPLE_LOCATION = "a bar\n ";
 
-
+    public static string[] EXAMPLE_CHARACTER_1 = new string[] { "Zoob", "An elf, he has a shield, a hoe, is very physically strong and has a bad attitude.\n ", 
+                                                                "a shorter description of zoob" };
+    public static string[] EXAMPLE_CHARACTER_2 = new string[] { "Opa", "An ork, he has a sword, a ball, is very physically weak and has a bad attitude.\n ", 
+                                                                "a shorter description of opa opa the terminator" };
 
 
     // TODO: organize and comment on all below

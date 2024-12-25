@@ -13,6 +13,7 @@ public partial class CharacterUI : Control
 
 	private VBoxContainer vContainer;
 	private MarginContainer diceContainer;
+	private MarginContainer nextContainer;
 
 	// Called when the node enters the scene tree for the first time.
 	public override async void _Ready()
@@ -22,6 +23,8 @@ public partial class CharacterUI : Control
 		if (vContainer == null) return; // FIXME: raise error
 		diceContainer = GetNodeOrNull<MarginContainer>("%DiceContainer");
 		if (diceContainer == null) return; // FIXME: raise error
+		nextContainer = GetNodeOrNull<MarginContainer>("%NextContainer");
+		if (nextContainer == null) return; // FIXME: raise error
 	}
 
 	public async Task AddResponse(string response)
@@ -79,6 +82,8 @@ public partial class CharacterUI : Control
 			return;
 		}
 
+		curDMResponse = dmCharResponse;
+
 		// Clear previous character responses
 		ClearResponses();
 
@@ -86,13 +91,16 @@ public partial class CharacterUI : Control
 		JSONDMResponse result = await GameManager.Instance.game.DM_response((Character) dmCharResponse.respondeeGameEntity); // FIXME: bad downcasting thing
 		dmCharResponse.dmResponse = result;
 
-		await AddResponse(dmCharResponse.dmResponse.text, dmCharResponse.respondeeGameEntity); // FIXME: downcasting
+		await AddResponse(dmCharResponse.dmResponse.text, dmCharResponse.responderGameEntity); // FIXME: downcasting
 
 		// TODO: show dice score needed to win in separate label?
 
 		// If the DM response requires a roll of the dice, it is performed
 		if (dmCharResponse.dmResponse.score > 0) {
 			diceContainer.Visible = true;
+		}
+		else {
+			nextContainer.Visible = true;
 		}
 
 		// TODO: Response from character to DM
@@ -114,6 +122,8 @@ public partial class CharacterUI : Control
 		await GameManager.Instance.game.cameraMover.MoveCameraByNode3D(curDMResponse.respondeeGameEntity.worldSpacePosition, 
 																		GameManager.TIME_TO_MOVE_CAMERA_POSITIONS);
 		Visible = true;
+
+		nextContainer.Visible = true;
 	}
 
 	public void _on_next_button_pressed() {
@@ -123,6 +133,9 @@ public partial class CharacterUI : Control
 			if (!curDMResponse.ThrownDice) return;
 		}
 
-		GameManager.Instance.game.NextAction();
+		ClearResponses();
+		nextContainer.Visible = false;
+
+		GameManager.Instance.game.MoveToNextCharacter();
 	}
 }

@@ -42,7 +42,6 @@ fit_content = true
 
 [node name="ReplyContainer" type="MarginContainer" parent="VFullResponseContainer"]
 unique_name_in_owner = true
-visible = false
 layout_mode = 2
 
 [node name="VReplyContainer" type="VBoxContainer" parent="VFullResponseContainer/ReplyContainer"]
@@ -58,11 +57,4 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 placeholder_text = "You may write a reply here"
-
-[node name="ReplyButton" type="Button" parent="VFullResponseContainer/ReplyContainer/VReplyContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 4
-text = "Apply"
-
-[connection signal="pressed" from="VFullResponseContainer/ReplyContainer/VReplyContainer/ReplyButton" to="." method="_on_reply_button_pressed"]
+scroll_fit_content_height = true
