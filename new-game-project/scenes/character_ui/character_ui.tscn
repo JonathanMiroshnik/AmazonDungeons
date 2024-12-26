@@ -35,6 +35,26 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 20
 
+[node name="ReplyContainer" type="MarginContainer" parent="MainContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="VReplyContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer/ReplyContainer"]
+layout_mode = 2
+
+[node name="InnerReplyContainer" type="MarginContainer" parent="MainContainer/VBoxContainer/ReplyContainer/VReplyContainer"]
+layout_mode = 2
+
+[node name="ReplyPanel" type="Panel" parent="MainContainer/VBoxContainer/ReplyContainer/VReplyContainer/InnerReplyContainer"]
+layout_mode = 2
+
+[node name="ReplyEdit" type="TextEdit" parent="MainContainer/VBoxContainer/ReplyContainer/VReplyContainer/InnerReplyContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+placeholder_text = "You may write a reply here"
+scroll_fit_content_height = true
+
 [node name="HBoxContainer" type="HBoxContainer" parent="MainContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4

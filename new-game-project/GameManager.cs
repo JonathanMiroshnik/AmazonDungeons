@@ -237,11 +237,24 @@ public partial class GameManager : Node
 
 		try
 		{
+			// TODO: create guardrails and firgure it out, return something to say it is illegal/legal request
+			// var guardrailReq = new ApplyGuardrailRequest() {
+			// };
+			// var guardrail = client.ApplyGuardrailAsync(guardrailReq);
+			// guardrail.Result
+
 			// Send the request and wait for the response
 			var response = await client.InvokeModelAsync(request);
-			
+			GD.Print(response.ResponseMetadata.ChecksumValidationStatus);
+
 			// Decode the model's native response payload
 			var modelResponse = await JsonNode.ParseAsync(response.Body);
+
+			GD.Print(modelResponse);
+			// foreach (var header in modelResponse.)
+			// {
+			// 	GD.Print(header);
+			// }
 
 			// Extract and print the response text
 			string responseText = (string) modelResponse["generation"] ?? "";

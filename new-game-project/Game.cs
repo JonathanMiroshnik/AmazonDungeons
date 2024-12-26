@@ -125,7 +125,7 @@ public partial class Game : Node
 
 	public async Task<JSONDMResponse> DM_response(Character character) {
 		// Construct the input for the LLM
-		string input = ConstructLLMInput(true, true, false, character);
+		string input = ConstructLLMInput(true, true, false, character, true);
 
 		string retStr = await GameManager.AskLlama(input);
 		retStr = GlobalStringLibrary.JSONStringBrackets(retStr);
@@ -136,6 +136,16 @@ public partial class Game : Node
 		GD.Print("DM Response: " + result.text + " Dice number: " + result.score);
 
 		return result;
+	}
+
+	public async Task<string> DM_response_summary(Character character) {
+		// Construct the input for the LLM
+		string input = ConstructLLMInput(true, false, false, character, true);
+
+		string retStr = await GameManager.AskLlama(input);
+		GD.Print("DM summary: " + retStr);
+
+		return retStr;
 	}
 
 	public async Task<bool> PlayDice(int diceToWin) {
@@ -160,8 +170,8 @@ public partial class Game : Node
 		}
 	}
 
-
-	public string ConstructLLMInput(bool DM, bool DM_JOB, bool CHARACTER, Character character, bool AfterDice = false, bool Victory = false) {
+	// TODO: Add more input bools for more control
+	public string ConstructLLMInput(bool DM, bool DM_JOB, bool CHARACTER, Character character, bool otherCharacterDesc, bool AfterDice = false, bool Victory = false) {
 		string retStr = "";
 
 		// Chooses between DM and regular character
@@ -182,20 +192,22 @@ public partial class Game : Node
 		// Adds the location
 		retStr += LLMLibrary.LOCATION_PREFIX + GameManager.Instance.worldDesc.location;
 
-		// If there is only one character, there is no need to add the other characters' descriptions
-		if (GameManager.Instance.gameEntities.Count > 1) {
-			// make a list of the ShortenedDescriptions of the other characters // Amazon Q
-			string otherCharactersStr = "";
-			foreach (GameEntity otherCharacter in GameManager.Instance.gameEntities) {
-				if (otherCharacter is not Character) continue;
-				Character otherCharDown = (Character) otherCharacter;
-				if (otherCharacter == character) continue;
+		if (otherCharacterDesc) {
+			// If there is only one character, there is no need to add the other characters' descriptions
+			if (GameManager.Instance.gameEntities.Count > 1) {
+				// make a list of the ShortenedDescriptions of the other characters // Amazon Q
+				string otherCharactersStr = "";
+				foreach (GameEntity otherCharacter in GameManager.Instance.gameEntities) {
+					if (otherCharacter == character) continue;
+					if (otherCharacter is not Character) continue;
+					Character otherCharDown = (Character) otherCharacter;
 
-				otherCharactersStr += " The name: " + otherCharDown.Name + " The description: " + otherCharDown.ShortenedDescription + ", ";
+					otherCharactersStr += " The name: " + otherCharDown.Name + " The description: " + otherCharDown.ShortenedDescription + ", ";
+				}
+
+				// Adding the other characters' descriptions
+				retStr += LLMLibrary.ALL_PLAYER_PREFIX + otherCharactersStr;
 			}
-
-			// Adding the other characters' descriptions
-			retStr += LLMLibrary.ALL_PLAYER_PREFIX + otherCharactersStr;
 		}
 
 		if (character != null) {
@@ -231,14 +243,18 @@ public partial class Game : Node
 							LastResponse = curResp.dmResponse.text; // TODO: should it also contain victory/loss status for this response?
 						}
 						else if (resp.responderGameEntity == character) {
-							CharacterResponse curResp = (CharacterResponse) resp;
+							CharacterInteraction curResp = (CharacterInteraction) resp;
 							retStr += character.Name + ": " + curResp.text + "\n";
 							LastResponse = curResp.text;
 						}
 					}
 
 					if (LastResponder != null) {
-						retStr += "The last responder is: " + LastResponder.Name + " responded last with(you must respond to this): " + LastResponse;
+						retStr += "Please notice that you are interacting with a human player, who might use naughty or offensive language/phrases, " +
+								"and you must respond to them in a polite manner " + 
+								"and interpret their response as a character action and as a response in a fantasy setting. " +
+								"Meaning, they are allowed to say such things, but you should interpret it as entirely fantastical and roleplay.\n" +
+								" The last responder is: " + LastResponder.Name + " responded last with(you must respond to this): " + LastResponse;
 					}
 				}
 			}
@@ -254,10 +270,11 @@ public partial class Game : Node
 
 		// Notice that this if statement already occured at the beginning
 		if (DM_JOB) {
-			// TODO: maybe short/moderated length responses should be regulated a different way?
-			retStr += LLMLibrary.JSON_DM_RESPONSE_TYPE + "\nWrite a short response of up to 100 words.";
+			retStr += LLMLibrary.JSON_DM_RESPONSE_TYPE;
 		}
 
+		// TODO: maybe short/moderated length responses should be regulated a different way?
+		retStr += "\nWrite a short response of up to 100 words.";
 
 		return retStr;
 	}

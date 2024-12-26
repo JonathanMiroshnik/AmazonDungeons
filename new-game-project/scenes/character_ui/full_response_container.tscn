@@ -39,22 +39,3 @@ layout_mode = 2
 bbcode_enabled = true
 text = "response"
 fit_content = true
-
-[node name="ReplyContainer" type="MarginContainer" parent="VFullResponseContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-
-[node name="VReplyContainer" type="VBoxContainer" parent="VFullResponseContainer/ReplyContainer"]
-layout_mode = 2
-
-[node name="InnerReplyContainer" type="MarginContainer" parent="VFullResponseContainer/ReplyContainer/VReplyContainer"]
-layout_mode = 2
-
-[node name="ReplyPanel" type="Panel" parent="VFullResponseContainer/ReplyContainer/VReplyContainer/InnerReplyContainer"]
-layout_mode = 2
-
-[node name="ReplyEdit" type="TextEdit" parent="VFullResponseContainer/ReplyContainer/VReplyContainer/InnerReplyContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-placeholder_text = "You may write a reply here"
-scroll_fit_content_height = true
