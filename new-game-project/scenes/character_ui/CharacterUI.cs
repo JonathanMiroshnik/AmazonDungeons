@@ -8,6 +8,9 @@ public partial class CharacterUI : Control
 	[Export]
 	public PackedScene fullResponseContainer;
 
+	// State Machine that controls the pace of the dialogue, it is connected both ways with the CharacterUI
+	public DialogueStateMachine dialogueStateMachine;
+
 	// Current conversation between DM and character that is being shown in the UI // TODO: generalize it beyong DM-character interactions
 	public DMCharacterResponse curDMResponse;
 
@@ -20,21 +23,21 @@ public partial class CharacterUI : Control
 	public TextEdit replyEdit;
 
 	// Called when the node enters the scene tree for the first time.
-	public override async void _Ready()
+	public override void _Ready()
 	{
-		if (fullResponseContainer == null) return; // FIXME: raise error
+		if (fullResponseContainer == null)	throw new ArgumentException("Add FullResponseContainer to the CharacterUI");
 		vContainer = GetNodeOrNull<VBoxContainer>("%VResponsesContainer");
-		if (vContainer == null) return; // FIXME: raise error
+		if (vContainer == null) throw new ArgumentException("Add VResponsesContainer to the CharacterUI");
 		diceContainer = GetNodeOrNull<MarginContainer>("%DiceContainer");
-		if (diceContainer == null) return; // FIXME: raise error
+		if (diceContainer == null) throw new ArgumentException("Add DiceContainer to the CharacterUI");
 		nextContainer = GetNodeOrNull<MarginContainer>("%NextContainer");
-		if (nextContainer == null) return; // FIXME: raise error
+		if (nextContainer == null) throw new ArgumentException("Add NextContainer to the CharacterUI");
 
 		// Reply to responses part
 		replyContainer = GetNode<MarginContainer>("%ReplyContainer");
-		if (replyContainer == null) return; // FIXME: raise error
+		if (replyContainer == null) throw new ArgumentException("Add ReplyContainer to the CharacterUI");
 		replyEdit = GetNode<TextEdit>("%ReplyEdit");
-		if (replyEdit == null) return; // FIXME: raise error
+		if (replyEdit == null) throw new ArgumentException("Add ReplyEdit to the CharacterUI");
 	}
 
 	public async Task AddResponse(string response)
@@ -47,8 +50,6 @@ public partial class CharacterUI : Control
 		FullResponseContainer container = fullResponseContainer.Instantiate<FullResponseContainer>();
 		vContainer.AddChild(container);
 		container.gameEntity = gameEntity;
-
-		// container.ReplyToResponse += ActivatedReply; // FIXME: delete?
 
 		await container.ShowResponse(response);
 		await Task.Delay(1000);
@@ -67,20 +68,6 @@ public partial class CharacterUI : Control
 			replyEdit.Editable = false;
 		}
 	}
-
-	// TODO: delete this? tried to put the conversation in a fullresponsecontainer but is a part of it
-	// public async Task EngageDMConversation(DMCharacterResponse dmReponse)
-	// {
-	// 	FullResponseContainer container = fullResponseContainer.Instantiate<FullResponseContainer>();
-	// 	vContainer.AddChild(container);
-	// 	container.gameEntity = dmReponse.respondeeGameEntity;
-
-	// 	container.ReplyToResponse += ActivatedReply;
-
-	// 	await container.ShowResponse(response);
-	// 	await Task.Delay(1000);
-		
-	// }
 
 	public void ActivatedReply(string response)
 	{
@@ -111,7 +98,7 @@ public partial class CharacterUI : Control
 		ClearResponses();
 
 		// Asking the DM for a first response
-		JSONDMResponse result = await GameManager.Instance.game.DM_response((Character) dmCharResponse.respondeeGameEntity); // FIXME: bad downcasting thing
+		JSONDMResponse result = await LLMLibrary.DM_response((Character) dmCharResponse.respondeeGameEntity); // FIXME: bad downcasting thing
 		dmCharResponse.dmResponse = result;
 
 		await AddResponse(dmCharResponse.dmResponse.text, dmCharResponse.responderGameEntity); // FIXME: downcasting
@@ -132,10 +119,6 @@ public partial class CharacterUI : Control
 		else {
 			nextContainer.Visible = true;
 		}
-
-		// TODO: Response from character to DM
-		// TODO: Possible dice roll
-		// TODO: DM Responds to dice roll
 	}
 
 	public async void _on_dice_button_pressed() {
@@ -144,13 +127,10 @@ public partial class CharacterUI : Control
 
 		diceContainer.Visible = false;
 		Visible = false;
-		curDMResponse.ThrownDiceSuccess = await GameManager.Instance.game.PlayDice(curDMResponse.dmResponse.score);
-		curDMResponse.ThrownDice = true;
+
+		dialogueStateMachine.ChangeState(new DiceThrowing(curDMResponse));
 		
 		// Move back to the Character
-		await Task.Delay(1000);
-		await GameManager.Instance.game.cameraMover.MoveCameraByNode3D(curDMResponse.respondeeGameEntity.worldSpacePosition, 
-																		GameManager.TIME_TO_MOVE_CAMERA_POSITIONS);
 		Visible = true;
 
 		nextContainer.Visible = true;
@@ -189,19 +169,19 @@ public partial class CharacterUI : Control
 
 				// FIXME: this part should always happen outside of these ifs
 				// TODO: create LLM response here that is only explanation and summary instead of further DM JOB tag
-				string summary = await GameManager.Instance.game.DM_response_summary(character);
-				CharacterInteraction characterInteractionSum = new CharacterInteraction(curDMResponse.responderGameEntity, curDMResponse.respondeeGameEntity, summary);
-				character.conversation.Add(characterInteractionSum);
+				// string summary = await GameManager.Instance.game.DM_response_summary(character);
+				// CharacterInteraction characterInteractionSum = new CharacterInteraction(curDMResponse.responderGameEntity, curDMResponse.respondeeGameEntity, summary);
+				// character.conversation.Add(characterInteractionSum);
 
-				FullResponseContainer sumContainer = fullResponseContainer.Instantiate<FullResponseContainer>();
-				vContainer.AddChild(sumContainer);
-				sumContainer.gameEntity = characterInteractionSum.responderGameEntity;
-				await sumContainer.ShowResponse(characterInteractionSum.text);
+				// FullResponseContainer sumContainer = fullResponseContainer.Instantiate<FullResponseContainer>();
+				// vContainer.AddChild(sumContainer);
+				// sumContainer.gameEntity = characterInteractionSum.responderGameEntity;
+				// await sumContainer.ShowResponse(characterInteractionSum.text);
 
-				GD.Print("Interactions: ");
-				foreach (CharacterInteraction c in character.conversation) {
-					GD.Print("From: " + c.responderGameEntity.Name + " To: " + c.respondeeGameEntity.Name + " Text: " + c.text);
-				}
+				// GD.Print("Interactions: ");
+				// foreach (CharacterInteraction c in character.conversation) {
+				// 	GD.Print("From: " + c.responderGameEntity.Name + " To: " + c.respondeeGameEntity.Name + " Text: " + c.text);
+				// }
 			}
 		}
 

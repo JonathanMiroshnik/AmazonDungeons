@@ -1,4 +1,6 @@
 using Godot;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 // TODO: maybe askllama and other LLM access functions should be here with the prompts? GameManager only to manage game specifically??
 
@@ -186,6 +188,31 @@ public partial class LLMLibrary : Node
 
 		// TODO: maybe short/moderated length responses should be regulated a different way?
 		retStr += "\nWrite a short response of up to 100 words.";
+
+		return retStr;
+	}
+
+	public static async Task<JSONDMResponse> DM_response(Character character) {
+		// Construct the input for the LLM
+		string input = LLMLibrary.ConstructLLMInput(true, true, false, character, true);
+
+		string retStr = await GameManager.AskLlama(input);
+		retStr = GlobalStringLibrary.JSONStringBrackets(retStr);
+		
+		// Accessing JSON output
+		JSONDMResponse result = JsonConvert.DeserializeObject<JSONDMResponse>(retStr);
+
+		GD.Print("DM Response: " + result.text + " Dice number: " + result.score);
+
+		return result;
+	}
+
+	public static async Task<string> DM_response_summary(Character character) {
+		// Construct the input for the LLM
+		string input = LLMLibrary.ConstructLLMInput(true, false, false, character, true);
+
+		string retStr = await GameManager.AskLlama(input);
+		GD.Print("DM summary: " + retStr);
 
 		return retStr;
 	}

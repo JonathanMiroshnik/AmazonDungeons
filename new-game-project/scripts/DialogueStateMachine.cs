@@ -4,20 +4,27 @@ using System.Threading.Tasks;
 
 public interface DialogueState
 {
-    public abstract void Enter();
-    public abstract void Exit();
-    public abstract void Action();
+    public abstract void Enter(DialogueStateMachine dialogueStateMachine);
+    public abstract void Exit(DialogueStateMachine dialogueStateMachine);
+    public abstract void Action(DialogueStateMachine dialogueStateMachine);
 }
 
 public partial class StartDialogue : DialogueState {
-    public async void Enter() {
+    public async void Enter(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Enter StartDialogue");
+
+        // Creating the conversation between the DM and the character
+		DMCharacterResponse resp = new DMCharacterResponse(); // TODO: very bad code and structure
+		resp.responderGameEntity = GameManager.Instance.DungeonMaster;
+		resp.respondeeGameEntity = dialogueStateMachine.gameStateMachine.character;
+
+		await dialogueStateMachine.gameStateMachine.characterUI.DoDMConversation(resp);
     }
 
-    public void Exit() {
+    public void Exit(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Exit StartDialogue");
     }
-    public void Action() {
+    public void Action(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Action StartDialogue");
     }
 }
@@ -25,31 +32,44 @@ public partial class StartDialogue : DialogueState {
 public partial class DiceThrowing : DialogueState {
     public Character character = null;
     public DiceThrowerMechanism diceThrowerMechanism = null;
+    public DMCharacterResponse dmCharacterResponse;
 
-    public async void Enter() {
+    public DiceThrowing(DMCharacterResponse curDMCharacterResponse) {
+        if (curDMCharacterResponse == null) throw new ArgumentException("Given DM Character Response for Dice Throwing is null");
+        dmCharacterResponse = curDMCharacterResponse;
+    }
+
+    public async void Enter(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Enter DiceThrowing");
+
+        await dialogueStateMachine.gameStateMachine.cameraMover.MoveCameraByNode3D(dialogueStateMachine.gameStateMachine.DICE_POS, GameStateMachine.TIME_TO_MOVE);
+        Action(dialogueStateMachine);
     }
 
-    public void Exit() {
+    public async void Exit(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Exit DiceThrowing");
+
+        await dialogueStateMachine.gameStateMachine.cameraMover.MoveCameraByNode3D(dmCharacterResponse.respondeeGameEntity.worldSpacePosition, 
+																		            GameManager.TIME_TO_MOVE_CAMERA_POSITIONS);
     }
 
-    public async void Action() {
+    public async void Action(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Action DiceThrowing");
-        int numSuccesses = await diceThrowerMechanism.ThrowDice();
-        GD.Print("Dice succeeded " + numSuccesses);
+        
+        dmCharacterResponse.ThrownDiceSuccess = await diceThrowerMechanism.PlayDice(6, 5); // FIXME: number of dice changes
+        dmCharacterResponse.ThrownDice = true;
     }
 }
 
 public partial class EndDialogue : DialogueState {
-    public async void Enter() {
+    public async void Enter(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Enter EndDialogue");
     }
 
-    public void Exit() {
+    public void Exit(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Exit EndDialogue");
     }
-    public void Action() {
+    public void Action(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Action EndDialogue");
     }
 }
@@ -57,23 +77,24 @@ public partial class EndDialogue : DialogueState {
 public partial class DialogueStateMachine : GodotObject
 {
     public DialogueState CurrentState { get; private set; }
-    public CharacterUI characterUI { get; private set; } // TODO: maybe get the GameStateMachine instead of UI?
+    public GameStateMachine gameStateMachine { get; private set; }
 
-    public void StartDialogue(CharacterUI curCharacterUI) {
-        if (curCharacterUI == null) {
-            GD.Print("Error: CharacterUI is null");
+    public void StartDialogue(GameStateMachine curGameStateMachine) {
+        if (curGameStateMachine == null) {
+            GD.Print("Error: GameStateMachine is null");
             return;
         }
 
-        characterUI = curCharacterUI;
-        characterUI.ClearResponses();
+        gameStateMachine = curGameStateMachine;
+        gameStateMachine.characterUI.ClearResponses();
+        gameStateMachine.characterUI.dialogueStateMachine = this;
 
         ChangeState(new StartDialogue());
     }
 
     public void ChangeState(DialogueState newState) {
-        CurrentState?.Exit();
+        CurrentState?.Exit(this);
         CurrentState = newState;
-        CurrentState.Enter();
+        CurrentState.Enter(this);
     }
 }

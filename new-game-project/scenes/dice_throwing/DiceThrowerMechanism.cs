@@ -162,5 +162,17 @@ public partial class DiceThrowerMechanism : Node3D
 		return num_of_victor_dice;
 	}
 
+
+	public async Task<bool> PlayDice(int NumDice, int MinWinningDice) {
+		if (numDice < MinWinningDice) return false;
+		
+		numDice = NumDice;
+		MIN_WINNING_DICE = MinWinningDice;
+
+		int final = await ThrowDice();
+
+		return final >= MIN_WINNING_DICE;
+	}
+
 	// TODO: need non-victorious die throwing mechanism, for e.x. D20
 }

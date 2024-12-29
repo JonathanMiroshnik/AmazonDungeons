@@ -18,6 +18,7 @@ public enum CoreSkill
 	Intelligence
 }
 
+// TODO: EXTRA FEATURE, add small movement of camera in accordance to posiiton of mouse in relative position of the screen
 public partial class GameManager : Node
 {
 	public static GameManager Instance { get; private set; }
@@ -73,8 +74,8 @@ public partial class GameManager : Node
 		// 	await CreateGameCharacter();
 		// }
 
-		// await CreateGameCharacter(); // TODO: delete this part and replace with above in real-game
-		CreateExampleCharacter(LLMLibrary.EXAMPLE_CHARACTER_1[0], LLMLibrary.EXAMPLE_CHARACTER_1[1], LLMLibrary.EXAMPLE_CHARACTER_1[2]);
+		await CreateGameCharacter(); // TODO: delete this part and replace with above in real-game
+		// CreateExampleCharacter(LLMLibrary.EXAMPLE_CHARACTER_1[0], LLMLibrary.EXAMPLE_CHARACTER_1[1], LLMLibrary.EXAMPLE_CHARACTER_1[2]);
 
 		// Create new dungeon master
 		DungeonMaster = new GameEntity("Dungeon Master", GameEntityType.DungeonMaster);
