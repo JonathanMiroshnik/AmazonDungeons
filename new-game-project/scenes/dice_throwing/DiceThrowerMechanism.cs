@@ -28,8 +28,15 @@ public partial class DiceThrowerMechanism : Node3D
 	private float START_DICE_MASS = 0.1f;
 	private float END_DICE_MASS = 100f;
 
+	private float SIZE_OF_RANDOM_SPAWN_CHANGE = 1;
+	float MAX_FORCE_PUSH = 0.25f;
+
 
 	public override async void _Ready() {
+		// We assume a uniform scaling
+		SIZE_OF_RANDOM_SPAWN_CHANGE = this.Scale.X;
+		MAX_FORCE_PUSH *= this.Scale.X;
+
 		ResetDice();
 		int final = await ThrowDice();
 
@@ -44,7 +51,6 @@ public partial class DiceThrowerMechanism : Node3D
 		foreach (Dice curDice in instDice)
 		{
 			if (curDice == null) continue;
-			GD.Print("wwww");
 			curDice.QueueFree();
 		}
 
@@ -54,34 +60,32 @@ public partial class DiceThrowerMechanism : Node3D
 	}
 	
 	// Recreates/resets the current dice
-	private async void ResetDice() {
+	private void ResetDice() {
 		DeleteDice();
 		
 		// Creating the dice
 		instDice = new List<Dice>();
 		for (int i = 0; i < numDice; i++)
 		{
-			await Task.Delay(100);
+			// await Task.Delay(100);
 
 			Dice curDice = dice.Instantiate<Dice>();
 			instDice.Add(curDice);			
 			AddChild(curDice);
-
-			if (curDice == null) GD.Print("curDice is null");
 			
 			// Notice: the global position show only be set AFTER the object is already in the global tree, given by AddChild	
 			// instDice[i].GetChild<CollisionShape3D>(0).GlobalScale(this.Scale);
-			curDice.GetChild<CollisionShape3D>(0).Scale = this.Scale;
+			curDice.GetChild<CollisionShape3D>(0).GlobalScale(this.Scale * 5);
 			curDice.LinearVelocity = Vector3.Zero;			
 			curDice.AngularVelocity = Vector3.Zero;
+			curDice.Freeze = true;
 			curDice.Mass = START_DICE_MASS;
 
 			Random curRand = new Random();
-			float SIZE_OF_MOVE = 5f;
 
-			curDice.GlobalPosition = GetNode<Node3D>("%DiceSpawnPos").GlobalPosition + new Vector3((float) (2 * curRand.NextDouble() - 1)  * SIZE_OF_MOVE, 
-																									(float) (2 * curRand.NextDouble() - 1)  * SIZE_OF_MOVE,
-																									(float) (2 * curRand.NextDouble() - 1)  * SIZE_OF_MOVE);		
+			curDice.GlobalPosition = GetNode<Node3D>("%DiceSpawnPos").GlobalPosition + new Vector3((float) (2 * curRand.NextDouble() - 1)  * SIZE_OF_RANDOM_SPAWN_CHANGE, 
+																									(float) (2 * curRand.NextDouble() - 1)  * SIZE_OF_RANDOM_SPAWN_CHANGE,
+																									(float) (2 * curRand.NextDouble() - 1)  * SIZE_OF_RANDOM_SPAWN_CHANGE);		
 		}
 	}
 
@@ -89,35 +93,30 @@ public partial class DiceThrowerMechanism : Node3D
 	private void PhysicallyThrowToMiddle(RigidBody3D curDice) {
 		Random curRand = new Random();
 
-		float MAX_FORCE = 50;
-
+		curDice.Freeze = false;
 		// curDice.ApplyForce(new Vector3((float) curRand.NextDouble() * MAX_FORCE, (float) curRand.NextDouble() * MAX_FORCE, (float) curRand.NextDouble() * MAX_FORCE));
-		curDice.ApplyImpulse(new Vector3((float) (2 * curRand.NextDouble() - 1)  * MAX_FORCE,
-		 								 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE, 
-										 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE));
-		curDice.ApplyTorqueImpulse(new Vector3((float) (2 * curRand.NextDouble() - 1) * MAX_FORCE * 25, 
-												(float) (2 * curRand.NextDouble() - 1) * MAX_FORCE * 25, 
-												(float) (2 * curRand.NextDouble() - 1) * MAX_FORCE* 25));
-		curDice.ApplyCentralImpulse(new Vector3((float) (2 * curRand.NextDouble() - 1) * MAX_FORCE,
-		 								 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE, 
-										 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE));
+		curDice.ApplyImpulse(new Vector3((float) (2 * curRand.NextDouble() - 1)  * MAX_FORCE_PUSH,
+		 								 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH, 
+										 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH));
+		curDice.ApplyTorqueImpulse(new Vector3((float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH * 25, 
+												(float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH * 25, 
+												(float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH* 25));
+		curDice.ApplyCentralImpulse(new Vector3((float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH,
+		 								 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH, 
+										 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH));
 	}
 
 	// Throws dice and gets the number of victourious dice	
 	public async Task<int> ThrowDice() {
 		ResetDice();
-		GD.Print("wew1");
 		if (instDice == null) return -1;
 
 		// Throwing the dice randomly
 		foreach (Dice curDice in instDice)
 		{
 			if (curDice == null) continue;
-			GD.Print("wwwweteetete");
 			PhysicallyThrowToMiddle(curDice);
 		}
-
-		GD.Print("wew2");
 
 		Vector3 checkPos;
 		int milliseconds = MAX_MILLISECS_TO_STOP;
@@ -146,8 +145,6 @@ public partial class DiceThrowerMechanism : Node3D
 			}
 		}
 
-		GD.Print("wew3");
-
 		// Finding how many of the dice are victorious
 		int num_of_victor_dice = 0;
 		foreach (Dice curDice in instDice)
@@ -162,7 +159,6 @@ public partial class DiceThrowerMechanism : Node3D
 			curDice.AngularVelocity = Vector3.Zero;
 		}
 
-		GD.Print("wew4");
 		return num_of_victor_dice;
 	}
 
