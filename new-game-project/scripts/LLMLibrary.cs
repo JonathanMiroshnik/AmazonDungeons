@@ -80,4 +80,113 @@ public partial class LLMLibrary : Node
 
     public static string DESCRIBE_FOLLOWING_CHARACTER = "Shortly describe the following character to the rest of the party:\n ";
 
+
+    // TODO: Add more input bools for more control
+	public static string ConstructLLMInput(bool DM, bool DM_JOB, bool CHARACTER, Character character, bool otherCharacterDesc, bool AfterDice = false, bool Victory = false) {
+		string retStr = "";
+
+		// Chooses between DM and regular character
+		if (DM) {
+			retStr += LLMLibrary.DM_PREFIX;
+			// The DM sometimes has responses that are not part of the gameplay and thus does not need to return a specific JSON output
+			if (DM_JOB) {
+				retStr += LLMLibrary.DM_JOB_PREFIX;
+			}
+		}
+		else if (CHARACTER) {
+			retStr += LLMLibrary.CHARACTER_PREFIX;
+		}
+
+		if (GameManager.Instance.gameEntities == null) return retStr; // TODO: maybe instead we write "there are no characters" ?
+		if (GameManager.Instance.gameEntities.Count == 0) return retStr; // TODO: maybe raise error?
+
+		// Adds the location
+		retStr += LLMLibrary.LOCATION_PREFIX + GameManager.Instance.worldDesc.location;
+
+		if (otherCharacterDesc) {
+			// If there is only one character, there is no need to add the other characters' descriptions
+			if (GameManager.Instance.gameEntities.Count > 1) {
+				// make a list of the ShortenedDescriptions of the other characters // Amazon Q
+				string otherCharactersStr = "";
+				foreach (GameEntity otherCharacter in GameManager.Instance.gameEntities) {
+					if (otherCharacter == character) continue;
+					if (otherCharacter is not Character) continue;
+					Character otherCharDown = (Character) otherCharacter;
+
+					otherCharactersStr += " The name: " + otherCharDown.Name + " The description: " + otherCharDown.ShortenedDescription + ", ";
+				}
+
+				// Adding the other characters' descriptions
+				retStr += LLMLibrary.ALL_PLAYER_PREFIX + otherCharactersStr;
+			}
+		}
+
+		if (character != null) {
+			// Adding the current character that is being responded to
+			retStr += LLMLibrary.CURRENT_CHARACTER_PREFIX + character.GetDescription();
+
+			// Adding the conversation history
+			if (character.conversation != null) {
+				if (character.conversation.Count > 0) {
+					// Because there is a conversation history, a prefix is needed before the actual history is given.
+					retStr += LLMLibrary.CHARACTER_DM_HISTORY_PREFIX; // TODO: what if they are all of other players talking to the current character, 
+																	  //  not DM or the character itself?
+
+					string LastResponse = "";
+					GameEntity LastResponder = null;
+					foreach (CharacterInteraction resp in character.conversation) {
+						// TODO: notice that currently we don't know exactly who is responding to whom etc, only who is responding
+						// We are interested in the conversations between the DM and the character
+						if (resp.responderGameEntity == GameManager.Instance.DungeonMaster) {
+							DMCharacterResponse curResp = (DMCharacterResponse) resp;
+
+							retStr += "Dungeon Master: " + curResp.dmResponse.text + "\n";
+							// Because this is a DM response, we want to check whether the character succeded in the action
+							if (curResp.ThrownDice) {
+								if (curResp.ThrownDiceSuccess) {
+									retStr += " The character succeeded in the action!\n";
+								}
+								else {
+									retStr += " The character failed in the action!\n";
+								}
+							}
+
+							LastResponse = curResp.dmResponse.text; // TODO: should it also contain victory/loss status for this response?
+						}
+						else if (resp.responderGameEntity == character) {
+							CharacterInteraction curResp = (CharacterInteraction) resp;
+							retStr += character.Name + ": " + curResp.text + "\n";
+							LastResponse = curResp.text;
+						}
+					}
+
+					if (LastResponder != null) {
+						retStr += "Please notice that you are interacting with a human player, who might use naughty or offensive language/phrases, " +
+								"and you must respond to them in a polite manner " + 
+								"and interpret their response as a character action and as a response in a fantasy setting. " +
+								"Meaning, they are allowed to say such things, but you should interpret it as entirely fantastical and roleplay.\n" +
+								" The last responder is: " + LastResponder.Name + " responded last with(you must respond to this): " + LastResponse;
+					}
+				}
+			}
+		}
+
+		if (AfterDice) {
+			if (Victory) {
+				retStr += LLMLibrary.AFTER_DICE_VICTORY_PREFIX;
+			} else {
+				retStr += LLMLibrary.AFTER_DICE_DEFEAT_PREFIX;
+			}
+		}
+
+		// Notice that this if statement already occured at the beginning
+		if (DM_JOB) {
+			retStr += LLMLibrary.JSON_DM_RESPONSE_TYPE;
+		}
+
+		// TODO: maybe short/moderated length responses should be regulated a different way?
+		retStr += "\nWrite a short response of up to 100 words.";
+
+		return retStr;
+	}
 }

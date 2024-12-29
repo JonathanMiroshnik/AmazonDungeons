@@ -72,4 +72,14 @@ public partial class GlobalStringLibrary : GodotObject
 		}
 		return JSONString;
 	}
+
+	public static void SeparatorPrint(string inner = "") {
+		GD.Print();
+		GD.Print("-----------------------------------------------------------------------------------------------");
+		if (inner != "") {
+			GD.Print(inner);
+			GD.Print("-----------------------------------------------------------------------------------------------");
+		}
+		GD.Print();
+	}
 }

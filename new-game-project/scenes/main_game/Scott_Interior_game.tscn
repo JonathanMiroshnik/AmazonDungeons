@@ -18,10 +18,10 @@ sky_material = SubResource("ProceduralSkyMaterial_yremt")
 [sub_resource type="Environment" id="Environment_ixvu5"]
 background_mode = 2
 sky = SubResource("Sky_ek3ka")
-sdfgi_enabled = true
 sdfgi_use_occlusion = true
 sdfgi_read_sky_light = false
 sdfgi_cascades = 8
+sdfgi_max_distance = 3276.8
 sdfgi_y_scale = 2
 glow_normalized = true
 glow_blend_mode = 0
@@ -86,3 +86,12 @@ light_energy = 1.356
 
 [node name="DiceThrower" parent="." instance=ExtResource("8_tcys4")]
 transform = Transform3D(1, 0.000694491, 0.000161217, -0.000694531, 1, 0.000234311, -0.000161045, -0.000234429, 1, 4.68089, 30.3074, 1.78356)
+
+[node name="DiceSpawnPos" parent="DiceThrower" index="0"]
+transform = Transform3D(1, -2.10001e-11, 0, 3.25084e-10, 1, -8.73115e-11, 8.73115e-11, 0, 1, -0.00302219, 12.2194, -0.0057174)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(-0.996883, -0.0743619, 0.0263548, -0.0583867, 0.92004, 0.387449, -0.0530589, 0.384703, -0.921514, 0, 41.1713, -24.1233)
+current = true
+
+[editable path="DiceThrower"]

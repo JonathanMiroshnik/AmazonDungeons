@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 /// <summary>
 /// Allows to throw dice and get their values after their tumbling
@@ -17,7 +18,7 @@ public partial class DiceThrowerMechanism : Node3D
 	public int numDice = 1;
 
 	// Instantiated Dice
-	private Dice[] instDice; 
+	private List<Dice> instDice = null; 
 
 	// Time given to the dice to stop tumbling
 	private int MAX_MILLISECS_TO_STOP = 5000;
@@ -28,45 +29,59 @@ public partial class DiceThrowerMechanism : Node3D
 	private float END_DICE_MASS = 100f;
 
 
-	// public override async void _Ready() {
-	// 	ResetDice();
-	// 	int final = await ThrowDice();
+	public override async void _Ready() {
+		ResetDice();
+		int final = await ThrowDice();
 
-	// 	GD.Print("FINAL " + final.ToString());
-	// }
+		GD.Print("FINAL " + final.ToString());
+	}
 
 	// Deletes the currently existing dice
 	private void DeleteDice() {
 		if (instDice == null) return;
 
 		// for loop over instDice deleting each one
-		for (int i = 0; i < instDice.Length; i++)
+		foreach (Dice curDice in instDice)
 		{
-			if (instDice[i] == null) continue;
-			instDice[i].QueueFree();
+			if (curDice == null) continue;
+			GD.Print("wwww");
+			curDice.QueueFree();
 		}
 
-		instDice = null;
+		instDice.Clear();
+
+		// instDice = null;
 	}
 	
 	// Recreates/resets the current dice
-	private void ResetDice() {
+	private async void ResetDice() {
 		DeleteDice();
 		
 		// Creating the dice
-		instDice = new Dice[numDice];
+		instDice = new List<Dice>();
 		for (int i = 0; i < numDice; i++)
 		{
-			instDice[i] = dice.Instantiate<Dice>();					
-			AddChild(instDice[i]);
+			await Task.Delay(100);
+
+			Dice curDice = dice.Instantiate<Dice>();
+			instDice.Add(curDice);			
+			AddChild(curDice);
+
+			if (curDice == null) GD.Print("curDice is null");
 			
 			// Notice: the global position show only be set AFTER the object is already in the global tree, given by AddChild	
 			// instDice[i].GetChild<CollisionShape3D>(0).GlobalScale(this.Scale);
-			instDice[i].GetChild<CollisionShape3D>(0).Scale = this.Scale;
-			instDice[i].LinearVelocity = Vector3.Zero;			
-			instDice[i].AngularVelocity = Vector3.Zero;
-			instDice[i].Mass = START_DICE_MASS;
-			instDice[i].GlobalPosition = GetNode<Node3D>("%DiceSpawnPos").GlobalPosition;			
+			curDice.GetChild<CollisionShape3D>(0).Scale = this.Scale;
+			curDice.LinearVelocity = Vector3.Zero;			
+			curDice.AngularVelocity = Vector3.Zero;
+			curDice.Mass = START_DICE_MASS;
+
+			Random curRand = new Random();
+			float SIZE_OF_MOVE = 5f;
+
+			curDice.GlobalPosition = GetNode<Node3D>("%DiceSpawnPos").GlobalPosition + new Vector3((float) (2 * curRand.NextDouble() - 1)  * SIZE_OF_MOVE, 
+																									(float) (2 * curRand.NextDouble() - 1)  * SIZE_OF_MOVE,
+																									(float) (2 * curRand.NextDouble() - 1)  * SIZE_OF_MOVE);		
 		}
 	}
 
@@ -91,23 +106,27 @@ public partial class DiceThrowerMechanism : Node3D
 	// Throws dice and gets the number of victourious dice	
 	public async Task<int> ThrowDice() {
 		ResetDice();
+		GD.Print("wew1");
 		if (instDice == null) return -1;
 
 		// Throwing the dice randomly
-		for (int i = 0; i < instDice.Length; i++)
+		foreach (Dice curDice in instDice)
 		{
-			if (instDice[i] == null) return -1;
-			PhysicallyThrowToMiddle(instDice[i]);
+			if (curDice == null) continue;
+			GD.Print("wwwweteetete");
+			PhysicallyThrowToMiddle(curDice);
 		}
+
+		GD.Print("wew2");
 
 		Vector3 checkPos;
 		int milliseconds = MAX_MILLISECS_TO_STOP;
 		int MILLISECS_REDUCTION_EACH_CHECK = 100;
 
 		// Waiting for the dice to stop tumbling
-		for (int i = 0; i < instDice.Length; i++)
+		foreach (Dice curDice in instDice)
 		{
-			checkPos = instDice[i].GlobalPosition;
+			checkPos = curDice.GlobalPosition;
 
 			if (milliseconds <= 0) {
 				break;
@@ -116,32 +135,34 @@ public partial class DiceThrowerMechanism : Node3D
 			while(milliseconds > 0) {
 				await Task.Delay(MILLISECS_REDUCTION_EACH_CHECK);
 
-				if (checkPos == instDice[i].GlobalPosition) {
+				if (checkPos == curDice.GlobalPosition) {
 					break;
 				}
 				else {
-					checkPos = instDice[i].GlobalPosition;
+					checkPos = curDice.GlobalPosition;
 				}
 
 				milliseconds -= MILLISECS_REDUCTION_EACH_CHECK;
 			}
 		}
-	
+
+		GD.Print("wew3");
 
 		// Finding how many of the dice are victorious
 		int num_of_victor_dice = 0;
-		for (int i = 0; i < instDice.Length; i++)
+		foreach (Dice curDice in instDice)
 		{
-			int curSide = instDice[i].WhichSideUp();
+			int curSide = curDice.WhichSideUp();
 			if (curSide >= MIN_WINNING_DICE) {
 				num_of_victor_dice++;
 			}
 
-			instDice[i].Mass = END_DICE_MASS;
-			instDice[i].LinearVelocity = Vector3.Zero;			
-			instDice[i].AngularVelocity = Vector3.Zero;
+			curDice.Mass = END_DICE_MASS;
+			curDice.LinearVelocity = Vector3.Zero;			
+			curDice.AngularVelocity = Vector3.Zero;
 		}
 
+		GD.Print("wew4");
 		return num_of_victor_dice;
 	}
 
