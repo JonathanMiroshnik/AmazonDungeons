@@ -22,3 +22,7 @@ GameManager="*res://GameManager.cs"
 [dotnet]
 
 project/assembly_name="New Game Project"
+
+[physics]
+
+3d/physics_engine="JoltPhysics3D"
