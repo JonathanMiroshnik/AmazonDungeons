@@ -7,10 +7,11 @@
     <RootNamespace>NewGameProject</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="AWSSDK.Bedrock" Version="3.7.412" />
-    <PackageReference Include="AWSSDK.BedrockAgent" Version="3.7.414" />
-    <PackageReference Include="AWSSDK.BedrockAgentRuntime" Version="3.7.413" />
-    <PackageReference Include="AWSSDK.BedrockRuntime" Version="3.7.411" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="AWSSDK.Bedrock" Version="3.7.412"/>
+    <PackageReference Include="AWSSDK.BedrockAgent" Version="3.7.414"/>
+    <PackageReference Include="AWSSDK.BedrockAgentRuntime" Version="3.7.413"/>
+    <PackageReference Include="AWSSDK.BedrockRuntime" Version="3.7.411"/>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3"/>
+    <PackageReference Include="Godot.NET.Sdk" Version="4.3.0"/>
   </ItemGroup>
 </Project>
