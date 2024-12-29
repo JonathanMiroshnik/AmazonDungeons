@@ -81,8 +81,8 @@ public partial class GameManager : Node
 		DungeonMaster = new GameEntity("Dungeon Master", GameEntityType.DungeonMaster);
 		gameEntities.Add(DungeonMaster);
 
-		// await CreateGameCharacter(); // TODO: delete this part and replace with above in real-game
-		CreateExampleCharacter(LLMLibrary.EXAMPLE_CHARACTER_2[0], LLMLibrary.EXAMPLE_CHARACTER_2[1], LLMLibrary.EXAMPLE_CHARACTER_2[2]);
+		await CreateGameCharacter(); // TODO: delete this part and replace with above in real-game
+		// CreateExampleCharacter(LLMLibrary.EXAMPLE_CHARACTER_2[0], LLMLibrary.EXAMPLE_CHARACTER_2[1], LLMLibrary.EXAMPLE_CHARACTER_2[2]);
 		
 		// IMPORTANT, must be kept at the end of this Ready function 
 		//  because other parts of the game rely on it through the IsLoaded function
