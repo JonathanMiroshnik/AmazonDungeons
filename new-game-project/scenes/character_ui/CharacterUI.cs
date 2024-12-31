@@ -16,7 +16,7 @@ public partial class CharacterUI : Control
 
 	private VBoxContainer vContainer;
 	private MarginContainer diceContainer;
-	private MarginContainer nextContainer;
+	public MarginContainer nextContainer;
 
 	// Reply to responses part
 	private MarginContainer replyContainer;
@@ -42,10 +42,10 @@ public partial class CharacterUI : Control
 
 	public async Task AddResponse(string response)
 	{
-		await AddResponse(response, null);
+		await AddResponse(response, null, false);
 	}
 
-	public async Task AddResponse(string response, GameEntity gameEntity)
+	public async Task AddResponse(string response, GameEntity gameEntity, bool RespondingOption = true)
 	{
 		FullResponseContainer container = fullResponseContainer.Instantiate<FullResponseContainer>();
 		vContainer.AddChild(container);
@@ -55,6 +55,14 @@ public partial class CharacterUI : Control
 		await Task.Delay(1000);
 
 		if (gameEntity == null) return; // TODO: have the same if statmenet above, combine these
+
+		if (!RespondingOption) {
+			replyContainer.Visible = false;
+			replyEdit.Editable = false;
+			replyEdit.Text = "";
+
+			return;
+		}
 
 		// After the text is written, we show the reply container
 		replyContainer.Visible = true;
@@ -117,6 +125,7 @@ public partial class CharacterUI : Control
 			diceContainer.Visible = true;
 		}
 		else {
+			dialogueStateMachine.ChangeState(new ResponseDialogue(dmCharResponse));
 			nextContainer.Visible = true;
 		}
 	}
@@ -129,11 +138,6 @@ public partial class CharacterUI : Control
 		Visible = false;
 
 		dialogueStateMachine.ChangeState(new DiceThrowing(curDMResponse));
-		
-		// Move back to the Character
-		Visible = true;
-
-		nextContainer.Visible = true;
 	}
 
 	public async void _on_next_button_pressed() {
@@ -143,49 +147,18 @@ public partial class CharacterUI : Control
 			if (!curDMResponse.ThrownDice) return;
 		}
 
-		nextContainer.Visible = false;
-
-		string inputText = replyEdit.Text;
-		replyEdit.Text = "";
-		replyContainer.Visible = false;
-
-		if (inputText.Length > 0) {
-			FullResponseContainer container = fullResponseContainer.Instantiate<FullResponseContainer>();
-			vContainer.AddChild(container);
-			container.gameEntity = curDMResponse.respondeeGameEntity;
-
-			await container.ShowResponse(inputText);
-
-			// FIXME: downcasting bad
-			if (curDMResponse.respondeeGameEntity is Character) {	
-				Character character = (Character) curDMResponse.respondeeGameEntity;
-
-				CharacterInteraction characterInteraction = new CharacterInteraction();
-				characterInteraction.responderGameEntity = curDMResponse.respondeeGameEntity;
-				characterInteraction.respondeeGameEntity = curDMResponse.responderGameEntity;
-				characterInteraction.text = inputText;
-
-				character.conversation.Add(characterInteraction);
-
-				// FIXME: this part should always happen outside of these ifs
-				// TODO: create LLM response here that is only explanation and summary instead of further DM JOB tag
-				// string summary = await GameManager.Instance.game.DM_response_summary(character);
-				// CharacterInteraction characterInteractionSum = new CharacterInteraction(curDMResponse.responderGameEntity, curDMResponse.respondeeGameEntity, summary);
-				// character.conversation.Add(characterInteractionSum);
-
-				// FullResponseContainer sumContainer = fullResponseContainer.Instantiate<FullResponseContainer>();
-				// vContainer.AddChild(sumContainer);
-				// sumContainer.gameEntity = characterInteractionSum.responderGameEntity;
-				// await sumContainer.ShowResponse(characterInteractionSum.text);
-
-				// GD.Print("Interactions: ");
-				// foreach (CharacterInteraction c in character.conversation) {
-				// 	GD.Print("From: " + c.responderGameEntity.Name + " To: " + c.respondeeGameEntity.Name + " Text: " + c.text);
-				// }
-			}
-		}
+		dialogueStateMachine.CurrentState?.Action(dialogueStateMachine);
 
 		// ClearResponses();
 		// GameManager.Instance.game.MoveToNextCharacter();
+	}
+
+	public void ReplyToggle(bool allowReplying) {
+		replyEdit.Editable = allowReplying;
+		replyContainer.Visible = allowReplying;
+
+		if (!allowReplying) {
+			replyEdit.Text = "";
+		}
 	}
 }

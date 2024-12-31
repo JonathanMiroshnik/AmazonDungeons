@@ -11,10 +11,11 @@
 
 [node name="MainGame" type="Node3D"]
 
-[node name="GameObject" type="Node" parent="." node_paths=PackedStringArray("cameraMover", "characterUI")]
+[node name="GameObject" type="Node" parent="." node_paths=PackedStringArray("cameraMover", "characterUI", "diceThrowerMechanism")]
 script = ExtResource("1_h6d0l")
 cameraMover = NodePath("../Camera3D")
 characterUI = NodePath("../CharacterUI")
+diceThrowerMechanism = NodePath("../DiceThrower")
 
 [node name="CharacterUI" parent="." instance=ExtResource("2_dug5a")]
 

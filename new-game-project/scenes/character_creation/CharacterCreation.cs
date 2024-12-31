@@ -40,4 +40,12 @@ public partial class CharacterCreation : Control
 			character.CoreSkills[container.coreSkill] = container.skillPoints;
 		}
 	}
+
+	public void _on_randomize_character_button_pressed() {
+		if (GameManager.Instance.gameEntities.Count <= 0) return;
+
+		// TODO: change text of character prompt/create relevate text
+		// TODO: choose random values for attributes
+		// TODO: choose name	
+	}
 }

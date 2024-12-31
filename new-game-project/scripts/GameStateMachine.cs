@@ -10,12 +10,13 @@ public interface GameState
 	public abstract void Action(GameStateMachine gameStateMachine);
 }
 
+// FIXME: ChangeState should nto be used by states, only outside of them
+
 public partial class StartGame : GameState {
 	public void Enter(GameStateMachine gameStateMachine) {
 		GD.Print("Enter StartGame");
 
-		// TODO: perform game prelude here
-		DoPrelude();
+		Action(gameStateMachine);
 		gameStateMachine.ChangeState(new DMDialogue());
 	}
 
@@ -24,6 +25,8 @@ public partial class StartGame : GameState {
 	}
 	public void Action(GameStateMachine gameStateMachine) {
 		GD.Print("Action StartGame");
+
+		DoPrelude();
 	}
 
 	public void DoPrelude() {
@@ -44,6 +47,8 @@ public partial class StartGame : GameState {
  public partial class EndGame : GameState {
 	public void Enter(GameStateMachine gameStateMachine) {
 		GD.Print("Enter EndGame");
+
+		Action(gameStateMachine);
 	}
 
 	public void Exit(GameStateMachine gameStateMachine) {
@@ -91,7 +96,7 @@ public partial class DMDialogue : GameState {
 		}
 
 		await gameStateMachine.cameraMover.MoveCameraByNode3D(gameStateMachine.character.worldSpacePosition, GameStateMachine.TIME_TO_MOVE); // FIXME: magic number
-		dialogueStateMachine.StartDialogue(gameStateMachine);
+		dialogueStateMachine.ChangeState(new StartDialogue(gameStateMachine, dialogueStateMachine));
 	}
 	
 }

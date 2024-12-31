@@ -102,7 +102,7 @@ public partial class GameManager : Node
 										  "Don't write something long but make sure that the JSON is valid and closed properly.",
 										  0.5f, 1000);
 		worldSerializedJSON = GlobalStringLibrary.JSONStringBrackets(worldSerializedJSON);
-		GD.Print(worldSerializedJSON);
+		// GD.Print(worldSerializedJSON);
 
 		return JsonConvert.DeserializeObject<JSONWorld>(worldSerializedJSON);
 	}
@@ -115,7 +115,7 @@ public partial class GameManager : Node
 												"Don't write something long but make sure that the JSON is valid and closed properly.",
 												0.5f, 1000);
 		personalityTest = GlobalStringLibrary.JSONStringBrackets(personalityTest);
-		GD.Print(personalityTest);
+		// GD.Print(personalityTest);
 
 		var resultChar = JsonConvert.DeserializeObject<JSONCharacter>(personalityTest);
 
@@ -246,12 +246,12 @@ public partial class GameManager : Node
 
 			// Send the request and wait for the response
 			var response = await client.InvokeModelAsync(request);
-			GD.Print(response.ResponseMetadata.ChecksumValidationStatus);
+			// GD.Print(response.ResponseMetadata.ChecksumValidationStatus);
 
 			// Decode the model's native response payload
 			var modelResponse = await JsonNode.ParseAsync(response.Body);
 
-			GD.Print(modelResponse);
+			// GD.Print(modelResponse);
 			// foreach (var header in modelResponse.)
 			// {
 			// 	GD.Print(header);

@@ -119,6 +119,20 @@ layout_mode = 2
 tooltip_text = "Move to the next character"
 text = "Next"
 
+[node name="RandomizeButtonContainer" type="MarginContainer" parent="Background"]
+layout_mode = 1
+offset_right = 195.0
+offset_bottom = 184.0
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+
+[node name="RandomizeCharacterButton" type="Button" parent="Background/RandomizeButtonContainer"]
+layout_mode = 2
+tooltip_text = "Move to the next character"
+text = "Randomize"
+
 [node name="SaveContainer" type="MarginContainer" parent="Background"]
 layout_mode = 1
 anchors_preset = 3
@@ -172,6 +186,7 @@ You may change anything within, but be aware that it might break the game!"
 placeholder_text = "hello"
 
 [connection signal="pressed" from="Background/NextButtonContainer/NextCharacterButton" to="." method="_on_next_character_button_pressed"]
+[connection signal="pressed" from="Background/RandomizeButtonContainer/RandomizeCharacterButton" to="." method="_on_randomize_character_button_pressed"]
 [connection signal="pressed" from="Background/SaveContainer/SaveButton" to="." method="_on_save_button_pressed"]
 
 [editable path="Background/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer"]
