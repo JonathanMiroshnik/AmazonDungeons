@@ -1,13 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://6s4jwca2o6sq"]
+[gd_scene load_steps=13 format=3 uid="uid://6s4jwca2o6sq"]
 
 [ext_resource type="PackedScene" uid="uid://c8vq4a0408n08" path="res://models/Room/Room base.glb" id="1_8j3d6"]
 [ext_resource type="PackedScene" uid="uid://cumdvs8e1uxbx" path="res://models/Room/Tabel.glb" id="2_d406x"]
 [ext_resource type="PackedScene" uid="uid://bdk4y1616wm37" path="res://models/Room/Chair.glb" id="3_yl7tg"]
 [ext_resource type="PackedScene" uid="uid://bfwy4n5gndyvd" path="res://models/Room/Square Drawrs.glb" id="4_3vjp0"]
-[ext_resource type="PackedScene" uid="uid://k7qvotta4bhc" path="res://models/Room/BookShelf.glb" id="5_tctxt"]
+[ext_resource type="PackedScene" uid="uid://746ta4m5u6gx" path="res://models/DndBot/DndBot.glb" id="4_f2hvy"]
 [ext_resource type="PackedScene" uid="uid://c8ilxeckj4g26" path="res://models/Room/Small drawer.glb" id="6_rusjm"]
 [ext_resource type="PackedScene" uid="uid://dkix22hlnvcp" path="res://models/Room/Workbench.glb" id="7_pnheh"]
 [ext_resource type="PackedScene" uid="uid://bplnut3jd0dps" path="res://scenes/dice_throwing/dice_thrower.tscn" id="8_tcys4"]
+[ext_resource type="PackedScene" uid="uid://bu5idn8s8i3dr" path="res://models/Room/book_shelf1.tscn" id="10_x8ixy"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yremt"]
 sky_top_color = Color(0.572174, 0.674719, 0.817391, 1)
@@ -41,23 +42,179 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.435855, 0, 0.470311)
 
 [node name="Tabel" parent="." instance=ExtResource("2_d406x")]
 
-[node name="Chair" parent="." instance=ExtResource("3_yl7tg")]
+[node name="Chair5" parent="." instance=ExtResource("3_yl7tg")]
 transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.584375, 0, 7.68841)
 
-[node name="Chair2" parent="." instance=ExtResource("3_yl7tg")]
+[node name="DndBot" parent="Chair5" instance=ExtResource("4_f2hvy")]
+transform = Transform3D(0.73, 0, 0, 0, 0.73, 0, 0, 0, 0.73, -0.959354, 1.0769, 0.316351)
+
+[node name="Armature" parent="Chair5/DndBot" index="0"]
+transform = Transform3D(0.0161262, 0, 0.99987, 0, 1, 0, -0.99987, 0, 0.0161262, -3.09458, 0.514168, -0.558786)
+
+[node name="Skeleton3D" parent="Chair5/DndBot/Armature" index="0"]
+bones/1/position = Vector3(0, 4.36939, 3.32098)
+bones/2/rotation = Quaternion(-0.0923486, 0, 0, 0.995727)
+bones/3/rotation = Quaternion(-0.0336771, -0.107206, 0.663725, 0.739488)
+bones/4/rotation = Quaternion(-0.401102, -0.0817084, 0.357609, 0.839379)
+bones/5/rotation = Quaternion(-0.684493, 0.103153, -0.099374, 0.71481)
+bones/5/scale = Vector3(1, 1, 1)
+bones/6/rotation = Quaternion(0.39922, 0.257306, 0.0324792, 0.87941)
+bones/7/rotation = Quaternion(-9.50761e-07, -7.97494e-08, 0.991252, -0.131985)
+bones/7/scale = Vector3(0.999999, 1, 1)
+bones/8/rotation = Quaternion(-0.0202962, -0.110523, 0.749281, 0.65265)
+bones/9/rotation = Quaternion(0.0875463, -1.18752e-07, -1.04363e-08, 0.99616)
+bones/10/rotation = Quaternion(0.896742, -5.27565e-08, -1.069e-07, -0.442554)
+bones/11/rotation = Quaternion(-0.0265926, 0.0572854, -0.646541, 0.760261)
+bones/12/rotation = Quaternion(-0.535078, 0.148758, -0.360614, 0.749346)
+bones/13/rotation = Quaternion(-0.596605, -0.0621783, 0.0475825, 0.798706)
+bones/14/rotation = Quaternion(0.423118, -0.213286, 0.0333116, 0.879983)
+bones/14/scale = Vector3(1, 1, 1)
+bones/15/rotation = Quaternion(9.5033e-07, -8.29805e-08, 0.991252, 0.131985)
+bones/15/scale = Vector3(0.999999, 1, 1)
+bones/16/rotation = Quaternion(-0.0193778, 0.0601106, -0.734769, 0.675371)
+bones/17/rotation = Quaternion(0.00193168, -0.63057, 0.77613, 0.000274673)
+bones/17/scale = Vector3(1, 0.999986, 1.00011)
+bones/18/rotation = Quaternion(0.696681, 0.00314138, 0.00402975, 0.717363)
+bones/18/scale = Vector3(1, 0.999922, 1.00007)
+bones/19/rotation = Quaternion(-0.0019317, -0.63057, 0.77613, -0.000274674)
+bones/19/scale = Vector3(1, 0.999986, 1.00011)
+bones/20/rotation = Quaternion(0.696681, -0.00314138, -0.00402975, 0.717363)
+bones/20/scale = Vector3(1, 0.999922, 1.00007)
+bones/21/position = Vector3(-2.29809, 8.58099, -1.88104)
+bones/21/rotation = Quaternion(-0.511452, -0.535829, 0.440385, 0.507312)
+bones/21/scale = Vector3(1, 1, 1)
+bones/22/rotation = Quaternion(-0.0077155, 0.707065, 0.707065, -0.0077155)
+bones/22/scale = Vector3(1, 1, 1)
+bones/23/position = Vector3(1.20667e-05, -0.000237054, -8.99502e-05)
+bones/23/rotation = Quaternion(0.979926, -0.00584645, 0.0115464, -0.198942)
+bones/23/scale = Vector3(1, 1, 1)
+bones/24/rotation = Quaternion(0.00733213, 0.707069, -0.707069, -0.00733213)
+bones/25/position = Vector3(1.80075, 8.83638, -2.07484)
+bones/25/rotation = Quaternion(0.455697, -0.568206, 0.520356, -0.445771)
+bones/25/scale = Vector3(1, 1, 1)
+bones/26/rotation = Quaternion(0.0077155, 0.707065, 0.707065, 0.0077155)
+bones/26/scale = Vector3(1, 1, 1)
+bones/27/position = Vector3(-1.19475e-05, -0.000237054, -8.99529e-05)
+bones/27/rotation = Quaternion(0.979926, 0.00584645, -0.0115464, -0.198942)
+bones/27/scale = Vector3(1, 1, 1)
+
+[node name="Chair4" parent="." instance=ExtResource("3_yl7tg")]
 transform = Transform3D(1.31134e-07, 0, 1, 0, 1, 0, -1, 0, 1.31134e-07, 0.488227, 0, -9.08291)
 
+[node name="DndBot" parent="Chair4" instance=ExtResource("4_f2hvy")]
+transform = Transform3D(0.73, 0, 0, 0, 0.73, 0, 0, 0, 0.73, -0.959354, 1.0769, 0.316351)
+
+[node name="Armature" parent="Chair4/DndBot" index="0"]
+transform = Transform3D(0.0161262, 0, 0.99987, 0, 1, 0, -0.99987, 0, 0.0161262, -3.09458, 0.514168, -0.558786)
+
+[node name="Skeleton3D" parent="Chair4/DndBot/Armature" index="0"]
+bones/1/position = Vector3(0, 4.36939, 3.32098)
+bones/2/rotation = Quaternion(-0.0923486, 0, 0, 0.995727)
+bones/3/rotation = Quaternion(-0.0336771, -0.107206, 0.663725, 0.739488)
+bones/4/rotation = Quaternion(-0.401102, -0.0817084, 0.357609, 0.839379)
+bones/5/rotation = Quaternion(-0.684493, 0.103153, -0.099374, 0.71481)
+bones/5/scale = Vector3(1, 1, 1)
+bones/6/rotation = Quaternion(0.39922, 0.257306, 0.0324792, 0.87941)
+bones/7/rotation = Quaternion(-9.50761e-07, -7.97494e-08, 0.991252, -0.131985)
+bones/7/scale = Vector3(0.999999, 1, 1)
+bones/8/rotation = Quaternion(-0.0202962, -0.110523, 0.749281, 0.65265)
+bones/9/rotation = Quaternion(0.0875463, -1.18752e-07, -1.04363e-08, 0.99616)
+bones/10/rotation = Quaternion(0.896742, -5.27565e-08, -1.069e-07, -0.442554)
+bones/11/rotation = Quaternion(-0.0265926, 0.0572854, -0.646541, 0.760261)
+bones/12/rotation = Quaternion(-0.535078, 0.148758, -0.360614, 0.749346)
+bones/13/rotation = Quaternion(-0.596605, -0.0621783, 0.0475825, 0.798706)
+bones/14/rotation = Quaternion(0.423118, -0.213286, 0.0333116, 0.879983)
+bones/14/scale = Vector3(1, 1, 1)
+bones/15/rotation = Quaternion(9.5033e-07, -8.29805e-08, 0.991252, 0.131985)
+bones/15/scale = Vector3(0.999999, 1, 1)
+bones/16/rotation = Quaternion(-0.0193778, 0.0601106, -0.734769, 0.675371)
+bones/17/rotation = Quaternion(0.00193168, -0.63057, 0.77613, 0.000274673)
+bones/17/scale = Vector3(1, 0.999986, 1.00011)
+bones/18/rotation = Quaternion(0.696681, 0.00314138, 0.00402975, 0.717363)
+bones/18/scale = Vector3(1, 0.999922, 1.00007)
+bones/19/rotation = Quaternion(-0.0019317, -0.63057, 0.77613, -0.000274674)
+bones/19/scale = Vector3(1, 0.999986, 1.00011)
+bones/20/rotation = Quaternion(0.696681, -0.00314138, -0.00402975, 0.717363)
+bones/20/scale = Vector3(1, 0.999922, 1.00007)
+bones/21/position = Vector3(-2.29809, 8.58099, -1.88104)
+bones/21/rotation = Quaternion(-0.511452, -0.535829, 0.440385, 0.507312)
+bones/21/scale = Vector3(1, 1, 1)
+bones/22/rotation = Quaternion(-0.0077155, 0.707065, 0.707065, -0.0077155)
+bones/22/scale = Vector3(1, 1, 1)
+bones/23/position = Vector3(1.20667e-05, -0.000237054, -8.99502e-05)
+bones/23/rotation = Quaternion(0.979926, -0.00584645, 0.0115464, -0.198942)
+bones/23/scale = Vector3(1, 1, 1)
+bones/24/rotation = Quaternion(0.00733213, 0.707069, -0.707069, -0.00733213)
+bones/25/position = Vector3(1.80075, 8.83638, -2.07484)
+bones/25/rotation = Quaternion(0.455697, -0.568206, 0.520356, -0.445771)
+bones/25/scale = Vector3(1, 1, 1)
+bones/26/rotation = Quaternion(0.0077155, 0.707065, 0.707065, 0.0077155)
+bones/26/scale = Vector3(1, 1, 1)
+bones/27/position = Vector3(-1.19475e-05, -0.000237054, -8.99529e-05)
+bones/27/rotation = Quaternion(0.979926, 0.00584645, -0.0115464, -0.198942)
+bones/27/scale = Vector3(1, 1, 1)
+
 [node name="Chair3" parent="." instance=ExtResource("3_yl7tg")]
-transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 16.7894, 0, -0.162191)
+transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 13.287, 0, -0.162191)
+
+[node name="DndBot" parent="Chair3" instance=ExtResource("4_f2hvy")]
+transform = Transform3D(0.73, 0, 0, 0, 0.73, 0, 0, 0, 0.73, -0.959354, 1.0769, 0.316351)
+
+[node name="Armature" parent="Chair3/DndBot" index="0"]
+transform = Transform3D(0.0161262, 0, 0.99987, 0, 1, 0, -0.99987, 0, 0.0161262, -3.09458, 0.514168, -0.558786)
+
+[node name="Skeleton3D" parent="Chair3/DndBot/Armature" index="0"]
+bones/1/position = Vector3(0, 4.36939, 3.32098)
+bones/2/rotation = Quaternion(-0.0923486, 0, 0, 0.995727)
+bones/3/rotation = Quaternion(-0.0336771, -0.107206, 0.663725, 0.739488)
+bones/4/rotation = Quaternion(-0.401102, -0.0817084, 0.357609, 0.839379)
+bones/5/rotation = Quaternion(-0.684493, 0.103153, -0.099374, 0.71481)
+bones/5/scale = Vector3(1, 1, 1)
+bones/6/rotation = Quaternion(0.39922, 0.257306, 0.0324792, 0.87941)
+bones/7/rotation = Quaternion(-9.50761e-07, -7.97494e-08, 0.991252, -0.131985)
+bones/7/scale = Vector3(0.999999, 1, 1)
+bones/8/rotation = Quaternion(-0.0202962, -0.110523, 0.749281, 0.65265)
+bones/9/rotation = Quaternion(0.0875463, -1.18752e-07, -1.04363e-08, 0.99616)
+bones/10/rotation = Quaternion(0.896742, -5.27565e-08, -1.069e-07, -0.442554)
+bones/11/rotation = Quaternion(-0.0265926, 0.0572854, -0.646541, 0.760261)
+bones/12/rotation = Quaternion(-0.535078, 0.148758, -0.360614, 0.749346)
+bones/13/rotation = Quaternion(-0.596605, -0.0621783, 0.0475825, 0.798706)
+bones/14/rotation = Quaternion(0.423118, -0.213286, 0.0333116, 0.879983)
+bones/14/scale = Vector3(1, 1, 1)
+bones/15/rotation = Quaternion(9.5033e-07, -8.29805e-08, 0.991252, 0.131985)
+bones/15/scale = Vector3(0.999999, 1, 1)
+bones/16/rotation = Quaternion(-0.0193778, 0.0601106, -0.734769, 0.675371)
+bones/17/rotation = Quaternion(0.00193168, -0.63057, 0.77613, 0.000274673)
+bones/17/scale = Vector3(1, 0.999986, 1.00011)
+bones/18/rotation = Quaternion(0.696681, 0.00314138, 0.00402975, 0.717363)
+bones/18/scale = Vector3(1, 0.999922, 1.00007)
+bones/19/rotation = Quaternion(-0.0019317, -0.63057, 0.77613, -0.000274674)
+bones/19/scale = Vector3(1, 0.999986, 1.00011)
+bones/20/rotation = Quaternion(0.696681, -0.00314138, -0.00402975, 0.717363)
+bones/20/scale = Vector3(1, 0.999922, 1.00007)
+bones/21/position = Vector3(-2.29809, 8.58099, -1.88104)
+bones/21/rotation = Quaternion(-0.511452, -0.535829, 0.440385, 0.507312)
+bones/21/scale = Vector3(1, 1, 1)
+bones/22/rotation = Quaternion(-0.0077155, 0.707065, 0.707065, -0.0077155)
+bones/22/scale = Vector3(1, 1, 1)
+bones/23/position = Vector3(1.20667e-05, -0.000237054, -8.99502e-05)
+bones/23/rotation = Quaternion(0.979926, -0.00584645, 0.0115464, -0.198942)
+bones/23/scale = Vector3(1, 1, 1)
+bones/24/rotation = Quaternion(0.00733213, 0.707069, -0.707069, -0.00733213)
+bones/25/position = Vector3(1.80075, 8.83638, -2.07484)
+bones/25/rotation = Quaternion(0.455697, -0.568206, 0.520356, -0.445771)
+bones/25/scale = Vector3(1, 1, 1)
+bones/26/rotation = Quaternion(0.0077155, 0.707065, 0.707065, 0.0077155)
+bones/26/scale = Vector3(1, 1, 1)
+bones/27/position = Vector3(-1.19475e-05, -0.000237054, -8.99529e-05)
+bones/27/rotation = Quaternion(0.979926, 0.00584645, -0.0115464, -0.198942)
+bones/27/scale = Vector3(1, 1, 1)
 
 [node name="Square Drawrs" parent="." instance=ExtResource("4_3vjp0")]
 transform = Transform3D(0.974668, 0, -0.223658, 0, 1, 0, 0.223658, 0, 0.974668, 20.2971, 0, -32.0084)
 
-[node name="BookShelf2" parent="." instance=ExtResource("5_tctxt")]
+[node name="BookShelf4" parent="." instance=ExtResource("10_x8ixy")]
 transform = Transform3D(-0.987549, 0, -0.157313, 0, 1, 0, 0.157313, 0, -0.987549, 28.3329, 0, 33.4886)
-
-[node name="BookShelf" parent="." instance=ExtResource("5_tctxt")]
-transform = Transform3D(0.99476, 0, 0.102237, 0, 1, 0, -0.102237, 0, 0.99476, -9.33988, 0, -32.1237)
 
 [node name="Small drawer3" parent="." instance=ExtResource("6_rusjm")]
 transform = Transform3D(-0.606141, 0, -0.795357, 0, 1, 0, 0.795357, 0, -0.606141, -26.3376, 0, 25.1202)
@@ -70,6 +227,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 62.0575, 0, -20.1392)
 
 [node name="Workbench" parent="." instance=ExtResource("7_pnheh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.408657, 0, 36.4652)
+
+[node name="BookShelf3" parent="." instance=ExtResource("10_x8ixy")]
+transform = Transform3D(0.994703, 0, 0.102793, 0, 1, 0, -0.102793, 0, 0.994703, -9.33988, 0, -32.1237)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_ixvu5")
@@ -91,4 +251,7 @@ transform = Transform3D(0.25, 0.000173623, 4.03019e-05, -0.000173633, 0.25, 5.85
 [node name="DiceSpawnPos" parent="DiceThrower" index="0"]
 transform = Transform3D(1, -2.31815e-11, 2.91038e-11, 5.00663e-10, 1, -1.01863e-10, 1.16415e-10, 0, 1, -0.00193977, 10.6548, -0.00608397)
 
+[editable path="Chair5/DndBot"]
+[editable path="Chair4/DndBot"]
+[editable path="Chair3/DndBot"]
 [editable path="DiceThrower"]

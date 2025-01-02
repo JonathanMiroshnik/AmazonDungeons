@@ -23,6 +23,10 @@ GameManager="*res://GameManager.cs"
 
 project/assembly_name="New Game Project"
 
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/gd-blender-3d-shortcuts/plugin.cfg")
+
 [physics]
 
 3d/physics_engine="JoltPhysics3D"

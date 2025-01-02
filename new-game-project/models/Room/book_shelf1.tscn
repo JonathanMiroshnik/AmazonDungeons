@@ -1,0 +1,829 @@
+[gd_scene load_steps=7 format=4 uid="uid://bu5idn8s8i3dr"]
+
+[ext_resource type="PackedScene" uid="uid://k7qvotta4bhc" path="res://models/Room/BookShelf.glb" id="1_ms35a"]
+[ext_resource type="PackedScene" uid="uid://vff5mi4wo5ty" path="res://models/Room/BookBase.glb" id="2_18de0"]
+[ext_resource type="Texture2D" uid="uid://cd1xawukfyfl8" path="res://models/Room/BookBase_Bakegroup_1K_NormalGL.png" id="3_hwbr0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vglte"]
+resource_name = "Material"
+cull_mode = 2
+albedo_color = Color(0.284192, 0.123839, 0.0381338, 1)
+roughness = 0.5
+normal_enabled = true
+normal_texture = ExtResource("3_hwbr0")
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_cl5gr"]
+_surfaces = [{
+"aabb": AABB(-0.863148, 0, -2.43469, 1.7263, 4.92117, 4.20946),
+"format": 34896613377,
+"index_count": 168,
+"index_data": PackedByteArray("AwAQAA0AAwAHABAAFAAEAAAAFAAWAAQAFQAHAAMAFQAXAAcADAAGAAIADAARAAYAGAAEABYAGAAOAAQADAATABEADAAPABMADwAQABMADwANABAAGQAOABgAGQAKAA4AGgAKABkAGgAJAAoAFwAJABoAFwAFAAkAGwACABQAGwAMAAIAHAAMABsAHAAPAAwAHQAPABwAHQANAA8AFQANAB0AFQADAA0ACwAFAAEACwAJAAUACAAJAAsACAAKAAkAEgAKAAgAEgAOAAoAAAAOABIAAAAEAA4AAQAdAAsAAQAVAB0ACwAcAAgACwAdABwACAAbABIACAAcABsAEgAUAAAAEgAbABQABwAaABAABwAXABoAEAAZABMAEAAaABkAEwAYABEAEwAZABgAEQAWAAYAEQAYABYAAQAXABUAAQAFABcAAgAWABQAAgAGABYA"),
+"lods": [1.56828, PackedByteArray("FQAQAA0AFQAXABAAFAAEAAAAFAAWAAQAGAAEABYAGAAOAAQAEwAYABYAGgAOABgAEwAaABgAGgAJAA4AFwAJABoAFwAaABAAEAAaABMAFAATABYAFAAPABMADwAQABMADwANABAAGwAPABQAEgAbABQAEgAUAAAACwAbABIAHQAPABsACwAdABsAHQANAA8AFQAdAAsAFQANAB0ACwAXABUACwAJABcAEgAJAAsAEgAOAAkAAAAOABIAAAAEAA4A"), 2.28567, PackedByteArray("FQAQAA0AFQAXABAAFAAEAAAAFAARAAQAEQAXAAQAEAAXABEAEwAQABEADwAQABMAFAATABEAFAAPABMADwANABAAAAAXABUAAAAEABcAFQANAA8AFQAPABQAFQAUAAAA")],
+"name": "Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 30,
+"vertex_data": PackedByteArray("AAAAAP//AAD//wAA//8AAAAAAAAiKAAA//8AACIoAAAAAP////8AAP///////wAAAAD//yIoAAD/////IigAAP9/AAD//wAA/7//////AAD/f/////8AAP+/AAD//wAAxzsAAEwHAAA3xAAATAcAAP8//////wAA/38AAAAAAAA3xP//TAcAAMc7//9MBwAA/z8AAP//AAD/f///AAAAAAAAAAAnQgAA//8AACdCAAAAAP//J0IAAP////8nQgAASTz//60oAAD/f///3B4AALXD//+tKAAASTwAAK0oAAD/fwAA3B4AALXDAACtKAAA")
+}]
+blend_shape_mode = 0
+
+[sub_resource type="ArrayMesh" id="ArrayMesh_00v78"]
+resource_name = "BookBase_Plane"
+_surfaces = [{
+"aabb": AABB(-0.863148, 0, -2.43469, 1.7263, 4.92117, 4.20946),
+"attribute_data": PackedByteArray("7lCYBSy/BgBv9xGxk9vQl33c/Rfags4/4Y3JO4qkN2PDqoVUBgDJ2wYAJUztrPj/px4K8o+QVuZ0LdqcOTO0iHRM7rJFV5auys0VDG/pZqQCF3LsrJfP7GMP2+bCnkLzIdUIEnniHZ5xjHRK94wpSpma4lizB1jh3KWg+S6T8lGGTKyjYDsnmI89B5SAxgkGa/C5qhNF3JvafPA4zZO2NOiqvGnOsCNNJChfpLksfoHpRne6LV5stc80DaISP/ikKUWurc6UgUFCmq5K/qOpTu5QmAUsvwYAb/cRsW/3EbEGAMnbBgAlTAYAJUztrPj/mZriWJma4liZmuJYLpPyUS6T8lEuk/JRLpPyUYZMrKOGTKyjhkyso4ZMrKOGTKyjYDsnmI89B5SPPQeUE0XcmxNF3JsTRdyb2nzwONp88DjafPA42nzwOM2TtjToqrxp6Kq8aeiqvGnOsCNNzrAjTelGd7otXmy1LV5stS1ebLXuUJgFLL8GAG/3EbFv9xGxBgDJ2wYAJUwGACVM7az4/wIXcuysl8/srJfP7KyXz+wh1QgSeeIdnnniHZ554h2emZriWJma4liZmuJYswdY4dyloPncpaD53KWg+S6T8lEuk/JRLpPyUS6T8lGGTKyjhkyso4ZMrKOGTKyjhkyso4DGCQZr8Lmqa/C5qmvwuaoTRdybE0XcmxNF3JsTRdyb2nzwONp88DjafPA42nzwOM2TtjToqrxp6Kq8aeiqvGnOsCNNJChfpLksfoG5LH6B6UZ3ui1ebLUtXmy1LV5stc80DaIpRa6tKUWurc6UgUH+o6lO"),
+"format": 34896613399,
+"index_count": 168,
+"index_data": PackedByteArray("BwAgABwABwARACAAJgAKAAAAJgArAAoAKAARAAcAKAAtABEAGgAPAAUAGgAiAA8ALgAJACoALgAdAAkAGgAlACIAGgAfACUAHwAgACUAHwAcACAALwAdAC4ALwAWAB0AMAAWAC8AMAAUABYALAAUADAALAAMABQAMQAGACcAMQAbAAYAMgAbADEAMgAfABsAMwAfADIAMwAcAB8AKQAcADMAKQAIABwAGQANAAMAGQAVAA0AEwAVABkAEwAXABUAJAAXABMAJAAeABcAAgAeACQAAgALAB4ABAAzABgABAApADMAGAAyABIAGAAzADIAEgAxACMAEgAyADEAIwAnAAEAIwAxACcAEAAwACAAEAAsADAAIAAvACUAIAAwAC8AJQAuACEAJQAvAC4AIQAqAA4AIQAuACoAAwAtACgAAwANAC0ABQArACYABQAPACsA"),
+"lods": [1.56828, PackedByteArray("iQB3AGwAigCRAHgAhABhAFwAhQCOAGIAlABgAI0AlABvAGAAgwCUAI0AlQBvAJQAgwCVAJQAlQBkAG8AkABkAJUAkACVAHsAewCWAIMAhgCAAI8AhwBzAIEAdAB5AIIAdQBtAHoAlwB2AIgAfACXAIgAfACIAF0AaACXAHwAmAB2AJcAaACYAJcAmABuAHYAjACYAGgAjABuAJgAaQCSAIsAagBlAJMAfQBmAGsAfgBwAGcAXgBxAH8AXwBjAHIA"), 2.28567, PackedByteArray("UwBDADwAVABZAEQATgA5ADQATwBJADoASABYADgARwBYAEgATQBFAEgAQABFAE0AUABLAEoAUQA/AEwAQQA9AEYANgBaAFUANwA7AFsAVgA+AEIAVgBCAFIAVwBSADUA")],
+"material": SubResource("StandardMaterial3D_vglte"),
+"name": "Material",
+"primitive": 3,
+"uv_scale": Vector4(0, 0, 0, 0),
+"vertex_count": 153,
+"vertex_data": PackedByteArray("AAAAAP//G9AAAAAA///ApwAAAAD//2jm//8AAP//FO7//wAA///hugAAAAAiKPPZAAAAACIo9Mn//wAAIiha+f//AAAiKFDfAAD/////OrgAAP////8N8gAA/////6Lk////////fqf///////+U2wAA//8iKObeAAD//yIoxPr/////Iigjyv////8iKEra/38AAP//N6b/fwAA//906v+//////yOl/7//////Eer/f/////8Rpf9//////zjq/78AAP//I6b/vwAA//9y6sc7AABMB33exzsAAEwHWdw3xAAATAef6v8//////w6l/z//////XOr/fwAAAABb5DfE//9MB6rdxzv//0wHLeXHO///TAf37v8/AAD//0am/z8AAP//aOr/f///AAAu5AAAAAAnQhjYAAAAACdCEsD//wAAJ0LQ+v//AAAnQtPWAAD//ydCUdUAAP//J0L+/P////8nQgDA/////ydCYNlJPP//rSjHw/9////cHrnDtcP//60o2sNJPAAArSgHxf9/AADcHkLFtcMAAK0oBsUAAAAA//8E1AAAAAD//9O2AAAAAP//7sgAAAAA//9bxAAA/////yC+AAD///////8AAP///////wAA/////3HmN8QAAEwHfO43xAAATAf//zfEAABMB87c/38AAAAAmtv/fwAAAAD///9/AAAAAMPx/38AAAAAMM43xP//TAcw4DfE//9MB1rSN8T//0wHCeY3xP//TAeJ8zfE//9MB/LUxzv//0wH79DHO///TAfV4sc7//9MB////3///wAALe//f///AAAc7/9///8AAIPmAAAAACdCpc8AAAAAJ0Jm3QAAAAAnQv//AAAAACdCk+8AAAAAJ0JXxP//AAAnQv////8AACdC/////wAAJ0LH9P//AAAnQnHS//8AACdCIsH/////J0KjyP////8nQrPn/////ydCEtj/////J0IuyQAAAAD//7DUAAAAAP//dqwAAAAA//9z3QAAAAD//7DlAAD/////W7wAAP///////wAA////////AAD/////YeP/v//////2r/+//////////7//////4ur/v/////9p6f+/AAD//w6z/78AAP//MuH/vwAA//+u7v+/AAD//+TpN8QAAEwH3Ow3xAAATAf//zfEAABMB5Hc/z//////J7D/P/////+l6f8//////6Hr/z//////i+f/fwAAAAA/4/9/AAAAAP///38AAAAAwPH/fwAAAADv0jfE//9MB9HhN8T//0wHedM3xP//TAci7jfE//9MB6jxN8T//0wH0dL/PwAA//80q/8/AAD//x/q/z8AAP//B+v/PwAA//977P9///8AAPPj/3///wAALfT/f///AAAq8f9///8AAIDUAAAAACdCmM0AAAAAJ0Jz2QAAAAAnQmztAAAAACdC//8AAAAAJ0J3vv//AAAnQv////8AACdC/////wAAJ0JL/P//AAAnQnXRAAD//ydCI9AAAP//J0L//wAA//8nQv///////ydCCMP/////J0IS5/////8nQhXa/////ydCbc9JPP//rSiWwrXD//+tKBi/tcP//60of9JJPAAArSiFv7XDAACtKGjIVE+Ret89wM3pWvtuMZQYXo4MCjiSMYqHL0Nuwf0g2c7kAguyk/CCxzxqVaDCb9uly8FeNB2q+ova/atOyd36L2q+1kOhziJ5+BFavdJ1fV0G7w9GWop0ohjvS0ZIinmi5xEgvdF1fV1MJTWWiC9nq+oYBrYb71ZGN4p+omcc/abU19ljZvW/Weze+0AFEoa9zXV+XfTk4VocOed7xkCGxBsiH9dJAk23+f8FtXbccifMv9Y+KsXPhQnnFU4p51RO4ObCTWwb2LbSG6S3aRvTtjhMgIL8Iey6gYkgNxKcDEY2+65F311jo55Xaq9Sl7pmrQowVu8n38RdGp+0yjZIvWLO9aQzEoOhQxAXlSWxDDowwclRVeMwbF9biSRu5dJ1S+VTTbOS97y70uYvEOb6pZ1EIrOJ3mpUbz92gr5GfJMLLDJ5fjDqfs0oN7jw9wQ5RcJhZoapqnA4FoXElBx7zUTaYUv3xKR1srEWcSy3T4UDTE2DZzUYyOJpC15/Z0RkXPj9vKJemqM8XZesHGuDobHtRUsgnZBiLoA0qb+EGqU3DWeyEJvwQqmh/0roe3labAC1XJInfsTUGHmzivPTT3GFqqRWd3Cyxm9otqU1ir7Ewc62kwrGmqYXRp17pqctKsMuUyfazl/Apwgqh9tfbG8Yvb4ofYtZen83V4Nwx2vqtA7NPzqJqELOq0Jp58RhtkB+galNkZSjSJaefzHZeKszAbzp+mTS/sEacTeql2eNDoy/C/BZQEVTlJyeHhOwe88TR+XHynmdsD5tlr8pgPXq9lA64/9KrdzgRF8e/rh+F/6z")
+}]
+blend_shape_mode = 0
+shadow_mesh = SubResource("ArrayMesh_cl5gr")
+
+[node name="BookShelf" instance=ExtResource("1_ms35a")]
+
+[node name="BookBase" parent="." index="1" instance=ExtResource("2_18de0")]
+transform = Transform3D(-0.48, 0, 7.2478e-08, 0, 0.48, 0, -7.2478e-08, 0, -0.48, 13.0328, 18.6736, 2.82046)
+
+[node name="Plane2" type="MeshInstance3D" parent="BookBase" index="1"]
+transform = Transform3D(1, 0, -4.26326e-14, 0, 1.123, 0, 4.26326e-14, 0, 1, 1.91047, 0, -4.76837e-07)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane3" type="MeshInstance3D" parent="BookBase" index="2"]
+transform = Transform3D(1.106, 0, -1.60056e-08, 0, 0.907, 0, -1.60055e-08, 0, 1, 3.56694, 0, -2.38419e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane4" type="MeshInstance3D" parent="BookBase" index="3"]
+transform = Transform3D(1.01565, -0.403204, -2.36376e-09, 0.437817, 0.935358, -6.61086e-08, -2.36351e-09, 6.08821e-08, 1, 7.20833, 0, -1.90735e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane9" type="MeshInstance3D" parent="BookBase" index="4"]
+transform = Transform3D(1, 0, -5.68434e-14, 0, 1, 0, 5.68434e-14, 0, 1, 9.88196, -5.80186, -2.86102e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane10" type="MeshInstance3D" parent="BookBase" index="5"]
+transform = Transform3D(1, 0, -1.27898e-13, 0, 1.123, 0, 1.27898e-13, 0, 1, 11.7924, -5.80186, -1.90735e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane11" type="MeshInstance3D" parent="BookBase" index="6"]
+transform = Transform3D(1.106, 0, -1.60057e-08, 0, 0.907, 0, -1.60055e-08, 0, 1, 13.4489, -5.80186, -5.24521e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane12" type="MeshInstance3D" parent="BookBase" index="7"]
+transform = Transform3D(1.01565, -0.403204, -2.36385e-09, 0.437817, 0.935358, -6.61086e-08, -2.36344e-09, 6.08821e-08, 1, 17.0903, -5.80186, -4.29153e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane13" type="MeshInstance3D" parent="BookBase" index="8"]
+transform = Transform3D(0.794242, -0.340708, -2.36392e-09, 0.342373, 0.790378, -6.61086e-08, -1.84818e-09, 5.14454e-08, 1, 18.9103, -5.69873, -7.15256e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane5" type="MeshInstance3D" parent="BookBase" index="9"]
+transform = Transform3D(1, 0, -7.10543e-14, 0, 1, 0, 7.10543e-14, 0, 1, 6.50234, -5.84401, -9.53674e-07)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane6" type="MeshInstance3D" parent="BookBase" index="10"]
+transform = Transform3D(1, 0, -1.56319e-13, 0, 1.123, 0, 1.56319e-13, 0, 1, 8.41282, -5.84401, -2.86102e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane7" type="MeshInstance3D" parent="BookBase" index="11"]
+transform = Transform3D(1.106, 0, -1.60057e-08, 0, 0.907, 0, -1.60055e-08, 0, 1, 4.68181, -5.84401, -2.86102e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane14" type="MeshInstance3D" parent="BookBase" index="12"]
+transform = Transform3D(0.872, 0, -1.27898e-13, 0, 0.797, 0, 2.13163e-13, 0, 1, 30.7763, -5.80186, -6.19888e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane15" type="MeshInstance3D" parent="BookBase" index="13"]
+transform = Transform3D(0.872, 0, -2.41585e-13, 0, 0.895031, 0, 2.70006e-13, 0, 1, 35.9019, -5.80186, -7.62939e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane16" type="MeshInstance3D" parent="BookBase" index="14"]
+transform = Transform3D(0.964433, 0, -1.60058e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 32.5627, -5.80186, -8.10623e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane8" type="MeshInstance3D" parent="BookBase" index="15"]
+transform = Transform3D(0.872, 0, -2.13163e-13, 0, 0.797, 0, 2.55795e-13, 0, 1, 25.4714, -5.84401, -3.8147e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane17" type="MeshInstance3D" parent="BookBase" index="16"]
+transform = Transform3D(0.872, 0, -2.13163e-13, 0, 0.895031, 0, 2.41585e-13, 0, 1, 29.3071, -5.84401, -7.15256e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane18" type="MeshInstance3D" parent="BookBase" index="17"]
+transform = Transform3D(0.964433, 0, -1.60058e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 27.2585, -5.84401, -9.05991e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane19" type="MeshInstance3D" parent="BookBase" index="18"]
+transform = Transform3D(0.677544, 0, -2.70006e-13, 0, 0.6186, 0, 2.77112e-13, 0, 1, 41.3631, -5.80439, -8.58307e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane20" type="MeshInstance3D" parent="BookBase" index="19"]
+transform = Transform3D(0.677544, 0, -2.84217e-13, 0, 0.694688, 0, 2.70006e-13, 0, 1, 42.3081, -5.80439, -1.09673e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane21" type="MeshInstance3D" parent="BookBase" index="20"]
+transform = Transform3D(0.964433, 0, -1.60058e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 37.5974, -5.80186, -8.58307e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane22" type="MeshInstance3D" parent="BookBase" index="21"]
+transform = Transform3D(0.677544, 0, -2.70006e-13, 0, 0.6186, 0, 2.70006e-13, 0, 1, 38.8917, -5.84148, -7.62939e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane23" type="MeshInstance3D" parent="BookBase" index="22"]
+transform = Transform3D(0.677544, 0, -2.98428e-13, 0, 0.694688, 0, 2.77112e-13, 0, 1, 40.1245, -5.84148, -8.58307e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane24" type="MeshInstance3D" parent="BookBase" index="23"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 34.2751, -5.84401, -1.00136e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane61" type="MeshInstance3D" parent="BookBase" index="24"]
+transform = Transform3D(1, 0, -1.27898e-13, 0, 1, 0, 1.27898e-13, 0, 1, 1.4166, -27.9134, -4.76837e-07)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane62" type="MeshInstance3D" parent="BookBase" index="25"]
+transform = Transform3D(1, 0, -1.98952e-13, 0, 1.123, 0, 1.98952e-13, 0, 1, -0.639595, -27.9134, -4.76837e-07)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane63" type="MeshInstance3D" parent="BookBase" index="26"]
+transform = Transform3D(1.106, 0, -1.60057e-08, 0, 0.907001, 0, -1.60054e-08, 0, 1, 4.98355, -27.9134, -4.29153e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane64" type="MeshInstance3D" parent="BookBase" index="27"]
+transform = Transform3D(1.01565, -0.403204, -2.36389e-09, 0.437817, 0.935358, -6.61086e-08, -2.36344e-09, 6.08821e-08, 1, 8.62493, -27.9134, -3.8147e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane65" type="MeshInstance3D" parent="BookBase" index="28"]
+transform = Transform3D(1, 0, -1.56319e-13, 0, 1, 0, 1.56319e-13, 0, 1, 22.8111, -27.815, -6.67572e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane66" type="MeshInstance3D" parent="BookBase" index="29"]
+transform = Transform3D(1, 0, -2.13163e-13, 0, 1.123, 0, 2.13163e-13, 0, 1, 24.7215, -27.815, -3.8147e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane67" type="MeshInstance3D" parent="BookBase" index="30"]
+transform = Transform3D(1.106, 0, -1.60057e-08, 0, 0.907001, 0, -1.60054e-08, 0, 1, 26.378, -27.815, -7.15256e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane68" type="MeshInstance3D" parent="BookBase" index="31"]
+transform = Transform3D(1.01565, -0.403204, -2.3639e-09, 0.437817, 0.935358, -6.61086e-08, -2.36344e-09, 6.08821e-08, 1, 30.0194, -27.815, -6.19888e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane69" type="MeshInstance3D" parent="BookBase" index="32"]
+transform = Transform3D(0.794242, -0.340708, -2.36398e-09, 0.342373, 0.790378, -6.61086e-08, -1.84814e-09, 5.14453e-08, 1, 31.8394, -27.7119, -9.05991e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane70" type="MeshInstance3D" parent="BookBase" index="33"]
+transform = Transform3D(1, 0, -1.84741e-13, 0, 1, 0, 1.84741e-13, 0, 1, 19.4314, -27.8572, -3.8147e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane71" type="MeshInstance3D" parent="BookBase" index="34"]
+transform = Transform3D(1, 0, -2.27374e-13, 0, 1.123, 0, 2.27374e-13, 0, 1, 21.3419, -27.8572, -4.76837e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane72" type="MeshInstance3D" parent="BookBase" index="35"]
+transform = Transform3D(1.106, 0, -1.60058e-08, 0, 0.907001, 0, -1.60054e-08, 0, 1, 17.6109, -27.8572, -4.76837e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane73" type="MeshInstance3D" parent="BookBase" index="36"]
+transform = Transform3D(0.872, 0, -1.98952e-13, 0, 0.797, 0, 2.55795e-13, 0, 1, 40.3284, -27.815, -7.62939e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane74" type="MeshInstance3D" parent="BookBase" index="37"]
+transform = Transform3D(0.872, 0, -2.84217e-13, 0, 0.895031, 0, 3.12639e-13, 0, 1, 45.454, -27.815, -9.05991e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane75" type="MeshInstance3D" parent="BookBase" index="38"]
+transform = Transform3D(0.964433, 0, -1.60058e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 42.1148, -27.815, -9.53674e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane76" type="MeshInstance3D" parent="BookBase" index="39"]
+transform = Transform3D(0.872, 0, -2.55795e-13, 0, 0.797001, 0, 2.98428e-13, 0, 1, 35.0235, -27.8571, -5.24521e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane77" type="MeshInstance3D" parent="BookBase" index="40"]
+transform = Transform3D(0.872, 0, -2.55795e-13, 0, 0.895031, 0, 2.84217e-13, 0, 1, 38.8592, -27.8571, -8.58307e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane78" type="MeshInstance3D" parent="BookBase" index="41"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 36.8106, -27.8571, -1.04904e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane79" type="MeshInstance3D" parent="BookBase" index="42"]
+transform = Transform3D(0.677544, 0, -3.12639e-13, 0, 0.6186, 0, 3.19744e-13, 0, 1, 50.9152, -27.8175, -1.14441e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane80" type="MeshInstance3D" parent="BookBase" index="43"]
+transform = Transform3D(0.677544, 0, -3.2685e-13, 0, 0.694688, 0, 2.91323e-13, 0, 1, 51.8602, -27.8175, -1.23978e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane81" type="MeshInstance3D" parent="BookBase" index="44"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 47.1495, -27.815, -1.00136e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane82" type="MeshInstance3D" parent="BookBase" index="45"]
+transform = Transform3D(0.677544, 0, -3.12639e-13, 0, 0.6186, 0, 2.91323e-13, 0, 1, 48.4438, -27.8546, -9.53674e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane83" type="MeshInstance3D" parent="BookBase" index="46"]
+transform = Transform3D(0.677544, 0, -3.41061e-13, 0, 0.694688, 0, 2.98428e-13, 0, 1, 49.6765, -27.8546, -1.00136e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane84" type="MeshInstance3D" parent="BookBase" index="47"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 43.8271, -27.8571, -1.14441e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane25" type="MeshInstance3D" parent="BookBase" index="48"]
+transform = Transform3D(0.872, 0, -1.84741e-13, 0, 0.797, 0, 2.41585e-13, 0, 1, 41.5909, -13.6244, -8.10623e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane26" type="MeshInstance3D" parent="BookBase" index="49"]
+transform = Transform3D(0.872, 0, -2.70006e-13, 0, 0.895031, 0, 2.98428e-13, 0, 1, 46.7165, -13.6244, -9.05991e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane27" type="MeshInstance3D" parent="BookBase" index="50"]
+transform = Transform3D(0.964433, 0, -1.60058e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 43.3774, -13.6244, -9.53674e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane28" type="MeshInstance3D" parent="BookBase" index="51"]
+transform = Transform3D(0.872, 0, -2.41585e-13, 0, 0.797001, 0, 2.84217e-13, 0, 1, 36.286, -13.6666, -5.72205e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane29" type="MeshInstance3D" parent="BookBase" index="52"]
+transform = Transform3D(0.872, 0, -2.41585e-13, 0, 0.895031, 0, 2.70006e-13, 0, 1, 40.1217, -13.6666, -8.58307e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane30" type="MeshInstance3D" parent="BookBase" index="53"]
+transform = Transform3D(0.964433, 0, -1.60058e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 38.0731, -13.6666, -1.04904e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane31" type="MeshInstance3D" parent="BookBase" index="54"]
+transform = Transform3D(0.677544, 0, -2.98428e-13, 0, 0.6186, 0, 3.05533e-13, 0, 1, 52.1777, -13.627, -1.09673e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane32" type="MeshInstance3D" parent="BookBase" index="55"]
+transform = Transform3D(0.677544, 0, -3.12639e-13, 0, 0.694688, 0, 2.77112e-13, 0, 1, 53.1227, -13.627, -1.23978e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane33" type="MeshInstance3D" parent="BookBase" index="56"]
+transform = Transform3D(0.964433, 0, -1.60058e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 48.4121, -13.6244, -1.04904e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane34" type="MeshInstance3D" parent="BookBase" index="57"]
+transform = Transform3D(0.677544, 0, -2.98428e-13, 0, 0.6186, 0, 2.77112e-13, 0, 1, 49.7064, -13.6641, -9.53674e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane35" type="MeshInstance3D" parent="BookBase" index="58"]
+transform = Transform3D(0.677544, 0, -3.2685e-13, 0, 0.694688, 0, 2.84217e-13, 0, 1, 50.9391, -13.6641, -1.04904e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane36" type="MeshInstance3D" parent="BookBase" index="59"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 45.0897, -13.6666, -1.19209e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane37" type="MeshInstance3D" parent="BookBase" index="60"]
+transform = Transform3D(0.872, 0, -1.98952e-13, 0, 0.797, 0, 2.55795e-13, 0, 1, 23.1346, -13.6244, -5.72205e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane38" type="MeshInstance3D" parent="BookBase" index="61"]
+transform = Transform3D(0.872, 0, -2.84217e-13, 0, 0.895031, 0, 3.12639e-13, 0, 1, 28.2602, -13.6244, -6.19888e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane39" type="MeshInstance3D" parent="BookBase" index="62"]
+transform = Transform3D(0.964433, 0, -1.60058e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 24.9211, -13.6244, -6.67572e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane40" type="MeshInstance3D" parent="BookBase" index="63"]
+transform = Transform3D(0.872, 0, -2.55795e-13, 0, 0.797001, 0, 2.98428e-13, 0, 1, 17.8297, -13.6666, -2.86102e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane41" type="MeshInstance3D" parent="BookBase" index="64"]
+transform = Transform3D(0.872, 0, -2.55795e-13, 0, 0.895031, 0, 2.84217e-13, 0, 1, 21.6654, -13.6666, -5.72205e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane42" type="MeshInstance3D" parent="BookBase" index="65"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 19.6168, -13.6666, -8.10623e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane43" type="MeshInstance3D" parent="BookBase" index="66"]
+transform = Transform3D(0.677544, 0, -3.12639e-13, 0, 0.6186, 0, 3.19744e-13, 0, 1, 33.7214, -13.627, -8.10623e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane44" type="MeshInstance3D" parent="BookBase" index="67"]
+transform = Transform3D(0.677544, 0, -3.2685e-13, 0, 0.694688, 0, 2.91323e-13, 0, 1, 34.6664, -13.627, -9.53674e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane45" type="MeshInstance3D" parent="BookBase" index="68"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 29.9558, -13.6244, -7.62939e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane46" type="MeshInstance3D" parent="BookBase" index="69"]
+transform = Transform3D(0.677544, 0, -3.12639e-13, 0, 0.6186, 0, 2.91323e-13, 0, 1, 31.2501, -13.6641, -6.67572e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane47" type="MeshInstance3D" parent="BookBase" index="70"]
+transform = Transform3D(0.677544, 0, -3.41061e-13, 0, 0.694688, 0, 2.98428e-13, 0, 1, 32.4828, -13.6641, -8.10623e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane48" type="MeshInstance3D" parent="BookBase" index="71"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 26.6334, -13.6666, -9.05991e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane49" type="MeshInstance3D" parent="BookBase" index="72"]
+transform = Transform3D(0.872, 0, -2.27374e-13, 0, 0.797001, 0, 2.84217e-13, 0, 1, 4.83749, -13.6244, -2.86102e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane50" type="MeshInstance3D" parent="BookBase" index="73"]
+transform = Transform3D(0.872, 0, -3.12639e-13, 0, 0.895031, 0, 3.41061e-13, 0, 1, 9.96309, -13.6244, -3.8147e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane51" type="MeshInstance3D" parent="BookBase" index="74"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 6.62397, -13.6244, -3.8147e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane52" type="MeshInstance3D" parent="BookBase" index="75"]
+transform = Transform3D(0.872, 0, -2.84217e-13, 0, 0.797001, 0, 3.2685e-13, 0, 1, -0.467415, -13.6666, 0)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane53" type="MeshInstance3D" parent="BookBase" index="76"]
+transform = Transform3D(0.872, 0, -2.84217e-13, 0, 0.895031, 0, 3.12639e-13, 0, 1, 3.36832, -13.6666, -2.86102e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane54" type="MeshInstance3D" parent="BookBase" index="77"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 1.31973, -13.6666, -5.24521e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane55" type="MeshInstance3D" parent="BookBase" index="78"]
+transform = Transform3D(0.677544, 0, -3.41061e-13, 0, 0.6186, 0, 3.62377e-13, 0, 1, 15.4243, -13.627, -5.24521e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane56" type="MeshInstance3D" parent="BookBase" index="79"]
+transform = Transform3D(0.677544, 0, -3.55271e-13, 0, 0.694688, 0, 3.19744e-13, 0, 1, 16.3693, -13.627, -7.15256e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane57" type="MeshInstance3D" parent="BookBase" index="80"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 11.6587, -13.6244, -4.76837e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane58" type="MeshInstance3D" parent="BookBase" index="81"]
+transform = Transform3D(0.677544, 0, -3.41061e-13, 0, 0.6186, 0, 3.19744e-13, 0, 1, 12.953, -13.6641, -4.29153e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane59" type="MeshInstance3D" parent="BookBase" index="82"]
+transform = Transform3D(0.677544, 0, -3.69482e-13, 0, 0.694688, 0, 3.33955e-13, 0, 1, 14.1857, -13.6641, -5.24521e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane60" type="MeshInstance3D" parent="BookBase" index="83"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 8.33628, -13.6666, -6.19888e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane85" type="MeshInstance3D" parent="BookBase" index="84"]
+transform = Transform3D(0.872, 0, -1.98952e-13, 0, 0.797, 0, 2.55795e-13, 0, 1, 41.5909, -20.4589, -8.58307e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane86" type="MeshInstance3D" parent="BookBase" index="85"]
+transform = Transform3D(0.872, 0, -2.84217e-13, 0, 0.895031, 0, 3.12639e-13, 0, 1, 46.7165, -20.4589, -9.05991e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane87" type="MeshInstance3D" parent="BookBase" index="86"]
+transform = Transform3D(0.964433, 0, -1.60058e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 43.3774, -20.4589, -9.53674e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane88" type="MeshInstance3D" parent="BookBase" index="87"]
+transform = Transform3D(0.872, 0, -2.55795e-13, 0, 0.797001, 0, 2.98428e-13, 0, 1, 36.286, -20.501, -5.72205e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane89" type="MeshInstance3D" parent="BookBase" index="88"]
+transform = Transform3D(0.872, 0, -2.55795e-13, 0, 0.895031, 0, 2.84217e-13, 0, 1, 40.1217, -20.501, -8.58307e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane90" type="MeshInstance3D" parent="BookBase" index="89"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 38.0731, -20.501, -1.04904e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane91" type="MeshInstance3D" parent="BookBase" index="90"]
+transform = Transform3D(0.677544, 0, -3.12639e-13, 0, 0.6186, 0, 3.19744e-13, 0, 1, 52.1777, -20.4614, -1.09673e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane92" type="MeshInstance3D" parent="BookBase" index="91"]
+transform = Transform3D(0.677544, 0, -3.2685e-13, 0, 0.694688, 0, 2.91323e-13, 0, 1, 53.1227, -20.4614, -1.23978e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane93" type="MeshInstance3D" parent="BookBase" index="92"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 48.4121, -20.4589, -1.04904e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane94" type="MeshInstance3D" parent="BookBase" index="93"]
+transform = Transform3D(0.677544, 0, -3.12639e-13, 0, 0.6186, 0, 2.91323e-13, 0, 1, 49.7064, -20.4985, -9.53674e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane95" type="MeshInstance3D" parent="BookBase" index="94"]
+transform = Transform3D(0.677544, 0, -3.41061e-13, 0, 0.694688, 0, 2.98428e-13, 0, 1, 50.9391, -20.4985, -1.09673e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane96" type="MeshInstance3D" parent="BookBase" index="95"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 45.0897, -20.501, -1.19209e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane97" type="MeshInstance3D" parent="BookBase" index="96"]
+transform = Transform3D(0.872, 0, -2.13163e-13, 0, 0.797, 0, 2.70006e-13, 0, 1, 23.1346, -20.4589, -5.72205e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane98" type="MeshInstance3D" parent="BookBase" index="97"]
+transform = Transform3D(0.872, 0, -2.98428e-13, 0, 0.895031, 0, 3.2685e-13, 0, 1, 28.2602, -20.4589, -6.19888e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane99" type="MeshInstance3D" parent="BookBase" index="98"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 24.9211, -20.4589, -6.67572e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane100" type="MeshInstance3D" parent="BookBase" index="99"]
+transform = Transform3D(0.872, 0, -2.70006e-13, 0, 0.797001, 0, 3.12639e-13, 0, 1, 17.8297, -20.501, -2.86102e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane101" type="MeshInstance3D" parent="BookBase" index="100"]
+transform = Transform3D(0.872, 0, -2.70006e-13, 0, 0.895031, 0, 2.98428e-13, 0, 1, 21.6654, -20.501, -5.72205e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane102" type="MeshInstance3D" parent="BookBase" index="101"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 19.6168, -20.501, -8.10623e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane103" type="MeshInstance3D" parent="BookBase" index="102"]
+transform = Transform3D(0.677544, 0, -3.2685e-13, 0, 0.6186, 0, 3.41061e-13, 0, 1, 33.7214, -20.4614, -8.10623e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane104" type="MeshInstance3D" parent="BookBase" index="103"]
+transform = Transform3D(0.677544, 0, -3.41061e-13, 0, 0.694688, 0, 3.05533e-13, 0, 1, 34.6664, -20.4614, -9.53674e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane105" type="MeshInstance3D" parent="BookBase" index="104"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 29.9558, -20.4589, -7.62939e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane106" type="MeshInstance3D" parent="BookBase" index="105"]
+transform = Transform3D(0.677544, 0, -3.2685e-13, 0, 0.6186, 0, 3.05533e-13, 0, 1, 31.2501, -20.4985, -6.67572e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane107" type="MeshInstance3D" parent="BookBase" index="106"]
+transform = Transform3D(0.677544, 0, -3.55271e-13, 0, 0.694688, 0, 3.12639e-13, 0, 1, 32.4828, -20.4985, -8.10623e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane108" type="MeshInstance3D" parent="BookBase" index="107"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 26.6334, -20.501, -9.05991e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane109" type="MeshInstance3D" parent="BookBase" index="108"]
+transform = Transform3D(0.872, 0, -2.41585e-13, 0, 0.797001, 0, 2.98428e-13, 0, 1, 4.83749, -20.4589, -2.86102e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane110" type="MeshInstance3D" parent="BookBase" index="109"]
+transform = Transform3D(0.872, 0, -3.2685e-13, 0, 0.895031, 0, 3.55271e-13, 0, 1, 9.96309, -20.4589, -4.29153e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane111" type="MeshInstance3D" parent="BookBase" index="110"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 6.62397, -20.4589, -3.8147e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane112" type="MeshInstance3D" parent="BookBase" index="111"]
+transform = Transform3D(0.872, 0, -2.98428e-13, 0, 0.797001, 0, 3.41061e-13, 0, 1, -0.467415, -20.501, 0)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane113" type="MeshInstance3D" parent="BookBase" index="112"]
+transform = Transform3D(0.872, 0, -2.98428e-13, 0, 0.895031, 0, 3.2685e-13, 0, 1, 3.36832, -20.501, -2.86102e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane114" type="MeshInstance3D" parent="BookBase" index="113"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 1.31973, -20.501, -5.24521e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane115" type="MeshInstance3D" parent="BookBase" index="114"]
+transform = Transform3D(0.677544, 0, -3.55271e-13, 0, 0.6186, 0, 3.83693e-13, 0, 1, 15.4243, -20.4614, -5.24521e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane116" type="MeshInstance3D" parent="BookBase" index="115"]
+transform = Transform3D(0.677544, 0, -3.69482e-13, 0, 0.694688, 0, 3.41061e-13, 0, 1, 16.3693, -20.4614, -7.15256e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane117" type="MeshInstance3D" parent="BookBase" index="116"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 11.6587, -20.4589, -4.76837e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane118" type="MeshInstance3D" parent="BookBase" index="117"]
+transform = Transform3D(0.677544, 0, -3.55271e-13, 0, 0.6186, 0, 3.41061e-13, 0, 1, 12.953, -20.4985, -4.76837e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane119" type="MeshInstance3D" parent="BookBase" index="118"]
+transform = Transform3D(0.677544, 0, -3.83693e-13, 0, 0.694688, 0, 3.55271e-13, 0, 1, 14.1857, -20.4985, -5.24521e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane120" type="MeshInstance3D" parent="BookBase" index="119"]
+transform = Transform3D(0.964433, 0, -1.6006e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 8.33628, -20.501, -6.19888e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane121" type="MeshInstance3D" parent="BookBase" index="120"]
+transform = Transform3D(0.872, 0, -2.13163e-13, 0, 0.797, 0, 2.70006e-13, 0, 1, 41.5909, -35.408, -9.05991e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane122" type="MeshInstance3D" parent="BookBase" index="121"]
+transform = Transform3D(0.872, 0, -2.98428e-13, 0, 0.895031, 0, 3.2685e-13, 0, 1, 46.7165, -35.408, -9.05991e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane123" type="MeshInstance3D" parent="BookBase" index="122"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 43.3774, -35.408, -9.53674e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane124" type="MeshInstance3D" parent="BookBase" index="123"]
+transform = Transform3D(0.872, 0, -2.70006e-13, 0, 0.797001, 0, 3.12639e-13, 0, 1, 36.286, -35.4501, -5.72205e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane125" type="MeshInstance3D" parent="BookBase" index="124"]
+transform = Transform3D(0.872, 0, -2.70006e-13, 0, 0.895031, 0, 2.98428e-13, 0, 1, 40.1217, -35.4501, -8.58307e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane126" type="MeshInstance3D" parent="BookBase" index="125"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 38.0731, -35.4501, -1.04904e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane127" type="MeshInstance3D" parent="BookBase" index="126"]
+transform = Transform3D(0.677544, 0, -3.2685e-13, 0, 0.6186, 0, 3.41061e-13, 0, 1, 52.1777, -35.4105, -1.09673e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane128" type="MeshInstance3D" parent="BookBase" index="127"]
+transform = Transform3D(0.677544, 0, -3.41061e-13, 0, 0.694688, 0, 3.05533e-13, 0, 1, 53.1227, -35.4105, -1.23978e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane129" type="MeshInstance3D" parent="BookBase" index="128"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 48.4121, -35.408, -1.04904e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane130" type="MeshInstance3D" parent="BookBase" index="129"]
+transform = Transform3D(0.677544, 0, -3.2685e-13, 0, 0.6186, 0, 3.05533e-13, 0, 1, 49.7064, -35.4476, -9.53674e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane131" type="MeshInstance3D" parent="BookBase" index="130"]
+transform = Transform3D(0.677544, 0, -3.55271e-13, 0, 0.694688, 0, 3.12639e-13, 0, 1, 50.9391, -35.4476, -1.14441e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane132" type="MeshInstance3D" parent="BookBase" index="131"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 45.0897, -35.4501, -1.19209e-05)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane133" type="MeshInstance3D" parent="BookBase" index="132"]
+transform = Transform3D(0.872, 0, -2.27374e-13, 0, 0.797001, 0, 2.84217e-13, 0, 1, 23.1346, -35.408, -5.72205e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane134" type="MeshInstance3D" parent="BookBase" index="133"]
+transform = Transform3D(0.872, 0, -3.12639e-13, 0, 0.895031, 0, 3.41061e-13, 0, 1, 28.2602, -35.408, -6.19888e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane135" type="MeshInstance3D" parent="BookBase" index="134"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 24.9211, -35.408, -6.67572e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane136" type="MeshInstance3D" parent="BookBase" index="135"]
+transform = Transform3D(0.872, 0, -2.84217e-13, 0, 0.797001, 0, 3.2685e-13, 0, 1, 17.8297, -35.4501, -2.86102e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane137" type="MeshInstance3D" parent="BookBase" index="136"]
+transform = Transform3D(0.872, 0, -2.84217e-13, 0, 0.895031, 0, 3.12639e-13, 0, 1, 21.6654, -35.4501, -5.72205e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane138" type="MeshInstance3D" parent="BookBase" index="137"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 19.6168, -35.4501, -8.10623e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane139" type="MeshInstance3D" parent="BookBase" index="138"]
+transform = Transform3D(0.677544, 0, -3.41061e-13, 0, 0.6186, 0, 3.62377e-13, 0, 1, 33.7214, -35.4105, -8.10623e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane140" type="MeshInstance3D" parent="BookBase" index="139"]
+transform = Transform3D(0.677544, 0, -3.55271e-13, 0, 0.694688, 0, 3.19744e-13, 0, 1, 34.6664, -35.4105, -9.53674e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane141" type="MeshInstance3D" parent="BookBase" index="140"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 29.9558, -35.408, -7.62939e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane142" type="MeshInstance3D" parent="BookBase" index="141"]
+transform = Transform3D(0.677544, 0, -3.41061e-13, 0, 0.6186, 0, 3.19744e-13, 0, 1, 31.2501, -35.4476, -6.67572e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane143" type="MeshInstance3D" parent="BookBase" index="142"]
+transform = Transform3D(0.677544, 0, -3.69482e-13, 0, 0.694688, 0, 3.33955e-13, 0, 1, 32.4828, -35.4476, -8.10623e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane144" type="MeshInstance3D" parent="BookBase" index="143"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 26.6334, -35.4501, -9.05991e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane145" type="MeshInstance3D" parent="BookBase" index="144"]
+transform = Transform3D(0.872, 0, -2.55795e-13, 0, 0.797001, 0, 3.12639e-13, 0, 1, 4.83749, -35.408, -2.86102e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane146" type="MeshInstance3D" parent="BookBase" index="145"]
+transform = Transform3D(0.872, 0, -3.41061e-13, 0, 0.895031, 0, 3.69482e-13, 0, 1, 9.96309, -35.408, -4.76837e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane147" type="MeshInstance3D" parent="BookBase" index="146"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 6.62397, -35.408, -3.8147e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane148" type="MeshInstance3D" parent="BookBase" index="147"]
+transform = Transform3D(0.872, 0, -3.12639e-13, 0, 0.797001, 0, 3.55271e-13, 0, 1, -0.467415, -35.4501, 0)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane149" type="MeshInstance3D" parent="BookBase" index="148"]
+transform = Transform3D(0.872, 0, -3.12639e-13, 0, 0.895031, 0, 3.41061e-13, 0, 1, 3.36832, -35.4501, -2.86102e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane150" type="MeshInstance3D" parent="BookBase" index="149"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 1.31973, -35.4501, -5.24521e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane151" type="MeshInstance3D" parent="BookBase" index="150"]
+transform = Transform3D(0.677544, 0, -3.69482e-13, 0, 0.6186, 0, 4.05009e-13, 0, 1, 15.4243, -35.4105, -5.24521e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane152" type="MeshInstance3D" parent="BookBase" index="151"]
+transform = Transform3D(0.677544, 0, -3.83693e-13, 0, 0.694688, 0, 3.62377e-13, 0, 1, 16.3693, -35.4105, -7.15256e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane153" type="MeshInstance3D" parent="BookBase" index="152"]
+transform = Transform3D(0.964433, 0, -1.60059e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 11.6587, -35.408, -4.76837e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane154" type="MeshInstance3D" parent="BookBase" index="153"]
+transform = Transform3D(0.677544, 0, -3.69482e-13, 0, 0.6186, 0, 3.62377e-13, 0, 1, 12.953, -35.4476, -5.24521e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane155" type="MeshInstance3D" parent="BookBase" index="154"]
+transform = Transform3D(0.677544, 0, -3.97904e-13, 0, 0.694688, 0, 3.76588e-13, 0, 1, 14.1857, -35.4476, -5.24521e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[node name="Plane156" type="MeshInstance3D" parent="BookBase" index="155"]
+transform = Transform3D(0.964433, 0, -1.6006e-08, 0, 0.72288, 0, -1.39566e-08, 0, 1, 8.33628, -35.4501, -6.19888e-06)
+mesh = SubResource("ArrayMesh_00v78")
+skeleton = NodePath("")
+
+[editable path="BookBase"]
