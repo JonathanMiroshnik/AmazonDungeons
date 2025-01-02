@@ -36,7 +36,7 @@ public partial class CameraMover : Camera3D
 		float xToMove = MousePos.Y / ViewportSize.Y - 0.5f;
 
 		Transform3D slightTransform = trueTransform;
-		slightTransform.Basis *= new Basis(new Vector3(1, 0, 0), -xToMove * CURSOR_MOVEMENT_MAX) * 
+		slightTransform.Basis *= new Basis(new Vector3(1, 0, 0), -xToMove * CURSOR_MOVEMENT_MAX) * //FIXME: might not work when moving between transforms!
 								 new Basis(new Vector3(0, 1, 0), -yToMove * CURSOR_MOVEMENT_MAX);
 		Transform = slightTransform;
 	}
