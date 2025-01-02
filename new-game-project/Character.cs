@@ -25,8 +25,8 @@ public partial class Character : GameEntity
     public List<CharacterInteraction> conversation = new List<CharacterInteraction>();
 
     // constructor that takes into consideration the constructor of GameEntity
-    public Character(string name, string personality = "", string shortenedDescription = "", int strength = 0, 
-                    int reflex = 0, int intelligence = 0, GameEntityType gameEntityType = GameEntityType.AI) : base(name, gameEntityType)
+    public Character(string name, string personality = "", string shortenedDescription = "", string creationPrompt = "", int strength = 0, 
+                    int reflex = 0, int intelligence = 0, GameEntityType gameEntityType = GameEntityType.AI) : base(name, gameEntityType, creationPrompt)
     {
         Name = name;
         Personality = personality;

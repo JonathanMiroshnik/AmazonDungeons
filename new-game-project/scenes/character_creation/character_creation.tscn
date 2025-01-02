@@ -73,7 +73,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/margin_bottom = 100
 script = ExtResource("2_wkhhl")
-skillContainers = []
+skillContainers = [NodePath("VButtonsContainer/StrengthContainer"), NodePath("VButtonsContainer/ReflexContainer"), NodePath("VButtonsContainer/IntelligenceContainer")]
 
 [node name="VButtonsContainer" type="VBoxContainer" parent="Background/CoreSkillsPresentationContainer"]
 layout_mode = 2
@@ -88,6 +88,7 @@ text = "      Strength
 
 [node name="ReflexContainer" parent="Background/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
 layout_mode = 2
+coreSkill = 1
 
 [node name="SkillLabel" parent="Background/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer/HSkillContainer" index="0"]
 text = "          Reflex
@@ -96,6 +97,7 @@ horizontal_alignment = 1
 
 [node name="IntelligenceContainer" parent="Background/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
 layout_mode = 2
+coreSkill = 2
 
 [node name="SkillLabel" parent="Background/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer/HSkillContainer" index="0"]
 text = "Intelligence
@@ -179,6 +181,7 @@ text = "LLM Character Prompt:"
 label_settings = SubResource("LabelSettings_8l5co")
 
 [node name="PromptText" type="TextEdit" parent="PromptContainer/VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
 tooltip_text = "Text that will define how the character will be presented to the Large Language Model.

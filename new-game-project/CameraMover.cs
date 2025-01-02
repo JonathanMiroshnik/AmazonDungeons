@@ -10,9 +10,14 @@ public partial class CameraMover : Camera3D
 	// Positions that the Camera can move to
 	[Export] public Node3D[] Positions { get; set; }
 
+	private Transform3D trueTransform;
+	private float CURSOR_MOVEMENT_MAX = 0.1f;
+
 	// Called when the node enters the scene tree for the first time.
 	public override async void _Ready()
 	{
+		trueTransform = Transform;
+
 		// Examples of movement over the indeces of positions in the list
 		// await MoveCameraByIndex(0, 2);
 		// await MoveCameraByIndex(1, 2);
@@ -20,6 +25,20 @@ public partial class CameraMover : Camera3D
 
 		// Example of movement with the name of the position in the lsit
 		// await MoveCameraByString("OriginalCameraPos", 4);
+	}
+
+	public override void _Process(double delta)
+	{
+		// We add some camera movement by the movement of the cursor on the screen
+		Vector2 ViewportSize = GetViewport().GetVisibleRect().Size;
+		Vector2 MousePos = GetViewport().GetMousePosition();
+		float yToMove = MousePos.X / ViewportSize.X - 0.5f;
+		float xToMove = MousePos.Y / ViewportSize.Y - 0.5f;
+
+		Transform3D slightTransform = trueTransform;
+		slightTransform.Basis *= new Basis(new Vector3(1, 0, 0), -xToMove * CURSOR_MOVEMENT_MAX) * 
+								 new Basis(new Vector3(0, 1, 0), -yToMove * CURSOR_MOVEMENT_MAX);
+		Transform = slightTransform;
 	}
 
 	// SOURCE: https://easings.net/#easeInOutQuad // Amazon Q
@@ -77,6 +96,8 @@ public partial class CameraMover : Camera3D
 		// NOTICE: Using Rotation or GlobalRotation does not work in this instance, the Slerp function inevitably breaks down with an issue of normalization, Quaternions do work though.
 		var startRot = camera.Quaternion;
 		var endRot = node.Quaternion;
+
+		trueTransform = node.Transform;
 
 		var time = 0f;
 		while (time < duration)

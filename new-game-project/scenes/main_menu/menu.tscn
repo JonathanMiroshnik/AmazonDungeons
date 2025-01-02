@@ -50,7 +50,9 @@ size_flags_vertical = 4
 theme_override_constants/separation = 18
 
 [node name="StartGameButton" type="Button" parent="Background/MenuContainer/ButtonsContainer/VButtonsContainer"]
+unique_name_in_owner = true
 layout_mode = 2
+disabled = true
 text = "Play Game"
 
 [node name="ExitGameButton" type="Button" parent="Background/MenuContainer/ButtonsContainer/VButtonsContainer"]

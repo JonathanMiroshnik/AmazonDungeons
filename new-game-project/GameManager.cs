@@ -28,10 +28,14 @@ public partial class GameManager : Node
 	// The game that is currently running
 	public Game game;
 
-	public List<GameEntity> gameEntities;
+	// These two lists will point to the same entities but each will have a different purpose as
+	//  GameEntities and Characters serve slightly different purposes.
+	public List<GameEntity> gameEntities = new List<GameEntity>();
+	public List<Character> characters = new List<Character>();
+
 
 	// Represents the Dungeon Master for the game, of which there is only one per game
-	public GameEntity DungeonMaster = new GameEntity("Dungeon Master", GameEntityType.DungeonMaster);
+	public GameEntity DungeonMaster = new GameEntity("Dungeon Master", GameEntityType.DungeonMaster, "prompter");
 
 	// Description of the DnD-like world
 	public JSONWorld worldDesc;
@@ -55,9 +59,6 @@ public partial class GameManager : Node
 	{
 		Instance = this;
 
-		// TODO: DELETE THIS CODE, TEST CODE
-		gameEntities = new List<GameEntity>();
-
 		// Creating the world
 		// worldDesc = await CreateWorldDesc();
 
@@ -67,7 +68,9 @@ public partial class GameManager : Node
 		worldDesc.location = LLMLibrary.EXAMPLE_LOCATION;
 
 		// Creating Main Player character
-		gameEntities.Add(new Character("Player", "write personality here", "write shortened description here", 0, 0, 0, GameEntityType.Player));
+		Character curChar = new Character("Player", "write personality here", "write shortened description here", "prompt1", 0, 0, 0, GameEntityType.Player);
+		gameEntities.Add(curChar);
+		characters.Add(curChar);
 
 		// Creating the AI characters
 		// for (int i = 0; i < NUMBER_OF_AI_CHARACTERS; i++) { // FIXME:
@@ -78,7 +81,7 @@ public partial class GameManager : Node
 		// CreateExampleCharacter(LLMLibrary.EXAMPLE_CHARACTER_1[0], LLMLibrary.EXAMPLE_CHARACTER_1[1], LLMLibrary.EXAMPLE_CHARACTER_1[2]);
 
 		// Create new dungeon master
-		DungeonMaster = new GameEntity("Dungeon Master", GameEntityType.DungeonMaster);
+		DungeonMaster = new GameEntity("Dungeon Master", GameEntityType.DungeonMaster, "prompt2");
 		gameEntities.Add(DungeonMaster);
 
 		await CreateGameCharacter(); // TODO: delete this part and replace with above in real-game
@@ -108,11 +111,13 @@ public partial class GameManager : Node
 	}
 
 	public async Task<Character> CreateGameCharacter() {
+		string curCreationPrompt = "Write a Dungeons and Dragons character description.\n " + 
+									LLMLibrary.JSON_CHARACTER_CREATION_TYPE +
+									"The input in the categories are only string, not lists, not anything else.\n" +
+									"Don't write something long but make sure that the JSON is valid and closed properly.";
+
 		// create new character
-		string personalityTest = await AskLlama("Write a Dungeons and Dragons character description.\n " + 
-												LLMLibrary.JSON_CHARACTER_CREATION_TYPE +
-												"The input in the categories are only string, not lists, not anything else.\n" +
-												"Don't write something long but make sure that the JSON is valid and closed properly.",
+		string personalityTest = await AskLlama(curCreationPrompt,
 												0.5f, 1000);
 		personalityTest = GlobalStringLibrary.JSONStringBrackets(personalityTest);
 		// GD.Print(personalityTest);
@@ -123,15 +128,17 @@ public partial class GameManager : Node
 		var personality = resultChar.personality;
 		var shortDesc = resultChar.shortdesc;
 		
-		Character character = new Character(charName, personality, shortDesc, 2);
+		Character character = new Character(charName, personality, shortDesc, curCreationPrompt, 2);
 		gameEntities.Add(character);
+		characters.Add(character);
 
 		return character;
 	}
 
 	public Character CreateExampleCharacter(string charName, string personality, string shortDesc) {
-		Character character = new Character(charName, personality, shortDesc, 2);
+		Character character = new Character(charName, personality, shortDesc, "prompt4", 2);
 		gameEntities.Add(character);
+		characters.Add(character);
 
 		return character;
 	}
