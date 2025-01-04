@@ -1,0 +1,13 @@
+[gd_scene load_steps=2 format=3 uid="uid://c7ejcupo87o8w"]
+
+[ext_resource type="PackedScene" uid="uid://dt4kofn616r3x" path="res://models/Room/Candel.glb" id="1_e76rs"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Candel" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0292323, 10.1406, 0.0199013)
+light_color = Color(1, 0.82401, 0.543478, 1)
+light_energy = 2.067
+
+[node name="Candel Mesh" parent="." instance=ExtResource("1_e76rs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0292342, 0.0322828, 0.0199013)
