@@ -18,6 +18,7 @@ public partial class StartDialogue : DialogueState {
 
         dialogueStateMachine.gameStateMachine = curGameStateMachine;
         dialogueStateMachine.gameStateMachine.characterUI.ClearResponses();
+        dialogueStateMachine.gameStateMachine.characterUI.Visible = true;
         dialogueStateMachine.gameStateMachine.characterUI.dialogueStateMachine = dialogueStateMachine;
     }
 
@@ -27,7 +28,7 @@ public partial class StartDialogue : DialogueState {
         // Creating the conversation between the DM and the character
 		DMCharacterResponse resp = new DMCharacterResponse(); // TODO: very bad code and structure
 		resp.responderGameEntity = GameManager.Instance.DungeonMaster;
-		resp.respondeeGameEntity = dialogueStateMachine.gameStateMachine.character;
+		resp.respondeeGameEntity = dialogueStateMachine.character;
 
 		await dialogueStateMachine.gameStateMachine.characterUI.DoDMConversation(resp);
     }
@@ -123,6 +124,8 @@ public partial class ResponseDialogue : DialogueState {
 
         // After showing the summary response, we switch to the final dialogue
         DefaultChangeState(dialogueStateMachine);
+
+        dialogueStateMachine.gameStateMachine.characterUI.nextContainer.Visible = true;
     }
 
     private void DefaultChangeState(DialogueStateMachine dialogueStateMachine) {
@@ -138,13 +141,13 @@ public partial class EndDialogue : DialogueState {
     public void Exit(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Exit EndDialogue");
 
-        dialogueStateMachine.gameStateMachine.ChangeState(new DMDialogue());
+        dialogueStateMachine.gameStateMachine.ChangeState(new DMDialogue(dialogueStateMachine.gameStateMachine.NextCharacter()));
     }
 
     public async Task Action(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Action EndDialogue");
 
-        dialogueStateMachine.gameStateMachine.characterUI.nextContainer.Visible = false; // FIXME: too long!!
+        dialogueStateMachine.gameStateMachine.characterUI.Visible = false; // FIXME: too long!!
 
         Exit(dialogueStateMachine);
     }
@@ -154,6 +157,12 @@ public partial class DialogueStateMachine : GodotObject
 {
     public DialogueState CurrentState { get; private set; }
     public GameStateMachine gameStateMachine { get; set; }
+    public Character character { get; set; }
+
+    public DialogueStateMachine(GameStateMachine curGameStateMachine, Character curCharacter) {
+        gameStateMachine = curGameStateMachine;
+        character = curCharacter;
+    }
 
     public void ChangeState(DialogueState newState) {
         CurrentState?.Exit(this);

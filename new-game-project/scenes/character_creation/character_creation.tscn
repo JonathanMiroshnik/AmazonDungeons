@@ -135,21 +135,45 @@ layout_mode = 2
 tooltip_text = "Move to the next character"
 text = "Randomize"
 
-[node name="SaveContainer" type="MarginContainer" parent="Background"]
+[node name="StartContainer" type="MarginContainer" parent="Background"]
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -185.0
+offset_left = -144.0
 offset_top = -184.0
+offset_right = 41.0
 grow_horizontal = 0
 grow_vertical = 0
 size_flags_horizontal = 4
 size_flags_vertical = 0
 theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 100
+
+[node name="StartButton" type="Button" parent="Background/StartContainer"]
+layout_mode = 2
+tooltip_text = "Save the current character"
+text = "Start
+Game"
+
+[node name="SaveContainer" type="MarginContainer" parent="Background"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -185.0
+offset_top = -92.0
+offset_bottom = 92.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 0
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
 
 [node name="SaveButton" type="Button" parent="Background/SaveContainer"]
 layout_mode = 2
@@ -190,6 +214,7 @@ placeholder_text = "hello"
 
 [connection signal="pressed" from="Background/NextButtonContainer/NextCharacterButton" to="." method="_on_next_character_button_pressed"]
 [connection signal="pressed" from="Background/RandomizeButtonContainer/RandomizeCharacterButton" to="." method="_on_randomize_character_button_pressed"]
+[connection signal="pressed" from="Background/StartContainer/StartButton" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="Background/SaveContainer/SaveButton" to="." method="_on_save_button_pressed"]
 
 [editable path="Background/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer"]

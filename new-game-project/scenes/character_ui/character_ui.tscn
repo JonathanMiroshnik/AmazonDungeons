@@ -82,5 +82,6 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "Next"
 
+[connection signal="text_changed" from="MainContainer/VBoxContainer/ReplyContainer/VReplyContainer/InnerReplyContainer/ReplyEdit" to="." method="_on_reply_edit_text_changed"]
 [connection signal="pressed" from="MainContainer/VBoxContainer/HBoxContainer/DiceContainer/DiceButton" to="." method="_on_dice_button_pressed"]
 [connection signal="pressed" from="MainContainer/VBoxContainer/HBoxContainer/NextContainer/NextButton" to="." method="_on_next_button_pressed"]

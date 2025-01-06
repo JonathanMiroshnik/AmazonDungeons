@@ -97,8 +97,6 @@ public partial class CameraMover : Camera3D
 		var startRot = camera.Quaternion;
 		var endRot = node.Quaternion;
 
-		trueTransform = node.Transform;
-
 		var time = 0f;
 		while (time < duration)
 		{
@@ -108,6 +106,8 @@ public partial class CameraMover : Camera3D
 
 			camera.GlobalPosition = start.Lerp(end, ease);
 			camera.Quaternion = startRot.Slerp(endRot, ease);
+
+			trueTransform = camera.Transform;
 
 			await ToSignal(GetTree(), "process_frame");
 		}

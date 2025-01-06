@@ -17,7 +17,7 @@ public partial class StartGame : GameState {
 		GD.Print("Enter StartGame");
 
 		Action(gameStateMachine);
-		gameStateMachine.ChangeState(new DMDialogue());
+		gameStateMachine.ChangeState(new DMDialogue(gameStateMachine.NextCharacter()));
 	}
 
 	public void Exit(GameStateMachine gameStateMachine) {
@@ -63,16 +63,20 @@ public partial class StartGame : GameState {
 
 
 public partial class DMDialogue : GameState {
+	public Character character { get; set; }
 	public DialogueStateMachine dialogueStateMachine = null;
+
+	public DMDialogue(Character curCharacter) {
+		if (curCharacter == null) {
+			GD.Print("problem"); // FIXME: raise exepction
+		}
+		character = curCharacter;
+	}
 
 	public void Enter(GameStateMachine gameStateMachine) {
 		GD.Print("Enter DMDialogue");
 
-		if (dialogueStateMachine == null) {
-			gameStateMachine.NextCharacter();
-		}
-
-		dialogueStateMachine = new DialogueStateMachine();
+		dialogueStateMachine = new DialogueStateMachine(gameStateMachine, character);
 		Action(gameStateMachine);
 	}
 
@@ -81,11 +85,15 @@ public partial class DMDialogue : GameState {
 
 		Character character = gameStateMachine.NextCharacter();
 		if (character == null) {
-			gameStateMachine.ChangeState(new EndGame());
-			return;
+			if (gameStateMachine.CurrentRound+1 >= gameStateMachine.NumberOfRounds) {
+				gameStateMachine.ChangeState(new EndGame());
+				return;
+			} else {
+				gameStateMachine.CurrentRound++;
+				gameStateMachine.ChangeState(new DMDialogue(character));
+				return;
+			}
 		}
-
-		gameStateMachine.ChangeState(new DMDialogue());
 	}
 
 	public async void Action(GameStateMachine gameStateMachine) {
@@ -94,8 +102,9 @@ public partial class DMDialogue : GameState {
 			gameStateMachine.ChangeState(new EndGame());
 			return;
 		}
+		if (character == null) return;
 
-		await gameStateMachine.cameraMover.MoveCameraByNode3D(gameStateMachine.character.worldSpacePosition, GameStateMachine.TIME_TO_MOVE); // FIXME: magic number
+		await gameStateMachine.cameraMover.MoveCameraByNode3D(character.worldSpacePosition, GameStateMachine.TIME_TO_MOVE); // FIXME: magic number
 		dialogueStateMachine.ChangeState(new StartDialogue(gameStateMachine, dialogueStateMachine));
 	}
 	
@@ -119,8 +128,9 @@ public partial class GameStateMachine : Node
 	public DiceThrowerMechanism diceThrowerMechanism;
 	[Export]
 	public int NumberOfRounds = 1;
+	public int CurrentRound = 0;
 
-	public Character character { get; set; }
+	// public Character character { get; set; }
 
 	// Camera positions relating to GameEntities, Character and other relevant objects
 	private List<string> GAME_ENTITIES_POS = new List<string> { "MainCharacter", "RightCharacter", "ForwardCharacterDM", "LeftCharacter" };
@@ -178,33 +188,26 @@ public partial class GameStateMachine : Node
 		CurrentState.Enter(this);
 	}
 
-	public Character NextCharacter() {
-		int TotalGameEntities = GameManager.Instance.gameEntities.Count;
-		if (TotalGameEntities <= 0) {
-			return null;
-		}
+	public Character NextCharacter(Character curCharacter = null) {
+		int TotalCharacters = GameManager.Instance.characters.Count;
+		if (TotalCharacters <= 0) return null;
+		if (curCharacter == null) return GameManager.Instance.characters[0];
 
-		if (character == null) {
-			character = (Character)GameManager.Instance.gameEntities[0];
-			return character;
-		}
+		Character character = curCharacter;
 
-		for (int i = 0; i < TotalGameEntities; i++) {
-			GameEntity curGE = GameManager.Instance.gameEntities[i];
-			if (curGE is not Character) continue;
+		for (int i = 0; i < TotalCharacters; i++) {
+			Character checkChar = GameManager.Instance.characters[i];
+			if (checkChar != character) continue;
 
-			Character curChar = (Character) curGE; // FIXME: downcasting bad
-			if (curChar != character) continue;
-
-			if (i+1 < TotalGameEntities) {
-				character = (Character)GameManager.Instance.gameEntities[i+1];
-				return character;
-
+			if (i+1 < TotalCharacters) {
+				character = GameManager.Instance.characters[i+1];
+				break;
 			} else {
-				return null;
+				character = null;
+				break;
 			}
 		}
 
-		return null;
+		return character;
 	}
 }

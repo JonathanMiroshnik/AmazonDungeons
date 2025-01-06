@@ -63,4 +63,8 @@ public partial class CharacterCreation : Control
 		// TODO: choose random values for attributes
 		// TODO: choose name	
 	}
+
+	public void _on_start_button_pressed() {
+		GetTree().ChangeSceneToFile("res://scenes/main_game/main_game.tscn");
+	}
 }

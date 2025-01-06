@@ -126,11 +126,10 @@ public partial class CharacterUI : Control
 		}
 		else {
 			dialogueStateMachine.ChangeState(new ResponseDialogue(dmCharResponse));
-			nextContainer.Visible = true;
 		}
 	}
 
-	public async void _on_dice_button_pressed() {
+	public void _on_dice_button_pressed() {
 		// TODO: null checks?
 		// TODO: how do we make sure that the curDMResponse is really the current one and not a previous one?
 
@@ -147,10 +146,19 @@ public partial class CharacterUI : Control
 			if (!curDMResponse.ThrownDice) return;
 		}
 
-		dialogueStateMachine.CurrentState?.Action(dialogueStateMachine);
+		replyContainer.Visible = false;
+		nextContainer.Visible = false;
 
-		// ClearResponses();
-		// GameManager.Instance.game.MoveToNextCharacter();
+		await dialogueStateMachine.CurrentState.Action(dialogueStateMachine);
+	}
+
+	public void _on_reply_edit_text_changed() {
+		if (replyEdit.Text.Length > 0) {
+			nextContainer.Visible = true;
+		}
+		else {
+			nextContainer.Visible = false;
+		}
 	}
 
 	public void ReplyToggle(bool allowReplying) {
