@@ -1,16 +1,17 @@
-[gd_scene load_steps=18 format=4 uid="uid://6s4jwca2o6sq"]
+[gd_scene load_steps=19 format=4 uid="uid://6s4jwca2o6sq"]
 
-[ext_resource type="PackedScene" uid="uid://c8vq4a0408n08" path="res://models/Room/Room base.glb" id="1_8j3d6"]
-[ext_resource type="PackedScene" uid="uid://cumdvs8e1uxbx" path="res://models/Room/Tabel.glb" id="2_d406x"]
-[ext_resource type="PackedScene" uid="uid://bdk4y1616wm37" path="res://models/Room/Chair.glb" id="3_yl7tg"]
-[ext_resource type="PackedScene" uid="uid://bfwy4n5gndyvd" path="res://models/Room/Square Drawrs.glb" id="4_3vjp0"]
+[ext_resource type="PackedScene" uid="uid://bghqnob8mevxr" path="res://models/Room/Room base.glb" id="1_8j3d6"]
+[ext_resource type="PackedScene" uid="uid://cinby67mxs62o" path="res://models/Room/Tabel.glb" id="2_d406x"]
+[ext_resource type="PackedScene" uid="uid://clopdex0jtvdh" path="res://models/Room/Chair.glb" id="3_yl7tg"]
+[ext_resource type="PackedScene" uid="uid://de14d6ebij6a7" path="res://models/Room/Square Drawrs.glb" id="4_3vjp0"]
 [ext_resource type="PackedScene" uid="uid://746ta4m5u6gx" path="res://models/DndBot/DndBot.glb" id="4_f2hvy"]
-[ext_resource type="PackedScene" uid="uid://c8ilxeckj4g26" path="res://models/Room/Small drawer.glb" id="6_rusjm"]
-[ext_resource type="Texture2D" uid="uid://cd1xawukfyfl8" path="res://models/Room/BookBase_Bakegroup_1K_NormalGL.png" id="6_y8fp3"]
-[ext_resource type="PackedScene" uid="uid://dkix22hlnvcp" path="res://models/Room/Workbench.glb" id="7_pnheh"]
+[ext_resource type="PackedScene" uid="uid://b5dh003xkt4c" path="res://models/Room/Small drawer.glb" id="6_rusjm"]
+[ext_resource type="Texture2D" uid="uid://c3a4ccmohb8aj" path="res://models/Room/BookBase_Bakegroup_1K_NormalGL.png" id="6_y8fp3"]
+[ext_resource type="PackedScene" uid="uid://dx730webixpdh" path="res://models/Room/Workbench.glb" id="7_pnheh"]
 [ext_resource type="PackedScene" uid="uid://bplnut3jd0dps" path="res://scenes/dice_throwing/dice_thrower.tscn" id="8_tcys4"]
 [ext_resource type="PackedScene" uid="uid://c7ejcupo87o8w" path="res://models/Room/candel.tscn" id="9_6vv1x"]
 [ext_resource type="PackedScene" uid="uid://bu5idn8s8i3dr" path="res://models/Room/book_shelf1.tscn" id="10_x8ixy"]
+[ext_resource type="PackedScene" uid="uid://yvgile5mixdj" path="res://models/Room/DM screen.glb" id="12_2rqla"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vglte"]
 resource_name = "Material"
@@ -365,8 +366,14 @@ transform = Transform3D(0.25, 0.000173623, 4.03019e-05, -0.000173633, 0.25, 5.85
 [node name="DiceSpawnPos" parent="DiceThrower" index="1"]
 transform = Transform3D(1, -2.31815e-11, 2.91038e-11, 5.00663e-10, 1, -1.01863e-10, 1.16415e-10, 0, 1, -0.00193977, 10.6548, -0.00608397)
 
+[node name="CollisionShape3D" parent="DiceThrower/Basket/BasketSide" index="0"]
+transform = Transform3D(1, -5.11847e-10, -1.16415e-10, 1.48438e-10, 1, -5.82077e-11, -1.45519e-11, -5.82077e-11, 1, -3.50475e-05, 0.00419354, 1.17905e-06)
+
 [node name="CollisionShape3D" parent="DiceThrower/Basket/BasketSide2" index="0"]
 transform = Transform3D(1, -5.11847e-10, -1.16415e-10, 1.48438e-10, 1, -5.82077e-11, -1.45519e-11, -5.82077e-11, 1, 0, 0, 0)
+
+[node name="DM screen" parent="." instance=ExtResource("12_2rqla")]
+transform = Transform3D(6.52839e-08, -0.0126104, 0.49784, 1.65365e-09, 0.49784, 0.0126104, -0.498, -1.3182e-23, 6.53048e-08, 6.3851, 7.184, -0.00615978)
 
 [editable path="Chair5/DndBot"]
 [editable path="Chair4/DndBot"]
