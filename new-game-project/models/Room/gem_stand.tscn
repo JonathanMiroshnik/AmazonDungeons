@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://ockh2usorf2t"]
+
+[ext_resource type="PackedScene" uid="uid://b6uxsd3v4gsyh" path="res://models/Room/Gem stand.glb" id="1_h3j1u"]
+
+[node name="Gem stand" instance=ExtResource("1_h3j1u")]
