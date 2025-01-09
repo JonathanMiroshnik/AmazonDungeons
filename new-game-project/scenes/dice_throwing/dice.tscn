@@ -14,6 +14,7 @@ Sides = [NodePath("CollisionShape3D/1"), NodePath("CollisionShape3D/2"), NodePat
 shape = SubResource("BoxShape3D_8my02")
 
 [node name="DiceMesh" parent="CollisionShape3D" instance=ExtResource("2_063vk")]
+unique_name_in_owner = true
 transform = Transform3D(-2.18557e-08, 3.56537e-12, 0.5, -2.9218e-08, 0.5, -3.56665e-12, -0.5, -2.9218e-08, -2.18557e-08, 0, 0, 0)
 
 [node name="1" type="Node3D" parent="CollisionShape3D"]
@@ -33,3 +34,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 
 [node name="4" type="Node3D" parent="CollisionShape3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
+
+[editable path="CollisionShape3D/DiceMesh"]

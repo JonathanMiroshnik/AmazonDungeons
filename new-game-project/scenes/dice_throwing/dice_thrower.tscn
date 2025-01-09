@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://scenes/dice_throwing/DiceThrowerMechanism.cs" id="1_ykfwl"]
 [ext_resource type="PackedScene" uid="uid://fgq2ae11m7rp" path="res://scenes/dice_throwing/dice.tscn" id="2_vrhd6"]
-[ext_resource type="PackedScene" uid="uid://ro4echjydbco" path="res://models/Room/Dice tray.glb" id="3_rh2pt"]
+[ext_resource type="PackedScene" uid="uid://b3qc4yl1kqi0n" path="res://models/Room/Dice tray.glb" id="3_rh2pt"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qbhw4"]
 

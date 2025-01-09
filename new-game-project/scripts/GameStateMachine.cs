@@ -127,46 +127,37 @@ public partial class GameStateMachine : Node
 
 	// Camera positions relating to GameEntities, Character and other relevant objects
 	private List<string> GAME_ENTITIES_POS = new List<string> { "MainCharacter", "RightCharacter", "ForwardCharacterDM", "LeftCharacter" };
+	// Camera position for the Dice mechanism
 	public Node3D DICE_POS;
 
 	public override async void _Ready() {
 		await GameManager.Instance.IsLoaded();
-		// GameManager.Instance.RegisterGame(this);
 
-		if (cameraMover == null || characterUI == null || diceThrowerMechanism == null) return; // FIXME: raise error
+		if (cameraMover == null || 
+			characterUI == null || 
+			diceThrowerMechanism == null) throw new System.Exception("Error: a GameStateMachine component is null");
 
 		// TODO: weird check that isn't appropriate in GameManager but also weird here as it combines both of these....
 
 		// Connecting between the Game Entities and the Camera positions
-		if (GameManager.Instance.gameEntities == null || GAME_ENTITIES_POS == null) return;
-		if (GameManager.Instance.gameEntities.Count != GameManager.NUMBER_OF_GAME_ENTITIES) {
-			GD.Print("Error: the number of game entities in the game is not correct");
-			return;
-		}
-		if (GAME_ENTITIES_POS.Count != GameManager.NUMBER_OF_GAME_ENTITIES) {
-			GD.Print("Error: the number of game entity positions in the game is not correct");
-			return;
-		}
+		if (GameManager.Instance.gameEntities == null || 
+			GAME_ENTITIES_POS == null) throw new System.Exception("Error: a GameStateMachine component is null");
+		if (GameManager.Instance.gameEntities.Count != GameManager.NUMBER_OF_GAME_ENTITIES) 
+			throw new System.Exception("Error: the number of game entities in the game is not correct");
+		if (GAME_ENTITIES_POS.Count != GameManager.NUMBER_OF_GAME_ENTITIES)
+			throw new System.Exception("Error: the number of game entity positions in the game is not correct");
 
 		for (int i = 0; i < GameManager.Instance.gameEntities.Count; i++) {
-			if (GameManager.Instance.gameEntities[i] == null) {
-				GD.Print("Error: a character in the game is null");
-				return;
-			}
+			if (GameManager.Instance.gameEntities[i] == null) throw new System.Exception("Error: a character in the game is null");
 
 			GameManager.Instance.gameEntities[i].worldSpacePosition = GetNodeOrNull<Node3D>("%" + GAME_ENTITIES_POS[i]);
-			if (GameManager.Instance.gameEntities[i].worldSpacePosition == null) {
-				GD.Print("Error: a corresponding Node3D position has not been found for " + GAME_ENTITIES_POS[i]);
-				return;
-			}
+			if (GameManager.Instance.gameEntities[i].worldSpacePosition == null)
+				throw new System.Exception("Error: a corresponding Node3D position has not been found for " + GAME_ENTITIES_POS[i]);
 		}
 
 		// Finding the Dice camera position
 		DICE_POS = GetNodeOrNull<Node3D>("%DicePos");
-		if (DICE_POS == null) {
-			GD.Print("Error: a corresponding Node3D position has not been found for DicePos");
-			return;
-		}
+		if (DICE_POS == null) throw new System.Exception("Error: a corresponding Node3D position has not been found for DicePos");
 
 		StartGame();
 	}

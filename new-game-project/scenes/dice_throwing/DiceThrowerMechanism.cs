@@ -152,6 +152,10 @@ public partial class DiceThrowerMechanism : Node3D
 			int curSide = curDice.WhichSideUp();
 			if (curSide >= MIN_WINNING_DICE) {
 				num_of_victor_dice++;
+				curDice.PaintDice(new Color(0,1,0));
+			}
+			else {
+				curDice.PaintDice(new Color(1,0,0));
 			}
 
 			curDice.Mass = END_DICE_MASS;

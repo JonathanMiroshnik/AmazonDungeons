@@ -105,8 +105,7 @@ public partial class GameManager : Node
 										  "Don't write something long but make sure that the JSON is valid and closed properly.",
 										  0.5f, 1000);
 		worldSerializedJSON = GlobalStringLibrary.JSONStringBrackets(worldSerializedJSON);
-		// GD.Print(worldSerializedJSON);
-
+		
 		return JsonConvert.DeserializeObject<JSONWorld>(worldSerializedJSON);
 	}
 
