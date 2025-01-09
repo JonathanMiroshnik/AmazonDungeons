@@ -1,0 +1,26 @@
+[remap]
+
+importer="2d_array_texture"
+type="CompressedTexture2DArray"
+uid="uid://dsf0scgfmt5h0"
+path="res://.godot/imported/Scott_Interior_game.exr-da85943cb1f0f984bd0b0609b397fb65.ctexarray"
+metadata={
+"vram_texture": false
+}
+
+[deps]
+
+source_file="res://models/Room/Light bake/Scott_Interior_game.exr"
+dest_files=["res://.godot/imported/Scott_Interior_game.exr-da85943cb1f0f984bd0b0609b397fb65.ctexarray"]
+
+[params]
+
+compress/mode=3
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/channel_pack=1
+mipmaps/generate=false
+mipmaps/limit=-1
+slices/horizontal=1
+slices/vertical=1
