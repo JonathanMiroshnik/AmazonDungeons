@@ -30,3 +30,10 @@ enabled=PackedStringArray("res://addons/gd-blender-3d-shortcuts/plugin.cfg")
 [physics]
 
 3d/physics_engine="JoltPhysics3D"
+
+[rendering]
+
+global_illumination/gi/use_half_resolution=true
+global_illumination/sdfgi/probe_ray_count=0
+global_illumination/sdfgi/frames_to_converge=2
+global_illumination/sdfgi/frames_to_update_lights=4
