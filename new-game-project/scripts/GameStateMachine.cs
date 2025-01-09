@@ -1,6 +1,4 @@
 using Godot;
-using System;
-using System.Threading.Tasks;
 using System.Collections.Generic;
 
 public interface GameState
@@ -9,8 +7,6 @@ public interface GameState
 	public abstract void Exit(GameStateMachine gameStateMachine);
 	public abstract void Action(GameStateMachine gameStateMachine);
 }
-
-// FIXME: ChangeState should nto be used by states, only outside of them
 
 public partial class StartGame : GameState {
 	public void Enter(GameStateMachine gameStateMachine) {
@@ -44,10 +40,13 @@ public partial class StartGame : GameState {
  
  
  public partial class EndGame : GameState {
-	public void Enter(GameStateMachine gameStateMachine) {
+	public async void Enter(GameStateMachine gameStateMachine) {
 		GD.Print("Enter EndGame");
+		await gameStateMachine.cameraMover.MoveCameraByNode3D(GameManager.Instance.characters[0].worldSpacePosition, 
+																GameStateMachine.TIME_TO_MOVE);
 
-		// TODO: make epic poem from game, display it
+		// TODO: move this to final scene of summary? and end credits?
+		GD.Print(LLMLibrary.GameSummary());
 	}
 
 	public void Exit(GameStateMachine gameStateMachine) {
@@ -61,49 +60,42 @@ public partial class StartGame : GameState {
 
 public partial class DMDialogue : GameState {
 	public Character character { get; set; }
-	public DialogueStateMachine dialogueStateMachine = null;
-
 	public DMDialogue(Character curCharacter) {
-		if (curCharacter == null) {
-			GD.Print("problem"); // FIXME: raise exepction
-		}
 		character = curCharacter;
 	}
 
 	public async void Enter(GameStateMachine gameStateMachine) {
 		GD.Print("Enter DMDialogue");
-
-		dialogueStateMachine = new DialogueStateMachine(gameStateMachine, character);
-		
-		GD.Print("Action DMDialogue");
-		if (dialogueStateMachine == null) {
-			gameStateMachine.ChangeState(new EndGame());
+		if (character == null) {
+			Action(gameStateMachine);
 			return;
 		}
-		if (character == null) return;
 
-		await gameStateMachine.cameraMover.MoveCameraByNode3D(character.worldSpacePosition, GameStateMachine.TIME_TO_MOVE); // FIXME: magic number
+		DialogueStateMachine dialogueStateMachine = new DialogueStateMachine(gameStateMachine, character);
+
+		await gameStateMachine.cameraMover.MoveCameraByNode3D(character.worldSpacePosition, GameStateMachine.TIME_TO_MOVE);
 		dialogueStateMachine.ChangeState(new StartDialogue(gameStateMachine, dialogueStateMachine));
 	}
 
 	public void Exit(GameStateMachine gameStateMachine) {
 		GD.Print("Exit DMDialogue");
-
-		Character character = gameStateMachine.NextCharacter();
-		if (character == null) {
-			if (gameStateMachine.CurrentRound+1 >= gameStateMachine.NumberOfRounds) {
-				gameStateMachine.ChangeState(new EndGame());
-				return;
-			} else {
-				gameStateMachine.CurrentRound++;
-				gameStateMachine.ChangeState(new DMDialogue(character));
-				return;
-			}
-		}
 	}
 
 	public void Action(GameStateMachine gameStateMachine) {
-		return;
+		GD.Print("Action DMDialogue");
+
+		// If the character is null, that means we finished the round and are now moving onto the next round, or the end of the game.
+		if (character == null) {
+			if (gameStateMachine.CurrentRound+1 >= gameStateMachine.NumberOfRounds) {
+				gameStateMachine.ChangeState(new EndGame());
+			} else {
+				gameStateMachine.CurrentRound++;
+				gameStateMachine.ChangeState(new DMDialogue(gameStateMachine.NextCharacter()));
+			}
+		}
+		else {
+			gameStateMachine.ChangeState(new DMDialogue(gameStateMachine.NextCharacter()));
+		}
 	}
 	
 }
@@ -124,11 +116,14 @@ public partial class GameStateMachine : Node
 	public CharacterUI characterUI;
 	[Export]
 	public DiceThrowerMechanism diceThrowerMechanism;
+
+	// Total number of rounds in the game
 	[Export]
-	public int NumberOfRounds = 1;
+	public int NumberOfRounds = 2;
 	public int CurrentRound = 0;
 
-	// public Character character { get; set; }
+	// Current character index that is in dialogue with the DM
+	public int character_ind = 0;
 
 	// Camera positions relating to GameEntities, Character and other relevant objects
 	private List<string> GAME_ENTITIES_POS = new List<string> { "MainCharacter", "RightCharacter", "ForwardCharacterDM", "LeftCharacter" };
@@ -186,28 +181,16 @@ public partial class GameStateMachine : Node
 		CurrentState.Enter(this);
 	}
 
-	public Character NextCharacter(Character curCharacter = null) {
+	// Returns the next character in the cycle, null if we came to the end of the round
+	public Character NextCharacter() {
 		int TotalCharacters = GameManager.Instance.characters.Count;
 		if (TotalCharacters <= 0) return null;
-		if (curCharacter == null) return GameManager.Instance.characters[0];
 
-		Character character = curCharacter;
-
-		for (int i = 0; i < TotalCharacters; i++) {
-			GD.Print(i);
-
-			Character checkChar = GameManager.Instance.characters[i];
-			if (checkChar != character) continue;
-
-			if (i+1 < TotalCharacters) {
-				character = GameManager.Instance.characters[i+1];
-				break;
-			} else {
-				character = null;
-				break;
-			}
+		if (character_ind >= TotalCharacters) {
+			character_ind = 0;
+			return null;
 		}
 
-		return character;
+		return GameManager.Instance.characters[character_ind++];
 	}
 }

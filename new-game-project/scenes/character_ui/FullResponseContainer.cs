@@ -1,11 +1,17 @@
 using Godot;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Presents a response from a GameEntity in the UI, showing their name and the text
+/// </summary>
 public partial class FullResponseContainer : MarginContainer
 {
+	// GameEntity that is responding
 	public GameEntity gameEntity;
 
+	// Different name colors indicate different types of GameEntities
 	private Dictionary<GameEntityType, Color> gameEntityTypeColor = new Dictionary<GameEntityType, Color>()
 	{
 		{ GameEntityType.AI, Colors.Red },
@@ -17,24 +23,26 @@ public partial class FullResponseContainer : MarginContainer
 	private RichTextLabel responseRichLabel;
 	private MarginContainer userLabelContainer;
 
-	// [Signal]
-	// public delegate void ReplyToResponseEventHandler(string reply);
-
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		responseRichLabel = GetNode<RichTextLabel>("%ResponseRichLabel");
-		if (responseRichLabel == null) return; // FIXME: raise error
+		if (responseRichLabel == null) throw new Exception("ResponseRichLabel not found in FullResponseContainer");
 		gameEntityNameLabel = GetNode<Label>("%GameEntityNameLabel");
-		if (gameEntityNameLabel == null) return; // FIXME: raise error
+		if (gameEntityNameLabel == null) throw new Exception("GameEntityNameLabel not found in FullResponseContainer");
 		userLabelContainer = GetNode<MarginContainer>("%UserLabelContainer");
-		if (userLabelContainer == null) return; // FIXME: raise error
+		if (userLabelContainer == null) throw new Exception("UserLabelContainer not found in FullResponseContainer");
 	}
 
+	/// <summary>
+	/// Shows the response text over a designated time.
+	/// </summary>
 	public async Task ShowResponse(string response)
 	{
-		float TIME_TO_SHOW = 3f;
+		// Time it takes the text to fully show, we seek to not make the Player wait too long
+		float TIME_TO_SHOW = Math.Min(3f, response.Length * 0.05f);
 
+		// If there is no GameEntity, the response is shown as-is without a name
 		if (gameEntity == null) {
 			userLabelContainer.Visible = false;
 			userLabelContainer.SetProcess(false);
@@ -49,11 +57,4 @@ public partial class FullResponseContainer : MarginContainer
 		// Writing the text
 		await GlobalStringLibrary.TypeWriteOverDuration(response, responseRichLabel, TIME_TO_SHOW);
 	}
-
-	// TODO: these two buttons should not be in this container, but in the one above, characteUI
-	// public void _on_reply_button_pressed() {
-	// 	EmitSignal(SignalName.ReplyToResponse, replyContainer);
-	// 	replyButton.Text = "Sent!";
-	// 	replyButton.Disabled = true;
-	// }
 }

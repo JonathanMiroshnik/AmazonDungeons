@@ -274,7 +274,7 @@ public partial class GameManager : Node
 			LLMLibrary.TotalNumberOfRequests++;
 
 			// GD.Print("Finished Llama request: " + responseText);
-			return responseText;
+			return responseText.TrimStart();
 		}
 		catch (Exception ex)
 		{

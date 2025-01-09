@@ -61,7 +61,7 @@ transform = Transform3D(0.258819, 0, 0.965926, 0, 1, 0, -0.965926, 0, 0.258819, 
 
 [node name="DicePos" type="Node3D" parent="Positions"]
 unique_name_in_owner = true
-transform = Transform3D(1, 0, 0, 0, -1, 8.74228e-08, 0, -8.74228e-08, -1, 15.8985, 15.1723, -17.7835)
+transform = Transform3D(-1, 8.74228e-08, 3.82137e-15, 0, -4.37114e-08, 1, 8.74228e-08, 1, 4.37114e-08, 14.0472, 19.2923, -17.7835)
 
 [node name="DiceThrower" parent="." instance=ExtResource("5_ng526")]
 transform = Transform3D(1, 0.000694493, 0.000161208, -0.000694531, 1, 0.000234317, -0.000161045, -0.000234429, 1, 13.943, 6.86846, -17.4995)

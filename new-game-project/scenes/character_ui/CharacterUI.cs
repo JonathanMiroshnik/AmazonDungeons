@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 
 public partial class CharacterUI : Control
@@ -19,7 +18,7 @@ public partial class CharacterUI : Control
 	public MarginContainer nextContainer;
 
 	// Reply to responses part
-	private MarginContainer replyContainer;
+	public MarginContainer replyContainer;
 	public TextEdit replyEdit;
 
 	// Called when the node enters the scene tree for the first time.
@@ -75,11 +74,6 @@ public partial class CharacterUI : Control
 		else {
 			replyEdit.Editable = false;
 		}
-	}
-
-	public void ActivatedReply(string response)
-	{
-		GD.Print("ReplyToResponse " + response);
 	}
 
 	public void ClearResponses()
@@ -140,6 +134,7 @@ public partial class CharacterUI : Control
 		await dialogueStateMachine.CurrentState.Action(dialogueStateMachine);
 	}
 
+	// The "next" button should activate the Action of the dialogue state machine to further the dialogue along
 	public async void _on_next_button_pressed() {
 		if (curDMResponse == null) return;
 		
@@ -153,6 +148,7 @@ public partial class CharacterUI : Control
 		await dialogueStateMachine.CurrentState.Action(dialogueStateMachine);
 	}
 
+	// When the replyEdit text input has text in it, the next button should show itself
 	public void _on_reply_edit_text_changed() {
 		if (replyEdit.Text.Length > 0) {
 			nextContainer.Visible = true;

@@ -233,4 +233,22 @@ public partial class LLMLibrary : Node
 
 		return retStr;
 	}
+
+	public static async Task<string> GameSummary() {
+		string allConvos = "";
+		foreach(Character character in GameManager.Instance.characters) {
+			allConvos += character.GetConversationHistory();
+		}
+
+		// Construct the input for the LLM
+		string input = DM_PREFIX + LLMLibrary.LOCATION_PREFIX + GameManager.Instance.worldDesc.location +
+						"The whole history of the conversations between the DM and the players are written here:\n " + 
+						allConvos + "\n Write an epic poem that will summarize the whole game that was played, according to all this data. " +
+						"\nWrite it up to 500 words.";
+
+		string retStr = await GameManager.AskLlama(input);
+		GD.Print("AI Game summary: " + retStr);
+
+		return retStr;
+	}
 }

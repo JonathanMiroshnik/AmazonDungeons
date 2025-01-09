@@ -83,4 +83,17 @@ public partial class Character : GameEntity
         // returns a string of a JSON representing the Character object
         return JsonSerializer.Serialize(this);
     }
+
+    public string GetConversationHistory() {
+        if (conversation == null) return "";
+        if (conversation.Count == 0) return "";
+
+        string retStr = "";
+
+        foreach (CharacterInteraction interaction in conversation) {
+            retStr += $"{interaction.responderGameEntity} reponds to {interaction.respondeeGameEntity}: " + $"{interaction}\n";
+        }
+
+        return retStr;
+    }
 }
