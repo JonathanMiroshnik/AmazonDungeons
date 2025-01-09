@@ -223,4 +223,14 @@ public partial class LLMLibrary : Node
 
 		return retStr;
 	}
+
+	public static async Task<string> AI_character_response(Character character, bool AfterDice, bool Victory) {
+		// Construct the input for the LLM
+		string input = LLMLibrary.ConstructLLMInput(false, false, true, character, true, AfterDice, Victory);
+
+		string retStr = await GameManager.AskLlama(input);
+		GD.Print("AI Character summary: " + retStr);
+
+		return retStr;
+	}
 }

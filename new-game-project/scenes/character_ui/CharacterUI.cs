@@ -123,20 +123,21 @@ public partial class CharacterUI : Control
 		// If the DM response requires a roll of the dice, it is performed
 		if (dmCharResponse.dmResponse.score > 0) {
 			diceContainer.Visible = true;
+			dialogueStateMachine.ChangeState(new DiceThrowing(curDMResponse));
 		}
 		else {
 			dialogueStateMachine.ChangeState(new ResponseDialogue(dmCharResponse));
 		}
 	}
 
-	public void _on_dice_button_pressed() {
+	public async void _on_dice_button_pressed() {
 		// TODO: null checks?
 		// TODO: how do we make sure that the curDMResponse is really the current one and not a previous one?
 
 		diceContainer.Visible = false;
 		Visible = false;
 
-		dialogueStateMachine.ChangeState(new DiceThrowing(curDMResponse));
+		await dialogueStateMachine.CurrentState.Action(dialogueStateMachine);
 	}
 
 	public async void _on_next_button_pressed() {

@@ -16,17 +16,16 @@ public partial class StartGame : GameState {
 	public void Enter(GameStateMachine gameStateMachine) {
 		GD.Print("Enter StartGame");
 
-		Action(gameStateMachine);
+		DoPrelude();
 		gameStateMachine.ChangeState(new DMDialogue(gameStateMachine.NextCharacter()));
 	}
 
 	public void Exit(GameStateMachine gameStateMachine) {
 		GD.Print("Exit StartGame");
 	}
+	
 	public void Action(GameStateMachine gameStateMachine) {
-		GD.Print("Action StartGame");
-
-		DoPrelude();
+		return;
 	}
 
 	public void DoPrelude() {
@@ -48,16 +47,14 @@ public partial class StartGame : GameState {
 	public void Enter(GameStateMachine gameStateMachine) {
 		GD.Print("Enter EndGame");
 
-		Action(gameStateMachine);
+		// TODO: make epic poem from game, display it
 	}
 
 	public void Exit(GameStateMachine gameStateMachine) {
 		GD.Print("Exit EndGame");
 	}
 	public void Action(GameStateMachine gameStateMachine) {
-		GD.Print("Action EndGame");
-
-		// TODO: make epic poem from game, display it
+		return;
 	}
 }
 
@@ -73,11 +70,20 @@ public partial class DMDialogue : GameState {
 		character = curCharacter;
 	}
 
-	public void Enter(GameStateMachine gameStateMachine) {
+	public async void Enter(GameStateMachine gameStateMachine) {
 		GD.Print("Enter DMDialogue");
 
 		dialogueStateMachine = new DialogueStateMachine(gameStateMachine, character);
-		Action(gameStateMachine);
+		
+		GD.Print("Action DMDialogue");
+		if (dialogueStateMachine == null) {
+			gameStateMachine.ChangeState(new EndGame());
+			return;
+		}
+		if (character == null) return;
+
+		await gameStateMachine.cameraMover.MoveCameraByNode3D(character.worldSpacePosition, GameStateMachine.TIME_TO_MOVE); // FIXME: magic number
+		dialogueStateMachine.ChangeState(new StartDialogue(gameStateMachine, dialogueStateMachine));
 	}
 
 	public void Exit(GameStateMachine gameStateMachine) {
@@ -96,16 +102,8 @@ public partial class DMDialogue : GameState {
 		}
 	}
 
-	public async void Action(GameStateMachine gameStateMachine) {
-		GD.Print("Action DMDialogue");
-		if (dialogueStateMachine == null) {
-			gameStateMachine.ChangeState(new EndGame());
-			return;
-		}
-		if (character == null) return;
-
-		await gameStateMachine.cameraMover.MoveCameraByNode3D(character.worldSpacePosition, GameStateMachine.TIME_TO_MOVE); // FIXME: magic number
-		dialogueStateMachine.ChangeState(new StartDialogue(gameStateMachine, dialogueStateMachine));
+	public void Action(GameStateMachine gameStateMachine) {
+		return;
 	}
 	
 }
@@ -196,6 +194,8 @@ public partial class GameStateMachine : Node
 		Character character = curCharacter;
 
 		for (int i = 0; i < TotalCharacters; i++) {
+			GD.Print(i);
+
 			Character checkChar = GameManager.Instance.characters[i];
 			if (checkChar != character) continue;
 

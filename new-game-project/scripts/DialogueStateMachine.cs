@@ -46,26 +46,25 @@ public partial class DiceThrowing : DialogueState {
     public DiceThrowerMechanism diceThrowerMechanism = null;
     public DMCharacterResponse dmCharacterResponse;
 
-    public DiceThrowing(DMCharacterResponse curDMCharacterResponse) {
+    public DiceThrowing(DMCharacterResponse curDMCharacterResponse) { // TODO: add number of dice to throw/win
         if (curDMCharacterResponse == null) throw new ArgumentException("Given DM Character Response for Dice Throwing is null");
         dmCharacterResponse = curDMCharacterResponse;
     }
 
-    public async void Enter(DialogueStateMachine dialogueStateMachine) {
+    public void Enter(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Enter DiceThrowing");
-
-        // Moving over to the dice
-        await dialogueStateMachine.gameStateMachine.cameraMover.MoveCameraByNode3D(dialogueStateMachine.gameStateMachine.DICE_POS, GameStateMachine.TIME_TO_MOVE);
-        await Action(dialogueStateMachine);
     }
 
-    public async void Exit(DialogueStateMachine dialogueStateMachine) {
+    public void Exit(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Exit DiceThrowing");
     }
 
     public async Task Action(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Action DiceThrowing");
         
+         // Moving over to the dice
+        await dialogueStateMachine.gameStateMachine.cameraMover.MoveCameraByNode3D(dialogueStateMachine.gameStateMachine.DICE_POS, GameStateMachine.TIME_TO_MOVE);
+
         // Throwing the dice
         dmCharacterResponse.ThrownDiceSuccess = await diceThrowerMechanism.PlayDice(6, 5); // FIXME: number of dice changes
         dmCharacterResponse.ThrownDice = true;
@@ -92,6 +91,14 @@ public partial class ResponseDialogue : DialogueState {
 
     public async void Enter(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Enter ResponseDialogue");
+
+        if (dmCharacterResponse.respondeeGameEntity.GameEntityType is GameEntityType.AI) {
+            string text = await LLMLibrary.AI_character_response(
+                (Character) dmCharacterResponse.respondeeGameEntity, dmCharacterResponse.ThrownDice, dmCharacterResponse.ThrownDiceSuccess);
+            
+            dialogueStateMachine.gameStateMachine.characterUI.replyEdit.Text = text;
+            dialogueStateMachine.gameStateMachine.characterUI.nextContainer.Visible = true;
+        }
     }
 
     public void Exit(DialogueStateMachine dialogueStateMachine) {
@@ -108,7 +115,7 @@ public partial class ResponseDialogue : DialogueState {
             return;
         }
 
-        await dialogueStateMachine.gameStateMachine.characterUI.AddResponse(text, dmCharacterResponse.responderGameEntity, false);
+        await dialogueStateMachine.gameStateMachine.characterUI.AddResponse(text, dmCharacterResponse.respondeeGameEntity, false);
 
         // FIXME: downcasting bad
 		if (dmCharacterResponse.respondeeGameEntity is Character) {	
@@ -129,27 +136,37 @@ public partial class ResponseDialogue : DialogueState {
     }
 
     private void DefaultChangeState(DialogueStateMachine dialogueStateMachine) {
-        dialogueStateMachine.ChangeState(new EndDialogue());
+        dialogueStateMachine.ChangeState(new EndDialogue(dmCharacterResponse.responderGameEntity, dmCharacterResponse.respondeeGameEntity));
     }
 }
 
 public partial class EndDialogue : DialogueState {
+    public GameEntity responder;
+    public Character respondee;
+    public EndDialogue(GameEntity gameEntity, GameEntity character) {
+        if (gameEntity == null) throw new ArgumentException("Given GameEntity for EndDialogue is null");
+        if (character == null) throw new ArgumentException("Given Character for EndDialogue is null");
+        if (character is not Character) throw new ArgumentException("Given Character for EndDialogue is not a Character");
+        responder = gameEntity;
+        respondee = (Character) character; // FIXME: downcasting bad
+    }
+
     public async void Enter(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Enter EndDialogue");
+
+        string text = await LLMLibrary.DM_response_summary(respondee);
+        await dialogueStateMachine.gameStateMachine.characterUI.AddResponse(text, responder, false);
     }
 
     public void Exit(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Exit EndDialogue");
-
-        dialogueStateMachine.gameStateMachine.ChangeState(new DMDialogue(dialogueStateMachine.gameStateMachine.NextCharacter()));
     }
 
     public async Task Action(DialogueStateMachine dialogueStateMachine) {
         GD.Print("Action EndDialogue");
 
         dialogueStateMachine.gameStateMachine.characterUI.Visible = false; // FIXME: too long!!
-
-        Exit(dialogueStateMachine);
+        dialogueStateMachine.gameStateMachine.ChangeState(new DMDialogue(dialogueStateMachine.gameStateMachine.NextCharacter(dialogueStateMachine.character)));
     }
 }
 
