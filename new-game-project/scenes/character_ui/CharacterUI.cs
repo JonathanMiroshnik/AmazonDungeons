@@ -16,6 +16,8 @@ public partial class CharacterUI : Control
 	private VBoxContainer vContainer;
 	private MarginContainer diceContainer;
 	public MarginContainer nextContainer;
+	public MarginContainer diceDescContainer;
+	public RichTextLabel diceDescLabel;
 
 	// Reply to responses part
 	public MarginContainer replyContainer;
@@ -37,6 +39,12 @@ public partial class CharacterUI : Control
 		if (replyContainer == null) throw new ArgumentException("Add ReplyContainer to the CharacterUI");
 		replyEdit = GetNode<TextEdit>("%ReplyEdit");
 		if (replyEdit == null) throw new ArgumentException("Add ReplyEdit to the CharacterUI");
+
+		// Dice description holder
+		diceDescContainer = GetNode<MarginContainer>("%DiceDescContainer");
+		if (diceDescContainer == null) throw new ArgumentException("Add DiceDescContainer to the CharacterUI");
+		diceDescLabel = GetNode<RichTextLabel>("%DiceRichLabel");
+		if (diceDescLabel == null) throw new ArgumentException("Add DiceRichLabel to the CharacterUI");
 	}
 
 	public async Task AddResponse(string response)

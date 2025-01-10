@@ -44,9 +44,13 @@ public partial class StartDialogue : DialogueState {
 public partial class DiceThrowing : DialogueState {
 	public Character character = null;
 	public DMCharacterResponse dmCharacterResponse;
+	public int numOfAttemptDice = 1;
+	public int numOfWinningDice = 1;
 
-	public DiceThrowing(DMCharacterResponse curDMCharacterResponse) { // TODO: add number of dice to throw/win
+	public DiceThrowing(DMCharacterResponse curDMCharacterResponse, int num_of_attempt_dice = 1, int num_of_victor_dice = 1) { // TODO: add number of dice to throw/win
 		if (curDMCharacterResponse == null) throw new ArgumentException("Given DM Character Response for Dice Throwing is null");
+		numOfWinningDice = num_of_victor_dice;
+		numOfAttemptDice = num_of_attempt_dice;
 		dmCharacterResponse = curDMCharacterResponse;
 	}
 
@@ -60,17 +64,32 @@ public partial class DiceThrowing : DialogueState {
 
 	public async Task Action(DialogueStateMachine dialogueStateMachine) {
 		GD.Print("Action DiceThrowing");
-		
+
 		 // Moving over to the dice
 		await dialogueStateMachine.gameStateMachine.cameraMover.MoveCameraByNode3D(dialogueStateMachine.gameStateMachine.DICE_POS, GameStateMachine.TIME_TO_MOVE);
 
+		// Indicating the start of the dice rolling
+		dialogueStateMachine.gameStateMachine.characterUI.diceDescContainer.Visible = true;
+		dialogueStateMachine.gameStateMachine.characterUI.diceDescLabel.Text = "Throwing " + numOfAttemptDice + " dice, " + numOfWinningDice + " of which must be above 4 or more";
+
 		// Throwing the dice
-		dmCharacterResponse.ThrownDiceSuccess = await dialogueStateMachine.gameStateMachine.diceThrowerMechanism.PlayDice(6, 5); // FIXME: number of dice changes
+		dmCharacterResponse.ThrownDiceSuccess = await dialogueStateMachine.gameStateMachine.diceThrowerMechanism.PlayDice(numOfAttemptDice, numOfWinningDice); // FIXME: number of dice changes
 		dmCharacterResponse.ThrownDice = true;
+
+		// Indicating the victory status of the completed dice roll
+		if (dmCharacterResponse.ThrownDiceSuccess) {
+			dialogueStateMachine.gameStateMachine.characterUI.diceDescLabel.Text = "You've won this dice roll!";
+		}
+		else {
+			dialogueStateMachine.gameStateMachine.characterUI.diceDescLabel.Text = "You've lost this dice roll!";
+		}
 
 		// Returning to the character that threw the dice
 		await dialogueStateMachine.gameStateMachine.cameraMover.MoveCameraByNode3D(dmCharacterResponse.respondeeGameEntity.worldSpacePosition, 
 																					GameManager.TIME_TO_MOVE_CAMERA_POSITIONS);
+
+		// Finished with the dice roll
+		dialogueStateMachine.gameStateMachine.characterUI.diceDescContainer.Visible = false;
 
 		// TODO: change to public function in CharacterUI, do this for all such long lines that depend on it.
 		// Move back to the Character

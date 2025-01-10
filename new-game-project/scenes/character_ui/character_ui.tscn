@@ -30,6 +30,17 @@ grow_vertical = 2
 [node name="VBoxContainer" type="VBoxContainer" parent="MainContainer"]
 layout_mode = 2
 
+[node name="DiceDescContainer" type="MarginContainer" parent="MainContainer/VBoxContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="DiceRichLabel" type="RichTextLabel" parent="MainContainer/VBoxContainer/DiceDescContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Dice needed: "
+fit_content = true
+
 [node name="VResponsesContainer" type="VBoxContainer" parent="MainContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
