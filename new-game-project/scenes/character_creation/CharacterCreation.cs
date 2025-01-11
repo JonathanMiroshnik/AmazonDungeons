@@ -30,8 +30,11 @@ public partial class CharacterCreation : Control
 		// Showing GameEntity Type
 		GetNode<Label>("%GameEntityType").Text = "Type: " + gameEntity.GameEntityType.ToString();
 
-		// Showing the prompt the character was created with
-		GetNode<TextEdit>("%PromptText").Text = gameEntity.CreationPrompt;
+		// Showing the personality of the game entity
+		GetNode<TextEdit>("%PersonalityText").Text = gameEntity.Personality;
+
+		// Showind the name of the game entity
+		GetNode<TextEdit>("%NameEdit").Text = gameEntity.Name;
 	}
 
 	public void _on_next_character_button_pressed() {
@@ -46,7 +49,10 @@ public partial class CharacterCreation : Control
 		if (GameManager.Instance.gameEntities.Count <= 0) return;
 
 		GameEntity gameEntity = GameManager.Instance.gameEntities[gameEntityIndex];
+
 		// TODO: save what is related solely to the GameEntity level of the object
+		gameEntity.Personality = GetNode<TextEdit>("%PersonalityText").Text;
+		gameEntity.Name = GetNode<TextEdit>("%NameEdit").Text;
 
 		if (gameEntity is not Character) return;
 		Character character = (Character) gameEntity;
@@ -56,12 +62,16 @@ public partial class CharacterCreation : Control
 		}
 	}
 
-	public void _on_randomize_character_button_pressed() {
+	public async void _on_randomize_character_button_pressed() {
 		if (GameManager.Instance.gameEntities.Count <= 0) return;
 
-		// TODO: change text of character prompt/create relevate text
-		// TODO: choose random values for attributes
-		// TODO: choose name	
+		GameEntityType curType = GameManager.Instance.gameEntities[gameEntityIndex].GameEntityType;
+		if (curType == GameEntityType.Player || curType == GameEntityType.DungeonMaster) return;
+
+		GameManager.Instance.gameEntities[gameEntityIndex] = await GameManager.Instance.CreateGameCharacter();
+		GameManager.Instance.gameEntities[gameEntityIndex].GameEntityType = curType;
+
+		ShowGameEntity(GameManager.Instance.gameEntities[gameEntityIndex]);
 	}
 
 	public void _on_start_button_pressed() {

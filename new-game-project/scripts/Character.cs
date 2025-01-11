@@ -11,7 +11,6 @@ public partial class Character : GameEntity
 	public Dictionary<CoreSkill, int> CoreSkills { get; set; }
 
 	// Character Lore
-	public string Personality { get; set; } = "";  // Contains personality/morality/history/goals
 	public string ShortenedDescription { get; set; } = "";
 
 	// Items
@@ -51,7 +50,7 @@ public partial class Character : GameEntity
 			}
 		}
 		
-		retStr += "Health Points: {HealthPoints}\nBase Dice Number: {BaseDiceNumber}\n";
+		retStr += $"Health Points: {HealthPoints}\nBase Dice Number: {BaseDiceNumber}\n";
 		
 		return retStr;
 	}

@@ -13,6 +13,7 @@ public partial class GameEntity : GodotObject
 	public GameEntityType GameEntityType { get; set; }
 	public string Name { get; set; }
 	public string CreationPrompt { get; set; }
+	public string Personality { get; set; }
 
 	// Camera position pointed at this GameEntity in the game
 	public Node3D worldSpacePosition;

@@ -9,6 +9,7 @@ using Amazon.BedrockRuntime;
 using Amazon.BedrockRuntime.Model;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Amazon.Runtime;
 
 
 public enum CoreSkill
@@ -50,6 +51,9 @@ public partial class GameManager : Node
 
 	// Other constants
 	public const float TIME_TO_MOVE_CAMERA_POSITIONS = 2f;
+	
+	// Used wherever a random value is needed in the project
+	public Random random = new Random();
 
 	[Signal]
 	public delegate void NextActionEventHandler();
@@ -110,16 +114,23 @@ public partial class GameManager : Node
 	}
 
 	public async Task<Character> CreateGameCharacter() {
-		string curCreationPrompt = "Write a Dungeons and Dragons character description.\n " + 
-									LLMLibrary.JSON_CHARACTER_CREATION_TYPE +
-									"The input in the categories are only string, not lists, not anything else.\n" +
-									"Don't write something long but make sure that the JSON is valid and closed properly.";
+		string curCreationPrompt = "Write a Dungeons and Dragons character description.\n ";
+
+		// Adding the previous characters into the creation consideration:
+		curCreationPrompt += "\nDo not create two character that are too similar. Characters that have been created so far:";
+		for (int i = 0; i < characters.Count; i++) {
+			curCreationPrompt += "\n" + characters[i].GetDescription();
+		}
+
+		// Adding JSON limits
+		curCreationPrompt += LLMLibrary.JSON_CHARACTER_CREATION_TYPE +
+								"The input in the categories are only string, not lists, not anything else.\n" +
+								"Don't write something long but make sure that the JSON is valid and closed properly.";
 
 		// create new character
 		string personalityTest = await AskLlama(curCreationPrompt,
 												0.5f, 1000);
 		personalityTest = GlobalStringLibrary.JSONStringBrackets(personalityTest);
-		// GD.Print(personalityTest);
 
 		var resultChar = JsonConvert.DeserializeObject<JSONCharacter>(personalityTest);
 
@@ -127,7 +138,18 @@ public partial class GameManager : Node
 		var personality = resultChar.personality;
 		var shortDesc = resultChar.shortdesc;
 		
-		Character character = new Character(charName, personality, shortDesc, curCreationPrompt, 2);
+		// Creating random stats for the character
+		int totalPoints = 2;
+		int strength = random.Next(0, 2);
+		totalPoints -= strength;
+
+		int reflex = random.Next(0, totalPoints);
+		totalPoints -= reflex;
+		
+		int intelligence = totalPoints;
+
+		// Creating the character and adding it to the total
+		Character character = new Character(charName, personality, shortDesc, curCreationPrompt, strength, reflex, intelligence);
 		gameEntities.Add(character);
 		characters.Add(character);
 
@@ -226,7 +248,8 @@ public partial class GameManager : Node
 			prompt = formattedPrompt,
 			
 			// Optional: Configure inference parameters
-			temperature = temperature,
+			
+			temperature = temperature + (GameManager.Instance.random.NextSingle()/100),
 			max_gen_len = max_gen_len
 		});
 

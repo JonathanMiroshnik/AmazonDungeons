@@ -40,20 +40,16 @@ public partial class Dice : RigidBody3D
 
 	public void PaintDice(Color color) {
 		Node3D DiceMesh = GetNodeOrNull<Node3D>("%DiceMesh");
-		GD.Print("e1");
 		if (DiceMesh == null) return;
 		
 		MeshInstance3D mesh = DiceMesh.GetNode<MeshInstance3D>("Cube");
-		GD.Print("e2");
 		if (mesh == null) return;
 
 		StandardMaterial3D material = (StandardMaterial3D)mesh.GetActiveMaterial(0);//GetSurfaceOverrideMaterial(0);
 		mesh.SetSurfaceOverrideMaterial(0, (StandardMaterial3D) material.Duplicate());
 		material = (StandardMaterial3D)mesh.GetActiveMaterial(0);//GetSurfaceOverrideMaterial(0);
-		GD.Print("e3");
 		if (material == null) return;
 
-		GD.Print("e4");
 		material.AlbedoColor = color;
 	}
 }

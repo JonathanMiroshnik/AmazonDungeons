@@ -124,8 +124,15 @@ public partial class CharacterUI : Control
 
 		// If the DM response requires a roll of the dice, it is performed
 		if (dmCharResponse.dmResponse.score > 0) {
+			// FIXME: downcasting and stuff and above character condition already
+			Character character = (Character) dmCharResponse.respondeeGameEntity;
+
+			GD.Print("Dice score needed: " + dmCharResponse.dmResponse.score);
+
 			diceContainer.Visible = true;
-			dialogueStateMachine.ChangeState(new DiceThrowing(curDMResponse));
+			replyContainer.Visible = false;
+			dialogueStateMachine.ChangeState(new DiceThrowing(curDMResponse, character.BaseDiceNumber /* TODO: add core skills here*/,
+																		 dmCharResponse.dmResponse.score));
 		}
 		else {
 			dialogueStateMachine.ChangeState(new ResponseDialogue(dmCharResponse));
@@ -141,6 +148,8 @@ public partial class CharacterUI : Control
 
 		await dialogueStateMachine.CurrentState.Action(dialogueStateMachine);
 	}
+
+	// TODO: connect dice and next buttons into one "action" button
 
 	// The "next" button should activate the Action of the dialogue state machine to further the dialogue along
 	public async void _on_next_button_pressed() {

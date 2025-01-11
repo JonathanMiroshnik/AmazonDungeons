@@ -78,7 +78,7 @@ public partial class LLMLibrary : Node
 	public static string WORLD_CREATION = "Create a Dungeons and Dragons game world, with city names, geographical features, etc.\n ";
 	public static string REWRITE_WORLD_SUM = "Summarizes the following description of a fantasy Dungeons and Dragons style " + 
 										"world so that it contains all the relevant information and is easily understandable.\n ";
-	public static string CHARACTER_DM_HISTORY_PREFIX = "The following is a chat history between you and the character you are responding to:\n ";
+	public static string CHARACTER_DM_HISTORY_PREFIX = "The following is a chat history between you and the character you are responding to(notice that it also contains the actions that were successful/failed):\n ";
 	public static string PARTY_TOGETHER = "The heroes are partied together and always move together in the game world.\n ";
 
 	public static string DESCRIBE_FOLLOWING_CHARACTER = "Shortly describe the following character to the rest of the party:\n ";
@@ -190,6 +190,8 @@ public partial class LLMLibrary : Node
 		// TODO: maybe short/moderated length responses should be regulated a different way?
 		retStr += "\nWrite a short response of up to 100 words.";
 
+		GD.Print("LLM input:\n " + retStr + "\n\n");
+
 		return retStr;
 	}
 
@@ -230,6 +232,21 @@ public partial class LLMLibrary : Node
 
 		string retStr = await GameManager.AskLlama(input);
 		GD.Print("AI Character summary: " + retStr);
+
+		return retStr;
+	}
+
+	public static async Task<string> PersonalitySummary(Character character) {
+		// Construct the input for the LLM
+		// string input = LLMLibrary.ConstructLLMInput(false, false, true, character, true, AfterDice, Victory);
+		string input = "Given a Dungeons and Dragons character's personality, goals, history, etc. " + 
+						"I want a shorter description of it. Make sure to only write the short description and don't comment on it beyond that. " +
+						"Here is the full description:\n" + character.Personality;
+
+		string retStr = await GameManager.AskLlama(input);
+		character.ShortenedDescription = retStr;
+
+		GD.Print("Character short description: " + retStr);
 
 		return retStr;
 	}
