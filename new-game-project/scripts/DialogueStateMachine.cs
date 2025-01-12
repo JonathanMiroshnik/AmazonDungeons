@@ -30,7 +30,16 @@ public partial class StartDialogue : DialogueState {
 		resp.responderGameEntity = GameManager.Instance.DungeonMaster;
 		resp.respondeeGameEntity = dialogueStateMachine.character;
 
-		await dialogueStateMachine.gameStateMachine.characterUI.DoDMConversation(resp);
+		dialogueStateMachine.gameStateMachine.characterUI.curDMResponse = resp;
+
+		// await dialogueStateMachine.gameStateMachine.characterUI.DoDMConversation(resp);
+
+		string text = await LLMLibrary.DM_response_summary((Character) resp.respondeeGameEntity);
+		await dialogueStateMachine.gameStateMachine.characterUI.AddResponse(text, resp.responderGameEntity, false);
+		dialogueStateMachine.gameStateMachine.characterUI.ReplyToggle(true);
+		// dialogueStateMachine.gameStateMachine.characterUI.nextContainer.Visible = true;
+
+		dialogueStateMachine.ChangeState(new ResponseDialogue(resp));
 	}
 
 	public void Exit(DialogueStateMachine dialogueStateMachine) {
@@ -130,7 +139,7 @@ public partial class ResponseDialogue : DialogueState {
 		// We take the reply text input
 		string text = dialogueStateMachine.gameStateMachine.characterUI.replyEdit.Text;
 		if (text.Length <= 0) {
-			DefaultChangeState(dialogueStateMachine);
+			dialogueStateMachine.ChangeState(new EndDialogue(dmCharacterResponse.responderGameEntity, dmCharacterResponse.respondeeGameEntity));
 			return;
 		}
 
@@ -148,13 +157,50 @@ public partial class ResponseDialogue : DialogueState {
 			characterInteraction.text = text;
 
 			character.conversation.Add(characterInteraction);
+
+			JSONRiskAction riskAction = await LLMLibrary.ActionCategorization(character, text); // TODO: delete!
+			if (riskAction != null) {
+				bool isRisk = riskAction.isRisk();
+				int neededDice = riskAction.getDice(); 
+				GD.Print("Risk action: " + isRisk + " Dice: " + neededDice);
+
+				if (isRisk && neededDice > 0) {
+					dialogueStateMachine.gameStateMachine.characterUI.diceContainer.Visible = true;
+					dialogueStateMachine.ChangeState(new DiceThrowing(dmCharacterResponse, character.BaseDiceNumber, neededDice));
+					return;
+				}
+			}
 		}
 
-		// After showing the summary response, we switch to the final dialogue
-		DefaultChangeState(dialogueStateMachine);
-	}
+		// // Asking the DM for a response to the player text input
+		// JSONDMResponse result = await LLMLibrary.DM_response((Character) dmCharacterResponse.respondeeGameEntity); // FIXME: bad downcasting thing
+		// dmCharacterResponse.dmResponse = result;
 
-	private void DefaultChangeState(DialogueStateMachine dialogueStateMachine) {
+		// await dialogueStateMachine.gameStateMachine.characterUI.AddResponse(dmCharacterResponse.dmResponse.text, dmCharacterResponse.responderGameEntity); // FIXME: downcasting
+
+		// // TODO: maybe conversations should be attached to GameEntity?
+		// if (dmCharacterResponse.respondeeGameEntity is Character) {
+		// 	Character character = (Character) dmCharacterResponse.respondeeGameEntity;
+		// 	dmCharacterResponse.text = result.text; // FIXME: this is a distinct problem with the heirarchy of JSON and text stuff
+		// 	character.conversation.Add(dmCharacterResponse);
+		// }
+
+		// If the DM response requires a roll of the dice, it is performed
+		// if (dmCharacterResponse.dmResponse.score > 0) {
+		// 	// FIXME: downcasting and stuff and above character condition already
+		// 	Character character = (Character) dmCharacterResponse.respondeeGameEntity;
+
+		// 	GD.Print("Dice score needed: " + dmCharacterResponse.dmResponse.score);
+
+		// 	dialogueStateMachine.gameStateMachine.characterUI.diceContainer.Visible = true;
+		// 	dialogueStateMachine.gameStateMachine.characterUI.replyContainer.Visible = false;
+		// 	dialogueStateMachine.ChangeState(new DiceThrowing(dmCharacterResponse, character.BaseDiceNumber /* TODO: add core skills here*/,
+		// 																 dmCharacterResponse.dmResponse.score));
+		// }
+		// else {
+		// 	dialogueStateMachine.ChangeState(new EndDialogue(dmCharacterResponse.responderGameEntity, dmCharacterResponse.respondeeGameEntity));
+		// }
+
 		dialogueStateMachine.ChangeState(new EndDialogue(dmCharacterResponse.responderGameEntity, dmCharacterResponse.respondeeGameEntity));
 	}
 }
@@ -175,7 +221,6 @@ public partial class EndDialogue : DialogueState {
 
 		string text = await LLMLibrary.DM_response_summary(respondee);
 		await dialogueStateMachine.gameStateMachine.characterUI.AddResponse(text, responder, false);
-
 		dialogueStateMachine.gameStateMachine.characterUI.nextContainer.Visible = true;
 	}
 

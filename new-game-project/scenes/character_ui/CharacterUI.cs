@@ -14,7 +14,7 @@ public partial class CharacterUI : Control
 	public DMCharacterResponse curDMResponse;
 
 	private VBoxContainer vContainer;
-	private MarginContainer diceContainer;
+	public MarginContainer diceContainer;
 	public MarginContainer nextContainer;
 	public MarginContainer diceDescContainer;
 	public RichTextLabel diceDescLabel;
@@ -154,10 +154,6 @@ public partial class CharacterUI : Control
 	// The "next" button should activate the Action of the dialogue state machine to further the dialogue along
 	public async void _on_next_button_pressed() {
 		if (curDMResponse == null) return;
-		
-		if (curDMResponse.dmResponse.score > 0) {
-			if (!curDMResponse.ThrownDice) return;
-		}
 
 		replyContainer.Visible = false;
 		nextContainer.Visible = false;

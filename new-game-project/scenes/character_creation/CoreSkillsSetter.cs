@@ -27,7 +27,6 @@ public partial class CoreSkillsSetter : MarginContainer
 		if (points_used >= TotalPoints) {
 			foreach (SkillContainer skillContainer in skillContainers) {
 				skillContainer.allowAddition = false;
-				GD.Print("hh");
 			}
 		}
 

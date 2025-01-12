@@ -132,11 +132,13 @@ public partial class GameManager : Node
 												0.5f, 1000);
 		personalityTest = GlobalStringLibrary.JSONStringBrackets(personalityTest);
 
-		var resultChar = JsonConvert.DeserializeObject<JSONCharacter>(personalityTest);
+		GD.Print(personalityTest);
 
-		var charName = resultChar.name;
-		var personality = resultChar.personality;
-		var shortDesc = resultChar.shortdesc;
+		JSONCharacter resultChar = JsonConvert.DeserializeObject<JSONCharacter>(personalityTest);
+
+		string charName = resultChar.name;
+		string personality = resultChar.personality;
+		string shortDesc = resultChar.shortdesc;
 		
 		// Creating random stats for the character
 		int totalPoints = 2;

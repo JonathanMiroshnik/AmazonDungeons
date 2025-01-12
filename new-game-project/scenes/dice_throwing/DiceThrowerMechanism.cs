@@ -40,7 +40,7 @@ public partial class DiceThrowerMechanism : Node3D
 		ResetDice();
 		int final = await ThrowDice();
 
-		GD.Print("FINAL " + final.ToString());
+		GD.Print("FINAL " + final.ToString()); // TODO: delete
 	}
 
 	// Deletes the currently existing dice

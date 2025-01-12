@@ -2,6 +2,8 @@ using Godot;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System;
+using Newtonsoft.Json.Serialization;
+using System.Diagnostics.Tracing;
 
 // TODO: maybe askllama and other LLM access functions should be here with the prompts? GameManager only to manage game specifically??
 
@@ -70,8 +72,8 @@ public partial class LLMLibrary : Node
 
 
 	// TODO: organize and comment on all below
-	public static string CURRENT_CHARACTER_PREFIX = "The current character you are responding to is:\n ";
-	public static string LOCATION_PREFIX = "The hero party is currently in:\n ";
+	public static string CURRENT_CHARACTER_PREFIX = "\n\nThe current character you are responding to is:\n ";
+	public static string LOCATION_PREFIX = "\n\nThe hero party is currently in:\n ";
 
 	// NOTICE: when it is short text responses, it doesn't do anything creative enough(often only one big tag), so use this for long strings of text output
 
@@ -190,7 +192,7 @@ public partial class LLMLibrary : Node
 		// TODO: maybe short/moderated length responses should be regulated a different way?
 		retStr += "\nWrite a short response of up to 100 words.";
 
-		GD.Print("LLM input:\n " + retStr + "\n\n");
+		// GD.Print("LLM input:\n " + retStr + "\n\n");
 
 		return retStr;
 	}
@@ -211,7 +213,7 @@ public partial class LLMLibrary : Node
 			return await DM_response(character);
 		}
 
-		GD.Print("DM Response: " + result.text + " Dice number: " + result.score);
+		// GD.Print("DM Response: " + result.text + " Dice number: " + result.score);
 
 		return result;
 	}
@@ -221,7 +223,7 @@ public partial class LLMLibrary : Node
 		string input = LLMLibrary.ConstructLLMInput(true, false, false, character, true);
 
 		string retStr = await GameManager.AskLlama(input);
-		GD.Print("DM summary: " + retStr);
+		// GD.Print("DM summary: " + retStr);
 
 		return retStr;
 	}
@@ -231,7 +233,7 @@ public partial class LLMLibrary : Node
 		string input = LLMLibrary.ConstructLLMInput(false, false, true, character, true, AfterDice, Victory);
 
 		string retStr = await GameManager.AskLlama(input);
-		GD.Print("AI Character summary: " + retStr);
+		// GD.Print("AI Character summary: " + retStr);
 
 		return retStr;
 	}
@@ -246,7 +248,7 @@ public partial class LLMLibrary : Node
 		string retStr = await GameManager.AskLlama(input);
 		character.ShortenedDescription = retStr;
 
-		GD.Print("Character short description: " + retStr);
+		// GD.Print("Character short description: " + retStr);
 
 		return retStr;
 	}
@@ -264,8 +266,36 @@ public partial class LLMLibrary : Node
 						"\nWrite it up to 500 words.";
 
 		string retStr = await GameManager.AskLlama(input);
-		GD.Print("AI Game summary: " + retStr);
+		// GD.Print("AI Game summary: " + retStr);
 
 		return retStr;
+	}
+
+	public static async Task<JSONRiskAction> ActionCategorization(Character character, string characterResponse) {
+		// Construct the input for the LLM
+		string input = ConstructLLMInput(false, false, false, character, true);
+
+		input = "We are running a Dungeons and Dragons style game, " +
+				"We want you to learn of the game and analyze certain things about it through the last given player response.\n "+
+				" this is the current status/properties of the game:\n" + input;
+		input += "\n\nGiven the following message, we want you to return a JSON(in text) and only a JSON without any further commentary\n" +
+				"The JSON will have two categories, the first category called risk will be a boolean with value true/false," +
+				" it will be true if the response from the player describes an action with a risk" + 
+				" and it'll be false otherwise.\n the second category called dice will be an integer between 1 and 8 where a "+ 
+				"lower number indicates a lower risk in the taken action(by the player), notice that the most common risk is on the lower end of the given integer range.\n";
+		input += "\n\nThe message from the current player that you must analyze:\n" + characterResponse;
+
+		string retStr = await GameManager.AskLlama(input);
+
+
+		JSONRiskAction result;
+		try {
+			result = JsonConvert.DeserializeObject<JSONRiskAction>(retStr);
+		}
+		catch (Exception e) {
+			return null;
+		}
+
+		return result;
 	}
 }
