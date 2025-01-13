@@ -28,7 +28,7 @@ public partial class CharacterCreation : Control
 		}
 
 		// Showing GameEntity Type
-		GetNode<Label>("%GameEntityType").Text = "Type: " + gameEntity.GameEntityType.ToString();
+		GetNode<Label>("%GameEntityType").Text = "Type: \n" + gameEntity.GameEntityType.ToString();
 
 		// Showing the personality of the game entity
 		GetNode<TextEdit>("%PersonalityText").Text = gameEntity.Personality;

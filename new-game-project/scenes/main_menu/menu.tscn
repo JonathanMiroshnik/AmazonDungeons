@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://dlge21n36tbmn"]
+[gd_scene load_steps=18 format=3 uid="uid://dlge21n36tbmn"]
 
 [ext_resource type="Script" path="res://scenes/main_menu/Menu.cs" id="1_woop4"]
 [ext_resource type="Texture2D" uid="uid://c7j6xj5mhrroi" path="res://models/2D/SplashScreen.png" id="2_q1oh0"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://cjgb7fkcybko" path="res://models/2D/Button.png" id="3_x77jj"]
 [ext_resource type="Texture2D" uid="uid://c4go0ggknants" path="res://models/2D/Button_disabled.png" id="4_uxakj"]
 [ext_resource type="Texture2D" uid="uid://1jfapd21k8cs" path="res://models/2D/Button_hover.png" id="5_ep7ga"]
+[ext_resource type="Texture2D" uid="uid://bhy6ljqr1s7jc" path="res://models/2D/Button_Activating.png" id="6_sdsib"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_xgrmf"]
 font_size = 90
@@ -19,6 +20,9 @@ texture = ExtResource("4_uxakj")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_imhol"]
 texture = ExtResource("5_ep7ga")
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_qadfc"]
+texture = ExtResource("6_sdsib")
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mtcn8"]
 texture = ExtResource("3_x77jj")
 axis_stretch_horizontal = 2
@@ -29,6 +33,9 @@ base_font = ExtResource("3_se7yn")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6gs2c"]
 texture = ExtResource("5_ep7ga")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_ji5ni"]
+texture = ExtResource("6_sdsib")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5i301"]
 texture = ExtResource("3_x77jj")
@@ -108,6 +115,7 @@ theme_override_constants/outline_size = 2
 theme_override_fonts/font = SubResource("FontVariation_qdwoq")
 theme_override_styles/disabled = SubResource("StyleBoxTexture_dmcp7")
 theme_override_styles/hover = SubResource("StyleBoxTexture_imhol")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_qadfc")
 theme_override_styles/normal = SubResource("StyleBoxTexture_mtcn8")
 disabled = true
 text = "Play Game"
@@ -119,6 +127,7 @@ theme_override_colors/font_outline_color = Color(0.0745098, 0.00392157, 0, 0.847
 theme_override_constants/outline_size = 2
 theme_override_fonts/font = SubResource("FontVariation_6n3pu")
 theme_override_styles/hover = SubResource("StyleBoxTexture_6gs2c")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_ji5ni")
 theme_override_styles/normal = SubResource("StyleBoxTexture_5i301")
 text = "Exit"
 
