@@ -221,7 +221,7 @@ public partial class GameManager : Node
 
 		// Choose your model ID. Supported models can be found at:
 		// https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference-supported-models-features.html
-		const string modelId = "meta.llama3-8b-instruct-v1:0";
+		const string modelId = "meta.llama3-70b-instruct-v1:0"; // "meta.llama3-8b-instruct-v1:0";
 
 		//-------------------
 		// 2. Client Setup

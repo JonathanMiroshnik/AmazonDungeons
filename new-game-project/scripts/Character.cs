@@ -17,7 +17,6 @@ public partial class Character : GameEntity
 
 	// Character Base Aspects
 	public int HealthPoints { get; set; } = 8;
-	public int BaseDiceNumber { get; set; } = 3;
 
 	// Includes all the conversations between the character and the others(specifically the DM) in chronological order
 	public List<CharacterInteraction> conversation = new List<CharacterInteraction>();
@@ -50,7 +49,7 @@ public partial class Character : GameEntity
 			}
 		}
 		
-		retStr += $"Health Points: {HealthPoints}\nBase Dice Number: {BaseDiceNumber}\n";
+		retStr += $"Health Points: {HealthPoints}\n";
 		
 		return retStr;
 	}
