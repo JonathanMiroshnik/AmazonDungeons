@@ -45,8 +45,7 @@ public partial class StartGame : GameState {
 		await gameStateMachine.cameraMover.MoveCameraByNode3D(GameManager.Instance.characters[0].worldSpacePosition, 
 																GameStateMachine.TIME_TO_MOVE);
 
-		// TODO: move this to final scene of summary? and end credits?
-		GD.Print(LLMLibrary.GameSummary());
+		GameManager.Instance.SceneChange("res://scenes/end_scene/end_ui.tscn");
 	}
 
 	public void Exit(GameStateMachine gameStateMachine) {
@@ -119,7 +118,7 @@ public partial class GameStateMachine : Node
 
 	// Total number of rounds in the game
 	[Export]
-	public int NumberOfRounds = 5;
+	public int NumberOfRounds = 1;
 	public int CurrentRound = 0;
 
 	// Current character index that is in dialogue with the DM

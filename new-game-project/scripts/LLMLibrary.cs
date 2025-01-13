@@ -273,12 +273,53 @@ public partial class LLMLibrary : Node
 		string input = DM_PREFIX + LLMLibrary.LOCATION_PREFIX + GameManager.Instance.worldDesc.location +
 						"The whole history of the conversations between the DM and the players are written here:\n " + 
 						allConvos + "\n Write an epic poem that will summarize the whole game that was played, according to all this data. " +
+						"Only write the poem without any further commentary\n" +
 						"\nWrite it up to 500 words.";
-
+ 
 		string retStr = await GameManager.AskLlama(input);
 		// GD.Print("AI Game summary: " + retStr);
 
 		return retStr;
+	}
+
+	public static async Task<string> GameSummaryJSON() {
+		string allConvos = "";
+		foreach(Character character in GameManager.Instance.characters) {
+			allConvos += character.GetConversationHistory();
+		}
+
+		// Construct the input for the LLM
+		string input = DM_PREFIX + LLMLibrary.LOCATION_PREFIX + GameManager.Instance.worldDesc.location +
+						"The whole history of the conversations between the DM and the players are written here:\n " + 
+						allConvos + "\n Write an epic poem that will summarize the whole game that was played, according to all this data. " +
+						"write it as a JSON file, it holds two categories, the first text, which will hold the poem, the second name, which will represent the name of the song, which is related to its content.\n" +
+						"write only the JSON file without any further commentary." +
+						"\nWrite it up to 500 words.";
+ 
+		string retStr = await GameManager.AskLlama(input);
+		// GD.Print("AI Game summary: " + retStr);
+
+		return retStr;
+	}
+
+	public static async Task<string> GameSeparatedSummary() {
+		// Construct the input for the LLM
+		string input = await LLMLibrary.GameSummary();
+		input += "Take the poem and separate each stanza where the each odd numbered stanza will start with the [right] tag and end with the [/right] tag. "+
+				"the even numbered stanzas will be left unchanged.\n "+ 
+				"Make sure that you only write the modified poem without further commentary";
+
+		string retStr = await GameManager.AskLlama(input);
+
+		string result;
+		try {
+			result = JsonConvert.DeserializeObject<string>(retStr);
+		}
+		catch (Exception e) {
+			return null;
+		}
+
+		return result;
 	}
 
 	public static async Task<JSONRiskAction> ActionCategorization(Character character, string characterResponse) {

@@ -173,6 +173,8 @@ public partial class GameManager : Node
 			await Task.Delay(1000);
 		}
 
+		GD.Print("wew");
+
 		return true;
 	}
 
@@ -205,6 +207,10 @@ public partial class GameManager : Node
 		}
 	}
 
+	public void SceneChange(string path) {
+		GetTree().ChangeSceneToFile(path);
+	}
+
 	public static async Task<string> AskLlama(string prompt, float temperature = 0.5f, int max_gen_len = 500)
 	{
 		// return "";
@@ -221,7 +227,7 @@ public partial class GameManager : Node
 
 		// Choose your model ID. Supported models can be found at:
 		// https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference-supported-models-features.html
-		const string modelId = "meta.llama3-70b-instruct-v1:0"; // "meta.llama3-8b-instruct-v1:0";
+		const string modelId = "meta.llama3-8b-instruct-v1:0";//"meta.llama3-70b-instruct-v1:0"; // "meta.llama3-8b-instruct-v1:0";
 
 		//-------------------
 		// 2. Client Setup
