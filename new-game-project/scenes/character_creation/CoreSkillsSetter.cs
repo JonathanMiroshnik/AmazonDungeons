@@ -11,15 +11,15 @@ public partial class CoreSkillsSetter : MarginContainer
 	public int TotalPoints = 2;
 	private int points_used = 0;
 
-	// private int strength_points = 0;
-	// private int reflex_points = 0;
-	// private int intelligence_points = 0;
-
-	public override void _Ready() {
+	public override async void _Ready() {
+		await GameManager.Instance.IsLoaded();
 		if (skillContainers == null) return; // FIXME: raise error, also check by length?
 	}
 
 	public void _on_add_button_pressed() {
+		GD.Print("points: " + points_used);
+		GD.Print("total: " + TotalPoints);
+
 		if (points_used < TotalPoints) {
 			points_used++;
 		}
@@ -30,17 +30,24 @@ public partial class CoreSkillsSetter : MarginContainer
 			}
 		}
 
+		CharacterCreation CC = (CharacterCreation) GetTree().Root.GetChild(0);
+		CC.ShowGameEntity(CC.GetGameEntity());
+
 		// Test print of skill levels
 		// var lines = GetAllSkillLevels().Select(kvp => kvp.Key + ": " + kvp.Value.ToString());
 		// GD.Print(string.Join("\n", lines));
 	}
 
 	public void SetSkillsByCharacter(Character character) {
+		GD.Print("points: " + points_used);
+		GD.Print("total: " + TotalPoints);
+
 		int curPoints;
 		points_used = 0;
 
 		foreach (var container in skillContainers) {
 			curPoints = character.CoreSkills[container.coreSkill];
+			coreSkills[container.coreSkill] = curPoints;
 			// GD.Print(curPoints);
 			container.SetPoints(curPoints);
 			points_used += curPoints;
@@ -51,9 +58,15 @@ public partial class CoreSkillsSetter : MarginContainer
 				skillContainer.allowAddition = false;
 			}
 		}
+
+		CharacterCreation CC = (CharacterCreation) GetTree().Root.GetChild(0);
+		CC.ShowGameEntity(CC.GetGameEntity());
 	}
 
 	public void _on_subtract_button_pressed() {
+		GD.Print("points: " + points_used);
+		GD.Print("total: " + TotalPoints);
+
 		if (points_used <= 0) return;
 
 		foreach (SkillContainer skillContainer in skillContainers) {
@@ -61,6 +74,9 @@ public partial class CoreSkillsSetter : MarginContainer
 		}
 		
 		points_used--;
+
+		CharacterCreation CC = (CharacterCreation) GetTree().Root.GetChild(0);
+		CC.ShowGameEntity(CC.GetGameEntity());
 	}
 
 	public Dictionary<CoreSkill, int> GetAllSkillLevels() {
@@ -73,6 +89,9 @@ public partial class CoreSkillsSetter : MarginContainer
 				}
 			}
 		}
+
+		CharacterCreation CC = (CharacterCreation) GetTree().Root.GetChild(0);
+		CC.ShowGameEntity(CC.GetGameEntity());
 
 		return allSkillLevels;
 	}

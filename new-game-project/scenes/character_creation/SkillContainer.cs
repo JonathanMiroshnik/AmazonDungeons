@@ -27,7 +27,9 @@ public partial class SkillContainer : MarginContainer
 	[Signal]
 	public delegate void SubtractLevelEventHandler();
 
-	public override void _Ready() {
+	public override async void _Ready() {
+		await GameManager.Instance.IsLoaded();
+
 		// Number of levels must be positive int
 		if (NumberOfLevels <= 0) return;
 

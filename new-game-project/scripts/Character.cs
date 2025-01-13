@@ -37,6 +37,18 @@ public partial class Character : GameEntity
 		};
 	}
 
+	public Dictionary<CoreSkill, int> SetCoreSkills(int strength = 0, int reflex = 0, int intelligence = 0)
+	{
+		CoreSkills = new Dictionary<CoreSkill, int>
+		{
+			{ CoreSkill.Strength, strength },
+			{ CoreSkill.Reflex, reflex },
+			{ CoreSkill.Intelligence, intelligence }
+		};
+
+		return CoreSkills;
+	}
+
 	// Gets a full description of the Character
 	public string GetDescription()
 	{

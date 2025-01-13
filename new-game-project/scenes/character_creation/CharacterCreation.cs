@@ -10,9 +10,16 @@ public partial class CharacterCreation : Control
 
 	// TODO: when do the characters get created really? is the character creation screen just a character "editing" screen? 
 	//  same num of characters always?
-	public override void _Ready() {
+	public override async void _Ready() {
+		await GameManager.Instance.IsLoaded();
+
 		if (GameManager.Instance.gameEntities.Count <= 0) return; // TODO: raise error?
 		ShowGameEntity(GameManager.Instance.gameEntities[gameEntityIndex]);
+	}
+
+	public GameEntity GetGameEntity() {
+		if (GameManager.Instance.gameEntities.Count <= 0) return null;
+		return GameManager.Instance.gameEntities[gameEntityIndex];
 	}
 
 	public void ShowGameEntity(GameEntity gameEntity) {
@@ -42,6 +49,7 @@ public partial class CharacterCreation : Control
 
 		gameEntityIndex++;
 		gameEntityIndex %= GameManager.Instance.gameEntities.Count;
+
 		ShowGameEntity(GameManager.Instance.gameEntities[gameEntityIndex]);
 	}
 
@@ -60,6 +68,8 @@ public partial class CharacterCreation : Control
 		foreach (var container in coreSkillsSetter.skillContainers) {
 			character.CoreSkills[container.coreSkill] = container.skillPoints;
 		}
+
+		ShowGameEntity(gameEntity);
 	}
 
 	public async void _on_randomize_character_button_pressed() {
@@ -68,10 +78,37 @@ public partial class CharacterCreation : Control
 		GameEntityType curType = GameManager.Instance.gameEntities[gameEntityIndex].GameEntityType;
 		if (curType == GameEntityType.Player || curType == GameEntityType.DungeonMaster) return;
 
-		GameManager.Instance.gameEntities[gameEntityIndex] = await GameManager.Instance.CreateGameCharacter();
+		GameManager.Instance.gameEntities[gameEntityIndex] = null;
+		GameManager.Instance.gameEntities[gameEntityIndex].GameEntityType = curType;
+
+		Character newCharacter = await GameManager.Instance.CreateGameCharacter();
+		GameManager.Instance.gameEntities[gameEntityIndex] = newCharacter;
+
+		int checker = indInCharacters();
+		if (checker > -1) {
+			GameManager.Instance.characters[checker] = null;
+			GameManager.Instance.characters[checker] = newCharacter;
+		}
+
 		GameManager.Instance.gameEntities[gameEntityIndex].GameEntityType = curType;
 
 		ShowGameEntity(GameManager.Instance.gameEntities[gameEntityIndex]);
+	}
+
+	private int indInCharacters() {
+		int indInCharacters = -1;
+		foreach (var GE in GameManager.Instance.gameEntities) {
+			if (GE is Character) {
+				foreach (var character in GameManager.Instance.characters) {
+					if (character == GE) {
+						indInCharacters = GameManager.Instance.characters.IndexOf(character);
+						break;
+					}
+				}
+			}
+		}
+
+		return indInCharacters;
 	}
 
 	public void _on_start_button_pressed() {
