@@ -1,7 +1,38 @@
-[gd_scene load_steps=3 format=3 uid="uid://dqyvcyelmjhed"]
+[gd_scene load_steps=16 format=3 uid="uid://dqyvcyelmjhed"]
 
 [ext_resource type="PackedScene" uid="uid://bfwgur1hbvjyv" path="res://scenes/character_ui/full_response_container.tscn" id="1_amya3"]
 [ext_resource type="Script" path="res://scenes/character_ui/CharacterUI.cs" id="1_gq6wj"]
+[ext_resource type="FontFile" uid="uid://dopwki03y3cic" path="res://models/Fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf" id="3_lfxw8"]
+[ext_resource type="Texture2D" uid="uid://1jfapd21k8cs" path="res://models/2D/Button_hover.png" id="4_1wq32"]
+[ext_resource type="Texture2D" uid="uid://bhy6ljqr1s7jc" path="res://models/2D/Button_Activating.png" id="5_g1hrq"]
+[ext_resource type="Texture2D" uid="uid://cjgb7fkcybko" path="res://models/2D/Button.png" id="6_5cfif"]
+
+[sub_resource type="FontVariation" id="FontVariation_b3cmr"]
+base_font = ExtResource("3_lfxw8")
+
+[sub_resource type="FontVariation" id="FontVariation_g6rut"]
+base_font = ExtResource("3_lfxw8")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7coih"]
+texture = ExtResource("4_1wq32")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_wr31p"]
+texture = ExtResource("5_g1hrq")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_upp5v"]
+texture = ExtResource("6_5cfif")
+
+[sub_resource type="FontVariation" id="FontVariation_l3aa6"]
+base_font = ExtResource("3_lfxw8")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hhk05"]
+texture = ExtResource("4_1wq32")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4g53h"]
+texture = ExtResource("5_g1hrq")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_70rid"]
+texture = ExtResource("6_5cfif")
 
 [node name="CharacterUI" type="Control"]
 layout_mode = 3
@@ -65,6 +96,8 @@ layout_mode = 2
 [node name="ReplyEdit" type="TextEdit" parent="MainContainer/VBoxContainer/ReplyContainer/VReplyContainer/InnerReplyContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_b3cmr")
 placeholder_text = "You may write a reply here"
 scroll_fit_content_height = true
 
@@ -81,8 +114,14 @@ layout_mode = 2
 size_flags_horizontal = 4
 
 [node name="NextButton" type="Button" parent="MainContainer/VBoxContainer/HBoxContainer/NextContainer"]
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_g6rut")
+theme_override_styles/hover = SubResource("StyleBoxTexture_7coih")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_wr31p")
+theme_override_styles/normal = SubResource("StyleBoxTexture_upp5v")
 text = "Next"
 
 [node name="DiceContainer" type="MarginContainer" parent="MainContainer/VBoxContainer/HBoxContainer"]
@@ -92,8 +131,14 @@ layout_mode = 2
 size_flags_horizontal = 4
 
 [node name="DiceButton" type="Button" parent="MainContainer/VBoxContainer/HBoxContainer/DiceContainer"]
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_l3aa6")
+theme_override_styles/hover = SubResource("StyleBoxTexture_hhk05")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_4g53h")
+theme_override_styles/normal = SubResource("StyleBoxTexture_70rid")
 text = "Roll Dice"
 
 [connection signal="text_changed" from="MainContainer/VBoxContainer/ReplyContainer/VReplyContainer/InnerReplyContainer/ReplyEdit" to="." method="_on_reply_edit_text_changed"]
