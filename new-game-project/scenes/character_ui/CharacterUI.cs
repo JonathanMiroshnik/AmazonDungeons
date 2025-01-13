@@ -13,11 +13,11 @@ public partial class CharacterUI : Control
 	// Current conversation between DM and character that is being shown in the UI // TODO: generalize it beyong DM-character interactions
 	public DMCharacterResponse curDMResponse;
 
+	public FullResponseContainer curFullResponseContainer;
+
 	private VBoxContainer vContainer;
 	public MarginContainer diceContainer;
 	public MarginContainer nextContainer;
-	public MarginContainer diceDescContainer;
-	public RichTextLabel diceDescLabel;
 
 	// Reply to responses part
 	public MarginContainer replyContainer;
@@ -39,12 +39,6 @@ public partial class CharacterUI : Control
 		if (replyContainer == null) throw new ArgumentException("Add ReplyContainer to the CharacterUI");
 		replyEdit = GetNode<TextEdit>("%ReplyEdit");
 		if (replyEdit == null) throw new ArgumentException("Add ReplyEdit to the CharacterUI");
-
-		// Dice description holder
-		diceDescContainer = GetNode<MarginContainer>("%DiceDescContainer");
-		if (diceDescContainer == null) throw new ArgumentException("Add DiceDescContainer to the CharacterUI");
-		diceDescLabel = GetNode<RichTextLabel>("%DiceRichLabel");
-		if (diceDescLabel == null) throw new ArgumentException("Add DiceRichLabel to the CharacterUI");
 	}
 
 	public async Task AddResponse(string response)
@@ -60,6 +54,8 @@ public partial class CharacterUI : Control
 
 		await container.ShowResponse(response);
 		await Task.Delay(1000);
+
+		curFullResponseContainer = container;
 
 		if (gameEntity == null) return; // TODO: have the same if statmenet above, combine these
 

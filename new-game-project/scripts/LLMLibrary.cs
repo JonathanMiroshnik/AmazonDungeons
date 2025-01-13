@@ -279,10 +279,12 @@ public partial class LLMLibrary : Node
 				"We want you to learn of the game and analyze certain things about it through the last given player response.\n "+
 				" this is the current status/properties of the game:\n" + input;
 		input += "\n\nGiven the following message, we want you to return a JSON(in text) and only a JSON without any further commentary\n" +
-				"The JSON will have two categories, the first category called risk will be a boolean with value true/false," +
+				"The JSON will have 5 categories, the first category called risk will be a boolean with value true/false," +
 				" it will be true if the response from the player describes an action with a risk" + 
 				" and it'll be false otherwise.\n the second category called dice will be an integer between 1 and 8 where a "+ 
-				"lower number indicates a lower risk in the taken action(by the player), notice that the most common risk is on the lower end of the given integer range.\n";
+				"lower number indicates a lower risk in the taken action(by the player), notice that the most common risk is on the lower end of the given integer range.\n" +
+				"The third, fourth and fifth category will be single boolean values, corresponding, in order, to strength, reflex and intelligence.\n" + 
+				"The boolean indicates(and is true) if the skill as stated by name is useful for the action that the player intends to perform, false otherwise.\n";
 		input += "\n\nThe message from the current player that you must analyze:\n" + characterResponse;
 
 		string retStr = await GameManager.AskLlama(input);

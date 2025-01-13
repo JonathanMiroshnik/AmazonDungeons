@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Threading.Tasks;
 
 /// <summary>
@@ -22,6 +23,8 @@ public partial class FullResponseContainer : MarginContainer
 	private Label gameEntityNameLabel;
 	private RichTextLabel responseRichLabel;
 	private MarginContainer userLabelContainer;
+	public MarginContainer diceDescContainer;
+	public RichTextLabel diceDescLabel;
 
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -32,6 +35,12 @@ public partial class FullResponseContainer : MarginContainer
 		if (gameEntityNameLabel == null) throw new Exception("GameEntityNameLabel not found in FullResponseContainer");
 		userLabelContainer = GetNode<MarginContainer>("%UserLabelContainer");
 		if (userLabelContainer == null) throw new Exception("UserLabelContainer not found in FullResponseContainer");
+
+		// Dice description holder
+		diceDescContainer = GetNode<MarginContainer>("%DiceDescContainer");
+		if (diceDescContainer == null) throw new ArgumentException("Add DiceDescContainer to the CharacterUI");
+		diceDescLabel = GetNode<RichTextLabel>("%DiceRichLabel");
+		if (diceDescLabel == null) throw new ArgumentException("Add DiceRichLabel to the CharacterUI");
 	}
 
 	/// <summary>
@@ -56,5 +65,11 @@ public partial class FullResponseContainer : MarginContainer
 
 		// Writing the text
 		await GlobalStringLibrary.TypeWriteOverDuration(response, responseRichLabel, TIME_TO_SHOW);
+	}
+
+	public void AddDiceDescription(string diceDescription)
+	{
+		diceDescLabel.Text = diceDescription;
+		diceDescContainer.Visible = true;
 	}
 }

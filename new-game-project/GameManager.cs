@@ -132,7 +132,7 @@ public partial class GameManager : Node
 												0.5f, 1000);
 		personalityTest = GlobalStringLibrary.JSONStringBrackets(personalityTest);
 
-		GD.Print(personalityTest);
+		// GD.Print(personalityTest);
 
 		JSONCharacter resultChar = JsonConvert.DeserializeObject<JSONCharacter>(personalityTest);
 

@@ -1,6 +1,5 @@
 using System.Text.Json;
 using System.Collections.Generic;
-using Godot;
 
 public partial class Character : GameEntity
 {
@@ -39,6 +38,7 @@ public partial class Character : GameEntity
 		};
 	}
 
+	// Gets a full description of the Character
 	public string GetDescription()
 	{
 		string retStr = "";
@@ -55,6 +55,7 @@ public partial class Character : GameEntity
 		return retStr;
 	}
 
+	// Gets a description of the Core Skills of the Character
 	private string GetCoreSkillsString() // Amazon Q figured it out instantly for me without me needing to even ask it
 	{
 		string coreSkillsString = "";
@@ -65,7 +66,7 @@ public partial class Character : GameEntity
 		return coreSkillsString;
 	}
 
-	// get items string
+	// Gets the Character's items
 	private string GetItemsString()
 	{
 		string itemsString = "";
@@ -83,6 +84,7 @@ public partial class Character : GameEntity
 		return JsonSerializer.Serialize(this);
 	}
 
+	// Gets the conversation history between the character and the others
 	public string GetConversationHistory() {
 		if (conversation == null) return "";
 		if (conversation.Count == 0) return "";
@@ -94,5 +96,16 @@ public partial class Character : GameEntity
 		}
 
 		return retStr;
+	}
+
+	// Gets the dice bonus for the core skills of the Character
+	public int getBonus(bool strength, bool reflex, bool intelligence) {
+		int ret = 0;
+
+		if (strength) ret += CoreSkills[CoreSkill.Strength];
+		if (reflex) ret += CoreSkills[CoreSkill.Reflex];
+		if (intelligence) ret += CoreSkills[CoreSkill.Intelligence];
+
+		return ret;
 	}
 }

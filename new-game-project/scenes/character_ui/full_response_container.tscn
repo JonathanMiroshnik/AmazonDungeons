@@ -39,3 +39,18 @@ layout_mode = 2
 bbcode_enabled = true
 text = "response"
 fit_content = true
+
+[node name="DiceDescContainer" type="MarginContainer" parent="VFullResponseContainer"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="DiceDescPanel" type="Panel" parent="VFullResponseContainer/DiceDescContainer"]
+modulate = Color(0.349869, 1, 0.912742, 1)
+layout_mode = 2
+
+[node name="DiceRichLabel" type="RichTextLabel" parent="VFullResponseContainer/DiceDescContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Dice needed: "
+fit_content = true

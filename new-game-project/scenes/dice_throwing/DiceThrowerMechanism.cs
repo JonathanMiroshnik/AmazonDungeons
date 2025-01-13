@@ -1,6 +1,5 @@
 using Godot;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -38,9 +37,9 @@ public partial class DiceThrowerMechanism : Node3D
 		MAX_FORCE_PUSH *= this.Scale.X;
 
 		ResetDice();
-		int final = await ThrowDice();
 
-		GD.Print("FINAL " + final.ToString()); // TODO: delete
+		// int final = await ThrowDice();
+		// GD.Print("FINAL " + final.ToString()); // TODO: delete
 	}
 
 	// Deletes the currently existing dice
@@ -55,8 +54,6 @@ public partial class DiceThrowerMechanism : Node3D
 		}
 
 		instDice.Clear();
-
-		// instDice = null;
 	}
 	
 	// Recreates/resets the current dice
@@ -67,8 +64,6 @@ public partial class DiceThrowerMechanism : Node3D
 		instDice = new List<Dice>();
 		for (int i = 0; i < numDice; i++)
 		{
-			// await Task.Delay(100);
-
 			Dice curDice = dice.Instantiate<Dice>();
 			instDice.Add(curDice);			
 			AddChild(curDice);
@@ -94,13 +89,14 @@ public partial class DiceThrowerMechanism : Node3D
 		Random curRand = new Random();
 
 		curDice.Freeze = false;
-		// curDice.ApplyForce(new Vector3((float) curRand.NextDouble() * MAX_FORCE, (float) curRand.NextDouble() * MAX_FORCE, (float) curRand.NextDouble() * MAX_FORCE));
 		curDice.ApplyImpulse(new Vector3((float) (2 * curRand.NextDouble() - 1)  * MAX_FORCE_PUSH,
 		 								 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH, 
 										 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH));
-		curDice.ApplyTorqueImpulse(new Vector3((float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH * 25, 
-												(float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH * 25, 
-												(float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH* 25));
+		
+		float NEEDED_MULTIPLIER = 25f;
+		curDice.ApplyTorqueImpulse(new Vector3((float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH * NEEDED_MULTIPLIER, 
+												(float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH * NEEDED_MULTIPLIER, 
+												(float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH* NEEDED_MULTIPLIER));
 		curDice.ApplyCentralImpulse(new Vector3((float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH,
 		 								 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH, 
 										 (float) (2 * curRand.NextDouble() - 1) * MAX_FORCE_PUSH));
@@ -145,6 +141,9 @@ public partial class DiceThrowerMechanism : Node3D
 			}
 		}
 
+		Color GREEN = new Color(0,1,0);
+		Color RED = new Color(1,0,0);
+
 		// Finding how many of the dice are victorious
 		int num_of_victor_dice = 0;
 		foreach (Dice curDice in instDice)
@@ -152,10 +151,10 @@ public partial class DiceThrowerMechanism : Node3D
 			int curSide = curDice.WhichSideUp();
 			if (curSide >= MIN_WINNING_DICE) {
 				num_of_victor_dice++;
-				curDice.PaintDice(new Color(0,1,0));
+				curDice.PaintDice(GREEN); // Green
 			}
 			else {
-				curDice.PaintDice(new Color(1,0,0));
+				curDice.PaintDice(RED);
 			}
 
 			curDice.Mass = END_DICE_MASS;

@@ -119,7 +119,7 @@ public partial class GameStateMachine : Node
 
 	// Total number of rounds in the game
 	[Export]
-	public int NumberOfRounds = 2;
+	public int NumberOfRounds = 5;
 	public int CurrentRound = 0;
 
 	// Current character index that is in dialogue with the DM

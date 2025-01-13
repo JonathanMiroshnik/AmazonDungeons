@@ -78,8 +78,7 @@ public partial class DiceThrowing : DialogueState {
 		await dialogueStateMachine.gameStateMachine.cameraMover.MoveCameraByNode3D(dialogueStateMachine.gameStateMachine.DICE_POS, GameStateMachine.TIME_TO_MOVE);
 
 		// Indicating the start of the dice rolling
-		dialogueStateMachine.gameStateMachine.characterUI.diceDescContainer.Visible = true;
-		dialogueStateMachine.gameStateMachine.characterUI.diceDescLabel.Text = "Throwing " + numOfAttemptDice + " dice, " + numOfWinningDice + " of which must be above 4 or more";
+		// dialogueStateMachine.gameStateMachine.characterUI.diceDescContainer.Visible = true; // TODO: delete?
 
 		// Throwing the dice
 		dmCharacterResponse.ThrownDiceSuccess = await dialogueStateMachine.gameStateMachine.diceThrowerMechanism.PlayDice(numOfAttemptDice, numOfWinningDice); // FIXME: number of dice changes
@@ -87,25 +86,23 @@ public partial class DiceThrowing : DialogueState {
 
 		// Indicating the victory status of the completed dice roll
 		if (dmCharacterResponse.ThrownDiceSuccess) {
-			dialogueStateMachine.gameStateMachine.characterUI.diceDescLabel.Text = "You've won this dice roll!";
+			dialogueStateMachine.gameStateMachine.characterUI.curFullResponseContainer.AddDiceDescription("You've won this dice roll!");
 		}
 		else {
-			dialogueStateMachine.gameStateMachine.characterUI.diceDescLabel.Text = "You've lost this dice roll!";
+			dialogueStateMachine.gameStateMachine.characterUI.curFullResponseContainer.AddDiceDescription("You've lost this dice roll!");
 		}
 
 		// Returning to the character that threw the dice
 		await dialogueStateMachine.gameStateMachine.cameraMover.MoveCameraByNode3D(dmCharacterResponse.respondeeGameEntity.worldSpacePosition, 
 																					GameManager.TIME_TO_MOVE_CAMERA_POSITIONS);
 
-		// Finished with the dice roll
-		dialogueStateMachine.gameStateMachine.characterUI.diceDescContainer.Visible = false;
-
 		// TODO: change to public function in CharacterUI, do this for all such long lines that depend on it.
 		// Move back to the Character
 		dialogueStateMachine.gameStateMachine.characterUI.Visible = true;
 		dialogueStateMachine.gameStateMachine.characterUI.nextContainer.Visible = true;
 
-		dialogueStateMachine.ChangeState(new ResponseDialogue(dmCharacterResponse)); // FIXME: should this be here??? not only outside doing such things, changing states?
+		dialogueStateMachine.ChangeState(new EndDialogue(dmCharacterResponse.responderGameEntity, 
+														 dmCharacterResponse.respondeeGameEntity)); // FIXME: should this be here??? not only outside doing such things, changing states?
 	}
 }
 
@@ -138,10 +135,6 @@ public partial class ResponseDialogue : DialogueState {
 
 		// We take the reply text input
 		string text = dialogueStateMachine.gameStateMachine.characterUI.replyEdit.Text;
-		if (text.Length <= 0) {
-			dialogueStateMachine.ChangeState(new EndDialogue(dmCharacterResponse.responderGameEntity, dmCharacterResponse.respondeeGameEntity));
-			return;
-		}
 
 		dialogueStateMachine.gameStateMachine.characterUI.replyContainer.Visible = false;
 		dialogueStateMachine.gameStateMachine.characterUI.nextContainer.Visible = false;
@@ -162,44 +155,25 @@ public partial class ResponseDialogue : DialogueState {
 			if (riskAction != null) {
 				bool isRisk = riskAction.isRisk();
 				int neededDice = riskAction.getDice(); 
+
+				var skillsBools = riskAction.getSkills();
+				bool strength = skillsBools.Item1;
+				bool reflex = skillsBools.Item2;
+				bool intelligence = skillsBools.Item3;
+
 				GD.Print("Risk action: " + isRisk + " Dice: " + neededDice);
 
 				if (isRisk && neededDice > 0) {
 					dialogueStateMachine.gameStateMachine.characterUI.diceContainer.Visible = true;
-					dialogueStateMachine.ChangeState(new DiceThrowing(dmCharacterResponse, character.BaseDiceNumber, neededDice));
+
+					int diceToThrow = neededDice + character.getBonus(strength, reflex, intelligence);
+					dialogueStateMachine.gameStateMachine.characterUI.curFullResponseContainer.AddDiceDescription(
+													"Throwing " + diceToThrow + " dice, " + neededDice + " of which must get a score of four or above");
+					dialogueStateMachine.ChangeState(new DiceThrowing(dmCharacterResponse, diceToThrow, neededDice));
 					return;
 				}
 			}
 		}
-
-		// // Asking the DM for a response to the player text input
-		// JSONDMResponse result = await LLMLibrary.DM_response((Character) dmCharacterResponse.respondeeGameEntity); // FIXME: bad downcasting thing
-		// dmCharacterResponse.dmResponse = result;
-
-		// await dialogueStateMachine.gameStateMachine.characterUI.AddResponse(dmCharacterResponse.dmResponse.text, dmCharacterResponse.responderGameEntity); // FIXME: downcasting
-
-		// // TODO: maybe conversations should be attached to GameEntity?
-		// if (dmCharacterResponse.respondeeGameEntity is Character) {
-		// 	Character character = (Character) dmCharacterResponse.respondeeGameEntity;
-		// 	dmCharacterResponse.text = result.text; // FIXME: this is a distinct problem with the heirarchy of JSON and text stuff
-		// 	character.conversation.Add(dmCharacterResponse);
-		// }
-
-		// If the DM response requires a roll of the dice, it is performed
-		// if (dmCharacterResponse.dmResponse.score > 0) {
-		// 	// FIXME: downcasting and stuff and above character condition already
-		// 	Character character = (Character) dmCharacterResponse.respondeeGameEntity;
-
-		// 	GD.Print("Dice score needed: " + dmCharacterResponse.dmResponse.score);
-
-		// 	dialogueStateMachine.gameStateMachine.characterUI.diceContainer.Visible = true;
-		// 	dialogueStateMachine.gameStateMachine.characterUI.replyContainer.Visible = false;
-		// 	dialogueStateMachine.ChangeState(new DiceThrowing(dmCharacterResponse, character.BaseDiceNumber /* TODO: add core skills here*/,
-		// 																 dmCharacterResponse.dmResponse.score));
-		// }
-		// else {
-		// 	dialogueStateMachine.ChangeState(new EndDialogue(dmCharacterResponse.responderGameEntity, dmCharacterResponse.respondeeGameEntity));
-		// }
 
 		dialogueStateMachine.ChangeState(new EndDialogue(dmCharacterResponse.responderGameEntity, dmCharacterResponse.respondeeGameEntity));
 	}
@@ -219,8 +193,11 @@ public partial class EndDialogue : DialogueState {
 	public async void Enter(DialogueStateMachine dialogueStateMachine) {
 		GD.Print("Enter EndDialogue");
 
+		dialogueStateMachine.gameStateMachine.characterUI.nextContainer.Visible = false;
+
 		string text = await LLMLibrary.DM_response_summary(respondee);
 		await dialogueStateMachine.gameStateMachine.characterUI.AddResponse(text, responder, false);
+
 		dialogueStateMachine.gameStateMachine.characterUI.nextContainer.Visible = true;
 	}
 
