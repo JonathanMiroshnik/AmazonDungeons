@@ -1,9 +1,37 @@
-[gd_scene load_steps=3 format=3 uid="uid://dlge21n36tbmn"]
+[gd_scene load_steps=15 format=3 uid="uid://dlge21n36tbmn"]
 
 [ext_resource type="Script" path="res://scenes/main_menu/Menu.cs" id="1_woop4"]
+[ext_resource type="Texture2D" uid="uid://c7j6xj5mhrroi" path="res://models/2D/SplashScreen.png" id="2_q1oh0"]
+[ext_resource type="FontFile" uid="uid://dopwki03y3cic" path="res://models/Fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf" id="3_se7yn"]
+[ext_resource type="Texture2D" uid="uid://cjgb7fkcybko" path="res://models/2D/Button.png" id="3_x77jj"]
+[ext_resource type="Texture2D" uid="uid://c4go0ggknants" path="res://models/2D/Button_disabled.png" id="4_uxakj"]
+[ext_resource type="Texture2D" uid="uid://1jfapd21k8cs" path="res://models/2D/Button_hover.png" id="5_ep7ga"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_xgrmf"]
-font_size = 180
+font_size = 90
+
+[sub_resource type="FontVariation" id="FontVariation_qdwoq"]
+base_font = ExtResource("3_se7yn")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_dmcp7"]
+texture = ExtResource("4_uxakj")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_imhol"]
+texture = ExtResource("5_ep7ga")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mtcn8"]
+texture = ExtResource("3_x77jj")
+axis_stretch_horizontal = 2
+axis_stretch_vertical = 2
+
+[sub_resource type="FontVariation" id="FontVariation_6n3pu"]
+base_font = ExtResource("3_se7yn")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6gs2c"]
+texture = ExtResource("5_ep7ga")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5i301"]
+texture = ExtResource("3_x77jj")
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -15,18 +43,36 @@ grow_vertical = 2
 script = ExtResource("1_woop4")
 
 [node name="Background" type="Panel" parent="."]
-layout_mode = 0
-offset_right = 1152.0
-offset_bottom = 648.0
-
-[node name="MenuContainer" type="MarginContainer" parent="Background"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_top = 100
+
+[node name="TextureRect" type="TextureRect" parent="Background"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_q1oh0")
+expand_mode = 5
+
+[node name="MenuContainer" type="MarginContainer" parent="Background"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -700.0
+offset_top = -200.0
+offset_bottom = 200.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/margin_top = 0
 
 [node name="TitleContainer" type="MarginContainer" parent="Background/MenuContainer"]
 layout_mode = 2
@@ -35,28 +81,45 @@ size_flags_vertical = 0
 
 [node name="Title" type="Label" parent="Background/MenuContainer/TitleContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 text = "Main Menu"
 label_settings = SubResource("LabelSettings_xgrmf")
+horizontal_alignment = 1
 
 [node name="ButtonsContainer" type="MarginContainer" parent="Background/MenuContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
-size_flags_vertical = 4
 theme_override_constants/margin_top = 60
 
 [node name="VButtonsContainer" type="VBoxContainer" parent="Background/MenuContainer/ButtonsContainer"]
 layout_mode = 2
-size_flags_vertical = 4
 theme_override_constants/separation = 18
+
+[node name="Control" type="Control" parent="Background/MenuContainer/ButtonsContainer/VButtonsContainer"]
+custom_minimum_size = Vector2(0, 90)
+layout_mode = 2
 
 [node name="StartGameButton" type="Button" parent="Background/MenuContainer/ButtonsContainer/VButtonsContainer"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.0745098, 0.00392157, 0, 0.847059)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_qdwoq")
+theme_override_styles/disabled = SubResource("StyleBoxTexture_dmcp7")
+theme_override_styles/hover = SubResource("StyleBoxTexture_imhol")
+theme_override_styles/normal = SubResource("StyleBoxTexture_mtcn8")
 disabled = true
 text = "Play Game"
 
 [node name="ExitGameButton" type="Button" parent="Background/MenuContainer/ButtonsContainer/VButtonsContainer"]
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
+theme_override_colors/font_outline_color = Color(0.0745098, 0.00392157, 0, 0.847059)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_6n3pu")
+theme_override_styles/hover = SubResource("StyleBoxTexture_6gs2c")
+theme_override_styles/normal = SubResource("StyleBoxTexture_5i301")
 text = "Exit"
 
 [connection signal="pressed" from="Background/MenuContainer/ButtonsContainer/VButtonsContainer/StartGameButton" to="." method="_on_start_game_button_pressed"]

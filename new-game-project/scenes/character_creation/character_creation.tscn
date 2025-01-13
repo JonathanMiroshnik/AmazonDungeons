@@ -1,11 +1,49 @@
-[gd_scene load_steps=5 format=3 uid="uid://bd8x1ir4ic430"]
+[gd_scene load_steps=20 format=3 uid="uid://bd8x1ir4ic430"]
 
 [ext_resource type="Script" path="res://scenes/character_creation/CharacterCreation.cs" id="1_k25fp"]
+[ext_resource type="Texture2D" uid="uid://1wpwqo08oykn" path="res://models/2D/SplashScreenBlur.png" id="2_822i5"]
 [ext_resource type="Script" path="res://scenes/character_creation/CoreSkillsSetter.cs" id="2_wkhhl"]
 [ext_resource type="PackedScene" uid="uid://ccqigl050o47l" path="res://scenes/character_creation/skill_container.tscn" id="3_buskf"]
+[ext_resource type="Texture2D" uid="uid://bl8g366vmuog5" path="res://models/2D/Menu bg.png" id="3_xm1ub"]
+[ext_resource type="FontFile" uid="uid://cf1bywoheh200" path="res://models/Fonts/RussoOne-Regular.ttf" id="4_2pg8x"]
+[ext_resource type="FontFile" uid="uid://dopwki03y3cic" path="res://models/Fonts/Roboto/Roboto-VariableFont_wdth,wght.ttf" id="5_wcxg5"]
+[ext_resource type="Texture2D" uid="uid://cjgb7fkcybko" path="res://models/2D/Button.png" id="8_xlbws"]
+
+[sub_resource type="FontVariation" id="FontVariation_up1s2"]
+base_font = ExtResource("4_2pg8x")
 
 [sub_resource type="LabelSettings" id="LabelSettings_8l5co"]
+font = SubResource("FontVariation_up1s2")
 font_size = 30
+outline_size = 4
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="FontVariation" id="FontVariation_w1xgh"]
+base_font = ExtResource("5_wcxg5")
+
+[sub_resource type="FontVariation" id="FontVariation_y7bvg"]
+base_font = ExtResource("5_wcxg5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_5mtys"]
+texture = ExtResource("8_xlbws")
+
+[sub_resource type="FontVariation" id="FontVariation_rddga"]
+base_font = ExtResource("5_wcxg5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_exo5f"]
+texture = ExtResource("8_xlbws")
+
+[sub_resource type="FontVariation" id="FontVariation_bx0is"]
+base_font = ExtResource("5_wcxg5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_2okj7"]
+texture = ExtResource("8_xlbws")
+
+[sub_resource type="FontVariation" id="FontVariation_8w8p3"]
+base_font = ExtResource("5_wcxg5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_px6uw"]
+texture = ExtResource("8_xlbws")
 
 [node name="CharacterCreation" type="Control" node_paths=PackedStringArray("coreSkillsSetter")]
 layout_mode = 3
@@ -15,7 +53,17 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_k25fp")
-coreSkillsSetter = NodePath("Background/HBoxContainer/VBoxContainer/CoreSkillsPresentationContainer")
+coreSkillsSetter = NodePath("Background/HBoxContainer/MarginContainer/VBoxContainer/CoreSkillsPresentationContainer")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_822i5")
+expand_mode = 5
 
 [node name="Background" type="Panel" parent="."]
 layout_mode = 0
@@ -42,109 +90,133 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Background/HBoxContainer/PersonalityContainer"]
+[node name="TextureRect" type="TextureRect" parent="Background/HBoxContainer/PersonalityContainer"]
+layout_mode = 2
+texture = ExtResource("3_xm1ub")
+expand_mode = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="Background/HBoxContainer/PersonalityContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 25
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 25
+theme_override_constants/margin_bottom = 30
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/HBoxContainer/PersonalityContainer/MarginContainer"]
 layout_mode = 2
 
-[node name="PersonalityLabel" type="Label" parent="Background/HBoxContainer/PersonalityContainer/VBoxContainer"]
+[node name="PersonalityLabel" type="Label" parent="Background/HBoxContainer/PersonalityContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Character Personality:"
 label_settings = SubResource("LabelSettings_8l5co")
 
-[node name="PersonalityText" type="TextEdit" parent="Background/HBoxContainer/PersonalityContainer/VBoxContainer"]
+[node name="PersonalityText" type="TextEdit" parent="Background/HBoxContainer/PersonalityContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 500)
+custom_minimum_size = Vector2(0, 450)
 layout_mode = 2
 tooltip_text = "Text that will define how the character will be presented to the Large Language Model.
 You may change anything within, but be aware that it might break the game!"
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_w1xgh")
 placeholder_text = "Write the personality of the character here,
 add history, goals or anything else"
 wrap_mode = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Background/HBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="Background/HBoxContainer"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="Background/HBoxContainer/MarginContainer"]
+layout_mode = 2
+texture = ExtResource("3_xm1ub")
+expand_mode = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/HBoxContainer/MarginContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 70
 
-[node name="MenuContainer" type="MarginContainer" parent="Background/HBoxContainer/VBoxContainer"]
+[node name="MenuContainer" type="MarginContainer" parent="Background/HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 30
+theme_override_constants/margin_right = 20
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Background/HBoxContainer/VBoxContainer/MenuContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/HBoxContainer/MarginContainer/VBoxContainer/MenuContainer"]
 layout_mode = 2
 
-[node name="TitleContainer" type="MarginContainer" parent="Background/HBoxContainer/VBoxContainer/MenuContainer/VBoxContainer"]
+[node name="TitleContainer" type="MarginContainer" parent="Background/HBoxContainer/MarginContainer/VBoxContainer/MenuContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 
-[node name="Title" type="Label" parent="Background/HBoxContainer/VBoxContainer/MenuContainer/VBoxContainer/TitleContainer"]
+[node name="Title" type="Label" parent="Background/HBoxContainer/MarginContainer/VBoxContainer/MenuContainer/VBoxContainer/TitleContainer"]
 layout_mode = 2
 text = "Character Creation"
 label_settings = SubResource("LabelSettings_8l5co")
 
-[node name="GameEntityTypeContainer" type="MarginContainer" parent="Background/HBoxContainer/VBoxContainer/MenuContainer/VBoxContainer"]
+[node name="GameEntityTypeContainer" type="MarginContainer" parent="Background/HBoxContainer/MarginContainer/VBoxContainer/MenuContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 
-[node name="GameEntityType" type="Label" parent="Background/HBoxContainer/VBoxContainer/MenuContainer/VBoxContainer/GameEntityTypeContainer"]
+[node name="GameEntityType" type="Label" parent="Background/HBoxContainer/MarginContainer/VBoxContainer/MenuContainer/VBoxContainer/GameEntityTypeContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 text = "Type: "
 label_settings = SubResource("LabelSettings_8l5co")
 
-[node name="NameContainer" type="MarginContainer" parent="Background/HBoxContainer/VBoxContainer"]
+[node name="NameContainer" type="MarginContainer" parent="Background/HBoxContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Background/HBoxContainer/VBoxContainer/NameContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Background/HBoxContainer/MarginContainer/VBoxContainer/NameContainer"]
 layout_mode = 2
 
-[node name="NameLabel" type="Label" parent="Background/HBoxContainer/VBoxContainer/NameContainer/VBoxContainer"]
+[node name="NameLabel" type="Label" parent="Background/HBoxContainer/MarginContainer/VBoxContainer/NameContainer/VBoxContainer"]
 layout_mode = 2
 text = "Name:"
 horizontal_alignment = 1
 
-[node name="NameEdit" type="TextEdit" parent="Background/HBoxContainer/VBoxContainer/NameContainer/VBoxContainer"]
+[node name="NameEdit" type="TextEdit" parent="Background/HBoxContainer/MarginContainer/VBoxContainer/NameContainer/VBoxContainer"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(160, 30)
 layout_mode = 2
 placeholder_text = "Write Name Here"
 
-[node name="CoreSkillsPresentationContainer" type="MarginContainer" parent="Background/HBoxContainer/VBoxContainer" node_paths=PackedStringArray("skillContainers")]
+[node name="CoreSkillsPresentationContainer" type="MarginContainer" parent="Background/HBoxContainer/MarginContainer/VBoxContainer" node_paths=PackedStringArray("skillContainers")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("2_wkhhl")
 skillContainers = [NodePath("VButtonsContainer/StrengthContainer"), NodePath("VButtonsContainer/ReflexContainer"), NodePath("VButtonsContainer/IntelligenceContainer")]
 
-[node name="VButtonsContainer" type="VBoxContainer" parent="Background/HBoxContainer/VBoxContainer/CoreSkillsPresentationContainer"]
+[node name="VButtonsContainer" type="VBoxContainer" parent="Background/HBoxContainer/MarginContainer/VBoxContainer/CoreSkillsPresentationContainer"]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="StrengthContainer" parent="Background/HBoxContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
+[node name="StrengthContainer" parent="Background/HBoxContainer/MarginContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
 layout_mode = 2
 
-[node name="SkillLabel" parent="Background/HBoxContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer/HSkillContainer" index="0"]
+[node name="SkillLabel" parent="Background/HBoxContainer/MarginContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer/HSkillContainer" index="0"]
 text = "      Strength
 "
 
-[node name="ReflexContainer" parent="Background/HBoxContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
+[node name="ReflexContainer" parent="Background/HBoxContainer/MarginContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
 layout_mode = 2
 coreSkill = 1
 
-[node name="SkillLabel" parent="Background/HBoxContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer/HSkillContainer" index="0"]
+[node name="SkillLabel" parent="Background/HBoxContainer/MarginContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer/HSkillContainer" index="0"]
 text = "          Reflex
 "
 horizontal_alignment = 1
 
-[node name="IntelligenceContainer" parent="Background/HBoxContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
+[node name="IntelligenceContainer" parent="Background/HBoxContainer/MarginContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
 layout_mode = 2
 coreSkill = 2
 
-[node name="SkillLabel" parent="Background/HBoxContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer/HSkillContainer" index="0"]
+[node name="SkillLabel" parent="Background/HBoxContainer/MarginContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer/HSkillContainer" index="0"]
 text = "Intelligence
 "
 
@@ -162,32 +234,51 @@ theme_override_constants/separation = 70
 layout_mode = 2
 
 [node name="NextCharacterButton" type="Button" parent="Background/HBoxContainer/ButtonsContainer/VButtonsContainer/NextButtonContainer"]
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 tooltip_text = "Move to the next character"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_y7bvg")
+theme_override_styles/normal = SubResource("StyleBoxTexture_5mtys")
 text = "Next"
 
 [node name="RandomizeButtonContainer" type="MarginContainer" parent="Background/HBoxContainer/ButtonsContainer/VButtonsContainer"]
 layout_mode = 2
 
 [node name="RandomizeCharacterButton" type="Button" parent="Background/HBoxContainer/ButtonsContainer/VButtonsContainer/RandomizeButtonContainer"]
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 tooltip_text = "Move to the next character"
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_rddga")
+theme_override_styles/normal = SubResource("StyleBoxTexture_exo5f")
 text = "Randomize"
 
 [node name="SaveContainer" type="MarginContainer" parent="Background/HBoxContainer/ButtonsContainer/VButtonsContainer"]
 layout_mode = 2
 
 [node name="SaveButton" type="Button" parent="Background/HBoxContainer/ButtonsContainer/VButtonsContainer/SaveContainer"]
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 tooltip_text = "Save the current character"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_bx0is")
+theme_override_styles/normal = SubResource("StyleBoxTexture_2okj7")
 text = "Save"
 
 [node name="StartContainer" type="MarginContainer" parent="Background/HBoxContainer/ButtonsContainer/VButtonsContainer"]
 layout_mode = 2
 
 [node name="StartButton" type="Button" parent="Background/HBoxContainer/ButtonsContainer/VButtonsContainer/StartContainer"]
+custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
 tooltip_text = "Save the current character"
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = SubResource("FontVariation_8w8p3")
+theme_override_styles/normal = SubResource("StyleBoxTexture_px6uw")
 text = "Start
 Game"
 
@@ -196,6 +287,6 @@ Game"
 [connection signal="pressed" from="Background/HBoxContainer/ButtonsContainer/VButtonsContainer/SaveContainer/SaveButton" to="." method="_on_save_button_pressed"]
 [connection signal="pressed" from="Background/HBoxContainer/ButtonsContainer/VButtonsContainer/StartContainer/StartButton" to="." method="_on_start_button_pressed"]
 
-[editable path="Background/HBoxContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer"]
-[editable path="Background/HBoxContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer"]
-[editable path="Background/HBoxContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer"]
+[editable path="Background/HBoxContainer/MarginContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer"]
+[editable path="Background/HBoxContainer/MarginContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer"]
+[editable path="Background/HBoxContainer/MarginContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer"]
