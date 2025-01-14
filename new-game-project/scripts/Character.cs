@@ -103,7 +103,7 @@ public partial class Character : GameEntity
 		string retStr = "";
 
 		foreach (CharacterInteraction interaction in conversation) {
-			retStr += $"{interaction.responderGameEntity} reponds to {interaction.respondeeGameEntity}: " + $"{interaction}\n";
+			retStr += $"{interaction.responderGameEntity.Name} reponds to {interaction.respondeeGameEntity.Name}: " + $"{interaction}\n";
 		}
 
 		return retStr;

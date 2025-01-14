@@ -352,7 +352,8 @@ public partial class LLMLibrary : Node
 	public static async Task<JSONSong> GameSummaryJSON() {
 		string allConvos = "";
 		foreach(Character character in GameManager.Instance.characters) {
-			allConvos += character.GetConversationHistory();
+			allConvos += "\n Character:\n" + character.GetDescription();
+			allConvos += "\n The conversation history of this character:\n" + character.GetConversationHistory();
 		}
 
 		// Construct the input for the LLM
