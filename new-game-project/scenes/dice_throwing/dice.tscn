@@ -35,4 +35,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5)
 [node name="4" type="Node3D" parent="CollisionShape3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.5)
 
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+
 [editable path="CollisionShape3D/DiceMesh"]

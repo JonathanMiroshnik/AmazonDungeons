@@ -9,7 +9,8 @@ public partial class JSONRiskAction : GodotObject
     public string strengh { get; set; }
     public string reflex { get; set; }
     public string intelligence { get; set; }
-    JSONRiskAction() {
+    
+    public JSONRiskAction() {
 		risk = "";
 		dice = "";
 
@@ -17,7 +18,6 @@ public partial class JSONRiskAction : GodotObject
 		reflex = "";
         intelligence = "";
 	}
-}
 
     public bool isRisk () {
         Boolean myBool = false;

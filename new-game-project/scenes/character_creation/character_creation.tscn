@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://bd8x1ir4ic430"]
+[gd_scene load_steps=38 format=3 uid="uid://bd8x1ir4ic430"]
 
 [ext_resource type="Script" path="res://scenes/character_creation/CharacterCreation.cs" id="1_k25fp"]
 [ext_resource type="Texture2D" uid="uid://1wpwqo08oykn" path="res://models/2D/SplashScreenBlur.png" id="2_822i5"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://1jfapd21k8cs" path="res://models/2D/Button_hover.png" id="8_mde6b"]
 [ext_resource type="Texture2D" uid="uid://cjgb7fkcybko" path="res://models/2D/Button.png" id="8_xlbws"]
 [ext_resource type="Script" path="res://scripts/GlobalAudioLibrary.cs" id="11_txv16"]
+[ext_resource type="AudioStream" uid="uid://jwe4konm5esv" path="res://Sounds/Ambient/Main menu/MainMenu.ogg" id="12_nhtv2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_dww54"]
 content_margin_left = 30.0
@@ -358,6 +359,10 @@ Game"
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true
 script = ExtResource("11_txv16")
+
+[node name="MainMusic" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("12_nhtv2")
+autoplay = true
 
 [connection signal="AddLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer" to="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer" method="_on_container_add_level"]
 [connection signal="SubtractLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer" to="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer" method="_on_container_subtract_level"]

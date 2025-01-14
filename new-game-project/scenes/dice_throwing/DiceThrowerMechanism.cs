@@ -16,6 +16,9 @@ public partial class DiceThrowerMechanism : Node3D
 	// The number of Dice we throw  // TODO: make it always >= 1
 	public int numDice = 1;
 
+	[Export]
+	public GlobalAudioLibrary globalAudioLibrary;
+
 	// Instantiated Dice
 	private List<Dice> instDice = null; 
 
@@ -31,7 +34,7 @@ public partial class DiceThrowerMechanism : Node3D
 	float MAX_FORCE_PUSH = 0.25f;
 
 
-	public override async void _Ready() {
+	public override void _Ready() {
 		// We assume a uniform scaling
 		SIZE_OF_RANDOM_SPAWN_CHANGE = this.Scale.X;
 		MAX_FORCE_PUSH *= this.Scale.X;
@@ -70,6 +73,10 @@ public partial class DiceThrowerMechanism : Node3D
 			curDice.AngularVelocity = Vector3.Zero;
 			curDice.Freeze = true;
 			curDice.Mass = START_DICE_MASS;
+
+			if (globalAudioLibrary != null) {
+				curDice.globalAudioLibrary = globalAudioLibrary;
+			}
 
 			Random curRand = new Random();
 

@@ -49,7 +49,7 @@ public partial class FullResponseContainer : MarginContainer
 	public async Task ShowResponse(string response)
 	{
 		// Time it takes the text to fully show, we seek to not make the Player wait too long
-		float TIME_TO_SHOW = Math.Min(3f, response.Length * 0.05f);
+		float TIME_TO_SHOW = Math.Min(1.5f, response.Length * 0.02f);
 
 		// If there is no GameEntity, the response is shown as-is without a name
 		if (gameEntity == null) {

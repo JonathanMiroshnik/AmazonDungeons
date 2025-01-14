@@ -65,7 +65,7 @@ public partial class CharacterUI : Control
 		container.gameEntity = gameEntity;
 
 		await container.ShowResponse(response);
-		await Task.Delay(1000);
+		await Task.Delay(500);
 
 		curFullResponseContainer = container;
 

@@ -9,6 +9,7 @@ public partial class Dice : RigidBody3D
 	// Sides of the die
 	[Export]
     public Node3D[] Sides { get; set; }
+	public GlobalAudioLibrary globalAudioLibrary;
 
 
 	// Called when the node enters the scene tree for the first time.
@@ -51,5 +52,10 @@ public partial class Dice : RigidBody3D
 		if (material == null) return;
 
 		material.AlbedoColor = color;
+	}
+
+	public void _on_body_entered() {
+		if (globalAudioLibrary == null) return;
+		globalAudioLibrary.PlayRandomSound(GlobalAudioLibrary.DICE_PATH);
 	}
 }

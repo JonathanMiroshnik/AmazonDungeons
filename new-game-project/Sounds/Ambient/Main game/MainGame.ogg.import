@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://de1dx3i0i5u4w"
+path="res://.godot/imported/MainGame.ogg-9570a5de5de5222e13b0976796a61786.oggvorbisstr"
+
+[deps]
+
+source_file="res://Sounds/Ambient/Main game/MainGame.ogg"
+dest_files=["res://.godot/imported/MainGame.ogg-9570a5de5de5222e13b0976796a61786.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

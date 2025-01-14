@@ -13,10 +13,14 @@ public partial class CameraMover : Camera3D
 	private Transform3D trueTransform;
 	private float CURSOR_MOVEMENT_MAX = 0.1f;
 
+	[Export]
+	public GlobalAudioLibrary globalAudioLibrary;
+
 	// Called when the node enters the scene tree for the first time.
 	public override async void _Ready()
 	{
 		trueTransform = Transform;
+		if (globalAudioLibrary == null) throw new Exception("GlobalAudioLibrary not found in CameraMover");
 
 		// Examples of movement over the indeces of positions in the list
 		// await MoveCameraByIndex(0, 2);
@@ -96,6 +100,8 @@ public partial class CameraMover : Camera3D
 		// NOTICE: Using Rotation or GlobalRotation does not work in this instance, the Slerp function inevitably breaks down with an issue of normalization, Quaternions do work though.
 		var startRot = camera.Quaternion;
 		var endRot = node.Quaternion;
+
+		globalAudioLibrary.PlayRandomSound(GlobalAudioLibrary.WOOSH_PATH);
 
 		var time = 0f;
 		while (time < duration)

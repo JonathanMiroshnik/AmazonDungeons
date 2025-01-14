@@ -251,7 +251,7 @@ public partial class LLMLibrary : Node
 
 		string retStr = await AskLlama(input);
 
-		GD.Print(retStr);
+		// GD.Print(retStr);
 
 		JSONHurtResponse result = new JSONHurtResponse();
 		try {
@@ -291,7 +291,7 @@ public partial class LLMLibrary : Node
 										  "Don't write something long but make sure that the JSON is valid and closed properly.",
 										  0.5f, 1000);
 
-		GD.Print(worldSerializedJSON); // TODO: delete
+		// GD.Print(worldSerializedJSON); // TODO: delete
 		worldSerializedJSON = GlobalStringLibrary.JSONStringBrackets(worldSerializedJSON);
 		
 		JSONWorld result = new JSONWorld();
@@ -349,7 +349,7 @@ public partial class LLMLibrary : Node
 		return retStr;
 	}
 
-	public static async Task<string> GameSummaryJSON() {
+	public static async Task<JSONSong> GameSummaryJSON() {
 		string allConvos = "";
 		foreach(Character character in GameManager.Instance.characters) {
 			allConvos += character.GetConversationHistory();
@@ -366,7 +366,16 @@ public partial class LLMLibrary : Node
 		string retStr = await AskLlama(input);
 		// GD.Print("AI Game summary: " + retStr);
 
-		return retStr;
+		string songJSONified = GlobalStringLibrary.JSONStringBrackets(retStr);
+		JSONSong result = new JSONSong();
+		try {
+			result = JsonConvert.DeserializeObject<JSONSong>(songJSONified);
+		}
+		catch (Exception e) {
+			GD.Print(e.Message);
+		}
+
+		return result;
 	}
 
 	public static async Task<string> GameSeparatedSummary() {

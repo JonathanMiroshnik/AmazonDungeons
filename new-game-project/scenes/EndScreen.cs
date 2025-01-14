@@ -26,24 +26,13 @@ public partial class EndScreen : Control
 		RTC = GetNodeOrNull<RichTextLabel>("%SongContent");
         if (RTC == null) throw new Exception("SongContent not found");
 
-        string songJSONified = await LLMLibrary.GameSummaryJSON();
-
-		songJSONified = GlobalStringLibrary.JSONStringBrackets(songJSONified);
-
-		JSONSong result = new JSONSong();
-		try {
-			result = JsonConvert.DeserializeObject<JSONSong>(songJSONified);
-		}
-		catch (Exception e) {
-			GD.Print(e.Message);
-		}
-
-        EnterSongInfo(result.name, result.text);
+        JSONSong songJSONified = await LLMLibrary.GameSummaryJSON();
+        EnterSongInfo(songJSONified.name, songJSONified.text);
 	}
 
 	public void EnterSongInfo(string songNameIn, string song) {
-		songName.Text = "[center]" + songNameIn + "[/center]";
-		RTC.Text = song;
+		songName.Text = songNameIn;
+		RTC.Text = "[center]" + song + "[/center]";
 	}
 
 	public async void _on_exit_game_button_pressed() {
