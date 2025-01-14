@@ -6,6 +6,7 @@ using Amazon.BedrockRuntime;
 using Amazon.BedrockRuntime.Model;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 public partial class EndScreen : Control
 {
@@ -21,7 +22,6 @@ public partial class EndScreen : Control
         if (RTC == null) throw new Exception("SongContent not found");
 
         string songJSONified = await LLMLibrary.GameSummaryJSON();
-		GD.Print(songJSONified); // TODO: delete
 
 		songJSONified = GlobalStringLibrary.JSONStringBrackets(songJSONified);
 		JSONSong songJSON = JsonConvert.DeserializeObject<JSONSong>(songJSONified);
@@ -34,11 +34,17 @@ public partial class EndScreen : Control
 		RTC.Text = song;
 	}
 
-	public void _on_exit_game_button_pressed() {
+	public async void _on_exit_game_button_pressed() {
+		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		await Task.Delay(200);
+		
 		GetTree().Quit();
 	}
 
-	public void _on_new_game_button_pressed() {
+	public async void _on_new_game_button_pressed() {
+		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		await Task.Delay(200);
+
 		GameManager.Instance._Ready();
 		GameManager.Instance.SceneChange("res://scenes/main_menu/menu.tscn");
 	}

@@ -38,7 +38,6 @@ public partial class CoreSkillsSetter : MarginContainer
 
 		foreach (var container in skillContainers) {
 			curPoints = curCharacter.CoreSkills[container.coreSkill];
-			// GD.Print(curPoints);
 			container.SetPoints(curPoints);
 			points_used += curPoints;
 		}
@@ -53,13 +52,11 @@ public partial class CoreSkillsSetter : MarginContainer
 				skillContainer.allowAddition = true;
 			}
 		}
-
-		GD.Print("points: " + points_used);
-		GD.Print("total: " + TotalPoints);
 	}
 
 	public void _on_container_add_level() {
 		if (curCharacter == null) return;
+		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
 
 		if (points_used < TotalPoints) {
 			points_used++;
@@ -70,15 +67,12 @@ public partial class CoreSkillsSetter : MarginContainer
 				skillContainer.allowAddition = false;
 			}
 		}
-		
-		// curCharacter.CoreSkills = GetAllSkillLevels();
-
-		GD.Print("points: " + points_used);
-		GD.Print("total: " + TotalPoints);
 	}
 
 	public void _on_container_subtract_level() {
 		if (curCharacter == null) return;
+		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+
 		if (points_used <= 0) return;
 
 		foreach (SkillContainer skillContainer in skillContainers) {
@@ -86,11 +80,6 @@ public partial class CoreSkillsSetter : MarginContainer
 		}
 		
 		points_used--;
-
-		// curCharacter.CoreSkills = GetAllSkillLevels();
-
-		GD.Print("points: " + points_used);
-		GD.Print("total: " + TotalPoints);
 	}
 
 	public Dictionary<CoreSkill, int> GetAllSkillLevels() {

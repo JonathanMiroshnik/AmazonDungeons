@@ -11,7 +11,7 @@ public interface GameState
 
 public partial class StartGame : GameState {
 	public async void Enter(GameStateMachine gameStateMachine) {
-		GD.Print("Enter StartGame");
+		// GD.Print("Enter StartGame");
 
 		gameStateMachine.characterUI.Visible = true;
 		string curWorldDesc = await LLMLibrary.WorldPrelude();
@@ -22,32 +22,18 @@ public partial class StartGame : GameState {
 	}
 
 	public void Exit(GameStateMachine gameStateMachine) {
-		GD.Print("Exit StartGame");
+		// GD.Print("Exit StartGame");
 	}
 	
 	public void Action(GameStateMachine gameStateMachine) {
-		GD.Print("Exit ActionGame");
+		// GD.Print("Exit ActionGame");
 	}
-
-	// TODO: delete
-	// public void DoPrelude() {
-	// 	GD.Print("Describing the world....\n\n");
-	// 	GD.Print(GameManager.Instance.worldDesc.world + "\n\n");
-
-	// 	GD.Print("Describing the characters....\n\n");
-	// 	foreach (GameEntity curGameEntity in GameManager.Instance.gameEntities) {
-	// 		if (curGameEntity is not Character) continue;
-	// 		Character curCharDown = (Character) curGameEntity;
-
-	// 		GD.Print(curCharDown.ShortenedDescription + "\n");
-	// 	}
-	// }
 }
  
  
  public partial class EndGame : GameState {
 	public async void Enter(GameStateMachine gameStateMachine) {
-		GD.Print("Enter EndGame");
+		// GD.Print("Enter EndGame");
 		await gameStateMachine.cameraMover.MoveCameraByNode3D(GameManager.Instance.characters[0].worldSpacePosition, 
 																GameStateMachine.TIME_TO_MOVE);
 
@@ -55,7 +41,7 @@ public partial class StartGame : GameState {
 	}
 
 	public void Exit(GameStateMachine gameStateMachine) {
-		GD.Print("Exit EndGame");
+		// GD.Print("Exit EndGame");
 	}
 	public void Action(GameStateMachine gameStateMachine) {
 		return;
@@ -70,7 +56,7 @@ public partial class DMDialogue : GameState {
 	}
 
 	public async void Enter(GameStateMachine gameStateMachine) {
-		GD.Print("Enter DMDialogue");
+		// GD.Print("Enter DMDialogue");
 		if (character == null) {
 			Action(gameStateMachine);
 			return;
@@ -83,11 +69,11 @@ public partial class DMDialogue : GameState {
 	}
 
 	public void Exit(GameStateMachine gameStateMachine) {
-		GD.Print("Exit DMDialogue");
+		// GD.Print("Exit DMDialogue");
 	}
 
 	public void Action(GameStateMachine gameStateMachine) {
-		GD.Print("Action DMDialogue");
+		// GD.Print("Action DMDialogue");
 
 		// If the character is null, that means we finished the round and are now moving onto the next round, or the end of the game.
 		if (character == null) {

@@ -16,14 +16,8 @@ public partial class EndUI : Node
         var g = await LLMLibrary.GameSummaryJSON();
 
         var JSON = GlobalStringLibrary.JSONStringBrackets(g);
-        GD.Print(g);
-		GD.Print(JsonConvert.DeserializeObject<JSONSong>(JSON));
-
-        GD.Print("wew2");
+		GD.Print(JsonConvert.DeserializeObject<JSONSong>(JSON)); // TODO: delete
         string result = await LLMLibrary.GameSeparatedSummary();
-
-        GD.Print("wew3");
-        GD.Print("HD \n" + result);
         RTC.Text = result;
     }
 }

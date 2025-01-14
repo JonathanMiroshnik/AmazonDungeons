@@ -22,10 +22,8 @@ public partial class Menu : Control
 	}
 
 	public async void _on_start_game_button_pressed() {
-		GD.Print("here");
-
-		GetNode<GlobalAudioLibrary>("AudioStreamPlayer").PlayRandomSound(GlobalAudioLibrary.TEST);
-		await Task.Delay(500);
+		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		await Task.Delay(200);
 
 		try {
 			GetTree().ChangeSceneToFile("res://scenes/character_creation/character_creation.tscn");	
@@ -35,8 +33,9 @@ public partial class Menu : Control
 		}
 	}
 
-	public void _on_exit_game_button_pressed() {
-		GetNode<GlobalAudioLibrary>("AudioStreamPlayer").PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+	public async void _on_exit_game_button_pressed() {
+		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		await Task.Delay(200);
 
 		GetTree().Quit();
 	}

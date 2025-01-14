@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://dqyvcyelmjhed"]
+[gd_scene load_steps=17 format=3 uid="uid://dqyvcyelmjhed"]
 
 [ext_resource type="PackedScene" uid="uid://bfwgur1hbvjyv" path="res://scenes/character_ui/full_response_container.tscn" id="1_amya3"]
 [ext_resource type="Script" path="res://scenes/character_ui/CharacterUI.cs" id="1_gq6wj"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://1jfapd21k8cs" path="res://models/2D/Button_hover.png" id="4_1wq32"]
 [ext_resource type="Texture2D" uid="uid://bhy6ljqr1s7jc" path="res://models/2D/Button_Activating.png" id="5_g1hrq"]
 [ext_resource type="Texture2D" uid="uid://cjgb7fkcybko" path="res://models/2D/Button.png" id="6_5cfif"]
+[ext_resource type="Script" path="res://scripts/GlobalAudioLibrary.cs" id="7_56yod"]
 
 [sub_resource type="FontVariation" id="FontVariation_b3cmr"]
 base_font = ExtResource("3_lfxw8")
@@ -140,6 +141,10 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_hhk05")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_4g53h")
 theme_override_styles/normal = SubResource("StyleBoxTexture_70rid")
 text = "Roll Dice"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+script = ExtResource("7_56yod")
 
 [connection signal="text_changed" from="MainContainer/VBoxContainer/ReplyContainer/VReplyContainer/InnerReplyContainer/ReplyEdit" to="." method="_on_reply_edit_text_changed"]
 [connection signal="pressed" from="MainContainer/VBoxContainer/HBoxContainer/NextContainer/NextButton" to="." method="_on_next_button_pressed"]

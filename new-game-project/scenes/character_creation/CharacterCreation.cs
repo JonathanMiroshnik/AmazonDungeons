@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public partial class CharacterCreation : Node
 {
@@ -11,11 +12,8 @@ public partial class CharacterCreation : Node
 	// TODO: when do the characters get created really? is the character creation screen just a character "editing" screen? 
 	//  same num of characters always?
 	public override async void _Ready() {
-		GD.Print("sds");
-
 		await GameManager.Instance.IsLoaded();
 
-		GD.Print("sds2");
 		if (GameManager.Instance.gameEntities.Count <= 0) return; // TODO: raise error?
 		ShowGameEntity(GameManager.Instance.gameEntities[gameEntityIndex]);
 	}
@@ -30,31 +28,27 @@ public partial class CharacterCreation : Node
 
 		// If it is a character, there is a point in showing skills
 		if (gameEntity is Character) {
-			GD.Print("wew1");
 			coreSkillsSetter.Visible = true;
 			coreSkillsSetter.SetSkillsByCharacter((Character) gameEntity, this);
-			GD.Print("wew2");
 		}
 		else {
 			coreSkillsSetter.Visible = false;
 		}
 
-		GD.Print("wew3");
 		// Showing GameEntity Type
 		GetNode<Label>("%GameEntityType").Text = "Type: \n" + gameEntity.GameEntityType.ToString();
 
-		GD.Print("wew4");
 		// Showing the personality of the game entity
 		GetNode<TextEdit>("%PersonalityText").Text = gameEntity.Personality;
 
-
-		GD.Print("wew5");
 		// Showind the name of the game entity
 		GetNode<TextEdit>("%NameEdit").Text = gameEntity.Name;
 	}
 
 	public void _on_next_character_button_pressed() {
 		if (GameManager.Instance.gameEntities.Count <= 0) return;
+
+		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
 
 		gameEntityIndex++;
 		gameEntityIndex %= GameManager.Instance.gameEntities.Count;
@@ -63,9 +57,8 @@ public partial class CharacterCreation : Node
 	}
 
 	public void _on_save_button_pressed() {
-		GD.Print("opop");
-
 		if (GameManager.Instance.gameEntities.Count <= 0) return;
+		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
 
 		GameEntity gameEntity = GameManager.Instance.gameEntities[gameEntityIndex];
 
@@ -80,23 +73,18 @@ public partial class CharacterCreation : Node
 			character.CoreSkills[container.coreSkill] = container.skillPoints;
 		}
 
-		// coreSkillsSetter.SetSkillsByCharacter((Character) gameEntity);
-
 		ShowGameEntity(gameEntity);
 	}
 
 	public async void _on_randomize_character_button_pressed() {
 		if (GameManager.Instance.gameEntities.Count <= 0) return;
-
-		GD.Print(GameManager.Instance.characters.Count);
+		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
 
 		GameEntityType curType = GameManager.Instance.gameEntities[gameEntityIndex].GameEntityType;
 		if (curType == GameEntityType.Player || curType == GameEntityType.DungeonMaster) return;
 
 		Character newCharacter = await GameManager.Instance.CreateGameCharacter();
 		GameManager.Instance.ExchangeGameEntity(gameEntityIndex, newCharacter);
-
-		GD.Print(GameManager.Instance.characters.Count);
 
 		ShowGameEntity(GameManager.Instance.gameEntities[gameEntityIndex]);
 	}
@@ -117,7 +105,10 @@ public partial class CharacterCreation : Node
 		return indInCharacters;
 	}
 
-	public void _on_start_button_pressed() {
+	public async void _on_start_button_pressed() {
+		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		await Task.Delay(200);
+
 		GetTree().ChangeSceneToFile("res://scenes/main_game/Scott_Interior_game.tscn");
 	}
 }

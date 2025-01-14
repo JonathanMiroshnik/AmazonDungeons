@@ -94,15 +94,10 @@ public partial class GameManager : Node
 
 		AddCharacterToLists(await CreateGameCharacter()); // TODO: delete this part and replace with above in real-game
 		// CreateExampleCharacter(LLMLibrary.EXAMPLE_CHARACTER_2[0], LLMLibrary.EXAMPLE_CHARACTER_2[1], LLMLibrary.EXAMPLE_CHARACTER_2[2]);
-		
-		GD.Print("CH " + characters.Count);
-		GD.Print("GE " + gameEntities.Count);
 
 		// IMPORTANT, must be kept at the end of this Ready function 
 		//  because other parts of the game rely on it through the IsLoaded function
 		Loaded = true;
-
-		GD.Print("HERE2");
 	}
 
 	public async Task<JSONWorld> CreateWorldDesc()
@@ -139,11 +134,8 @@ public partial class GameManager : Node
 								"Don't write something long but make sure that the JSON is valid and closed properly.";
 
 		// create new character
-		string personalityTest = await AskLlama(curCreationPrompt,
-												0.5f, 1000);
+		string personalityTest = await AskLlama(curCreationPrompt, 0.5f, 1000);
 		personalityTest = GlobalStringLibrary.JSONStringBrackets(personalityTest);
-
-		// GD.Print(personalityTest);
 
 		JSONCharacter resultChar = JsonConvert.DeserializeObject<JSONCharacter>(personalityTest);
 
@@ -191,8 +183,6 @@ public partial class GameManager : Node
 			// GD.Print("Waiting for GameManager to load...");
 			await Task.Delay(1000);
 		}
-
-		GD.Print("wewstart");
 
 		return true;
 	}
@@ -346,12 +336,6 @@ public partial class GameManager : Node
 
 			// Decode the model's native response payload
 			var modelResponse = await JsonNode.ParseAsync(response.Body);
-
-			// GD.Print(modelResponse);
-			// foreach (var header in modelResponse.)
-			// {
-			// 	GD.Print(header);
-			// }
 
 			// Extract and print the response text
 			string responseText = (string) modelResponse["generation"] ?? "";

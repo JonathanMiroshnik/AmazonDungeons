@@ -23,7 +23,7 @@ public partial class StartDialogue : DialogueState {
 	}
 
 	public async void Enter(DialogueStateMachine dialogueStateMachine) {
-		GD.Print("Enter StartDialogue");
+		// GD.Print("Enter StartDialogue");
 
 		// Creating the conversation between the DM and the character
 		DMCharacterResponse resp = new DMCharacterResponse(); // TODO: very bad code and structure
@@ -43,10 +43,10 @@ public partial class StartDialogue : DialogueState {
 	}
 
 	public void Exit(DialogueStateMachine dialogueStateMachine) {
-		GD.Print("Exit StartDialogue");
+		// GD.Print("Exit StartDialogue");
 	}
 	public async Task Action(DialogueStateMachine dialogueStateMachine) {
-		GD.Print("Action StartDialogue");
+		// GD.Print("Action StartDialogue");
 	}
 }
 
@@ -64,15 +64,15 @@ public partial class DiceThrowing : DialogueState {
 	}
 
 	public void Enter(DialogueStateMachine dialogueStateMachine) {
-		GD.Print("Enter DiceThrowing");
+		// GD.Print("Enter DiceThrowing");
 	}
 
 	public void Exit(DialogueStateMachine dialogueStateMachine) {
-		GD.Print("Exit DiceThrowing");
+		// GD.Print("Exit DiceThrowing");
 	}
 
 	public async Task Action(DialogueStateMachine dialogueStateMachine) {
-		GD.Print("Action DiceThrowing");
+		// GD.Print("Action DiceThrowing");
 
 		 // Moving over to the dice
 		await dialogueStateMachine.gameStateMachine.cameraMover.MoveCameraByNode3D(dialogueStateMachine.gameStateMachine.DICE_POS, GameStateMachine.TIME_TO_MOVE);
@@ -114,7 +114,7 @@ public partial class ResponseDialogue : DialogueState {
 	}
 
 	public async void Enter(DialogueStateMachine dialogueStateMachine) {
-		GD.Print("Enter ResponseDialogue");
+		// GD.Print("Enter ResponseDialogue");
 
 		// If the gameEntity is an AI, the responses should show themselves automatically until the end of the dialogue
 		if (dmCharacterResponse.respondeeGameEntity.GameEntityType is GameEntityType.AI) {
@@ -127,11 +127,11 @@ public partial class ResponseDialogue : DialogueState {
 	}
 
 	public void Exit(DialogueStateMachine dialogueStateMachine) {
-		GD.Print("Exit ResponseDialogue");
+		// GD.Print("Exit ResponseDialogue");
 	}
 
 	public async Task Action(DialogueStateMachine dialogueStateMachine) {
-		GD.Print("Action ResponseDialogue");
+		// GD.Print("Action ResponseDialogue");
 
 		// We take the reply text input
 		string text = dialogueStateMachine.gameStateMachine.characterUI.replyEdit.Text;
@@ -191,7 +191,7 @@ public partial class EndDialogue : DialogueState {
 	}
 
 	public async void Enter(DialogueStateMachine dialogueStateMachine) {
-		GD.Print("Enter EndDialogue");
+		// GD.Print("Enter EndDialogue");
 
 		dialogueStateMachine.gameStateMachine.characterUI.nextContainer.Visible = false;
 
@@ -202,11 +202,11 @@ public partial class EndDialogue : DialogueState {
 	}
 
 	public void Exit(DialogueStateMachine dialogueStateMachine) {
-		GD.Print("Exit EndDialogue");
+		// GD.Print("Exit EndDialogue");
 	}
 
 	public async Task Action(DialogueStateMachine dialogueStateMachine) {
-		GD.Print("Action EndDialogue");
+		// GD.Print("Action EndDialogue");
 
 		dialogueStateMachine.gameStateMachine.characterUI.Visible = false; // FIXME: too long!!
 		dialogueStateMachine.gameStateMachine.CurrentState.Action(dialogueStateMachine.gameStateMachine);

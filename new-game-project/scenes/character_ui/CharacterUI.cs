@@ -92,51 +92,9 @@ public partial class CharacterUI : Control
 		}
 	}
 
-	// TODO: delete this?
-	// public async Task DoDMConversation(DMCharacterResponse dmCharResponse) {
-	// 	if (dmCharResponse == null) {
-	// 		GD.Print("Error: a DM-character response is null");
-	// 		return;
-	// 	}
-
-	// 	curDMResponse = dmCharResponse;
-
-	// 	// Clear previous character responses
-	// 	ClearResponses();
-
-	// 	// Asking the DM for a first response
-	// 	JSONDMResponse result = await LLMLibrary.DM_response((Character) dmCharResponse.respondeeGameEntity); // FIXME: bad downcasting thing
-	// 	dmCharResponse.dmResponse = result;
-
-	// 	await AddResponse(dmCharResponse.dmResponse.text, dmCharResponse.responderGameEntity); // FIXME: downcasting
-
-	// 	// TODO: maybe conversations should be attached to GameEntity?
-	// 	if (dmCharResponse.respondeeGameEntity is Character) {
-	// 		Character character = (Character) dmCharResponse.respondeeGameEntity;
-	// 		dmCharResponse.text = result.text; // FIXME: this is a distinct problem with the heirarchy of JSON and text stuff
-	// 		character.conversation.Add(dmCharResponse);
-	// 	}
-
-	// 	// TODO: show dice score needed to win in separate label?
-
-	// 	// If the DM response requires a roll of the dice, it is performed
-	// 	if (dmCharResponse.dmResponse.score > 0) {
-	// 		// FIXME: downcasting and stuff and above character condition already
-	// 		Character character = (Character) dmCharResponse.respondeeGameEntity;
-
-	// 		GD.Print("Dice score needed: " + dmCharResponse.dmResponse.score);
-
-	// 		diceContainer.Visible = true;
-	// 		replyContainer.Visible = false;
-	// 		dialogueStateMachine.ChangeState(new DiceThrowing(curDMResponse, character.BaseDiceNumber /* TODO: add core skills here*/,
-	// 																	 dmCharResponse.dmResponse.score));
-	// 	}
-	// 	else {
-	// 		dialogueStateMachine.ChangeState(new ResponseDialogue(dmCharResponse));
-	// 	}
-	// }
-
 	public async void _on_dice_button_pressed() {
+		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+
 		// TODO: null checks?
 		// TODO: how do we make sure that the curDMResponse is really the current one and not a previous one?
 
@@ -151,6 +109,7 @@ public partial class CharacterUI : Control
 	// The "next" button should activate the Action of the dialogue state machine to further the dialogue along
 	public async void _on_next_button_pressed() {
 		if (curDMResponse == null) return;
+		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
 
 		replyContainer.Visible = false;
 		nextContainer.Visible = false;

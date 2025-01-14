@@ -94,7 +94,6 @@ public partial class SkillContainer : MarginContainer
 			}
 		}
 
-		GD.Print("yyyyyy");
 		EmitSignal(SignalName.AddLevel);
 	}
 
@@ -110,7 +109,6 @@ public partial class SkillContainer : MarginContainer
 			}
 		}
 
-		GD.Print("yyyyyy2");
 		EmitSignal(SignalName.SubtractLevel);
 	}
 
