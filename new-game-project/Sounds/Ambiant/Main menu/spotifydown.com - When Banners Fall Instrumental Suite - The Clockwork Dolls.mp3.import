@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://4jo7o0hiesfv"
+path="res://.godot/imported/spotifydown.com - When Banners Fall Instrumental Suite - The Clockwork Dolls.mp3-c93fc52019d9ceb9575bfa1a4313e670.mp3str"
+
+[deps]
+
+source_file="res://Sounds/Ambiant/Main menu/spotifydown.com - When Banners Fall Instrumental Suite - The Clockwork Dolls.mp3"
+dest_files=["res://.godot/imported/spotifydown.com - When Banners Fall Instrumental Suite - The Clockwork Dolls.mp3-c93fc52019d9ceb9575bfa1a4313e670.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

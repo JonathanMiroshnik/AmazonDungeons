@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dfgmcswsa8sjm"
+path="res://.godot/imported/spotifydown.com - Insatiable Curiosity - Michael Ghelfi.mp3-e393e886f6aec1a0deaa93ff6e95e998.mp3str"
+
+[deps]
+
+source_file="res://Sounds/Ambiant/Endgame/spotifydown.com - Insatiable Curiosity - Michael Ghelfi.mp3"
+dest_files=["res://.godot/imported/spotifydown.com - Insatiable Curiosity - Michael Ghelfi.mp3-e393e886f6aec1a0deaa93ff6e95e998.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
