@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://c5tdcx0jsca0s"
+path="res://.godot/imported/Sound 06.mp3-8f6a59f9c375872812f14a89efcc8203.mp3str"
+
+[deps]
+
+source_file="res://Sounds/Wooshes/Sound 06.mp3"
+dest_files=["res://.godot/imported/Sound 06.mp3-8f6a59f9c375872812f14a89efcc8203.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

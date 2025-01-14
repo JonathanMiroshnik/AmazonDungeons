@@ -16,6 +16,9 @@ public partial class CoreSkillsSetter : MarginContainer
 	public override async void _Ready() {
 		await GameManager.Instance.IsLoaded();
 		if (skillContainers == null) throw new System.Exception("skillContainers in CoresSkillSetter is null");
+
+		if (GameManager.Instance.characters.Count <= 0) return;
+		curCharacter = GameManager.Instance.characters[0];
 	}
 
 	public void SetSkillsByCharacter(Character character) {
