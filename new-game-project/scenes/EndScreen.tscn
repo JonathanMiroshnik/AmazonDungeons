@@ -177,6 +177,7 @@ script = ExtResource("9_ed8tf")
 
 [node name="MainMusic" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_huddb")
+volume_db = -37.886
 autoplay = true
 
 [connection signal="pressed" from="Background/PanelContainer2/VBoxContainer/HBoxContainer/NewGameButton" to="." method="_on_new_game_button_pressed"]
