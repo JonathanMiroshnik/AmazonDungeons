@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 public partial class CharacterCreation : Node
 {
 	[Export]
+	public GlobalAudioLibrary globalAudioLibrary;
+
+	[Export]
 	public CoreSkillsSetter coreSkillsSetter;
 	private int gameEntityIndex = 0;
 
@@ -13,6 +16,8 @@ public partial class CharacterCreation : Node
 	//  same num of characters always?
 	public override async void _Ready() {
 		await GameManager.Instance.IsLoaded();
+
+		if (globalAudioLibrary == null) throw new Exception("globalAudioLibrary is null in CharacterCreation");
 
 		if (GameManager.Instance.gameEntities.Count <= 0) return; // TODO: raise error?
 		ShowGameEntity(GameManager.Instance.gameEntities[gameEntityIndex]);
@@ -48,7 +53,7 @@ public partial class CharacterCreation : Node
 	public void _on_next_character_button_pressed() {
 		if (GameManager.Instance.gameEntities.Count <= 0) return;
 
-		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		globalAudioLibrary?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
 
 		gameEntityIndex++;
 		gameEntityIndex %= GameManager.Instance.gameEntities.Count;
@@ -58,7 +63,7 @@ public partial class CharacterCreation : Node
 
 	public void _on_save_button_pressed() {
 		if (GameManager.Instance.gameEntities.Count <= 0) return;
-		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		globalAudioLibrary?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
 
 		GameEntity gameEntity = GameManager.Instance.gameEntities[gameEntityIndex];
 
@@ -78,7 +83,7 @@ public partial class CharacterCreation : Node
 
 	public async void _on_randomize_character_button_pressed() {
 		if (GameManager.Instance.gameEntities.Count <= 0) return;
-		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		globalAudioLibrary?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
 
 		GameEntityType curType = GameManager.Instance.gameEntities[gameEntityIndex].GameEntityType;
 		if (curType == GameEntityType.Player || curType == GameEntityType.DungeonMaster) return;
@@ -106,7 +111,7 @@ public partial class CharacterCreation : Node
 	}
 
 	public async void _on_start_button_pressed() {
-		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		globalAudioLibrary?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
 		await Task.Delay(200);
 
 		GetTree().ChangeSceneToFile("res://scenes/main_game/Scott_Interior_game.tscn");

@@ -3,7 +3,11 @@ using Godot;
 
 public partial class Menu : Control
 {
+	[Export]
+	public GlobalAudioLibrary globalAudioLibrary;
+
 	private Button startGameButton;
+	private SpinBox roundsBox;
 
 	public override async void _Ready() {
 		startGameButton = GetNode<Button>("%StartGameButton");
@@ -11,6 +15,14 @@ public partial class Menu : Control
 			GD.PrintErr("StartGameButton is null");
 			return;
 		}
+
+		roundsBox = GetNode<SpinBox>("%RoundsBox");
+		if (roundsBox == null) {
+			GD.PrintErr("RoundsBox is null");
+			return;
+		}
+
+		if (globalAudioLibrary == null) throw new System.Exception("globalAudioLibrary is null in Menu");
 
 		startGameButton.Text = "Loading...";
 		startGameButton.Disabled = true;
@@ -22,7 +34,8 @@ public partial class Menu : Control
 	}
 
 	public async void _on_start_game_button_pressed() {
-		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		globalAudioLibrary?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		GameManager.Instance.TotalRounds = (int) roundsBox.Value;
 		await Task.Delay(200);
 
 		try {
@@ -34,7 +47,7 @@ public partial class Menu : Control
 	}
 
 	public async void _on_exit_game_button_pressed() {
-		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		globalAudioLibrary?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
 		await Task.Delay(200);
 
 		GetTree().Quit();

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://dqyvcyelmjhed"]
+[gd_scene load_steps=18 format=3 uid="uid://dqyvcyelmjhed"]
 
 [ext_resource type="PackedScene" uid="uid://bfwgur1hbvjyv" path="res://scenes/character_ui/full_response_container.tscn" id="1_amya3"]
 [ext_resource type="Script" path="res://scenes/character_ui/CharacterUI.cs" id="1_gq6wj"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bhy6ljqr1s7jc" path="res://models/2D/Button_Activating.png" id="5_g1hrq"]
 [ext_resource type="Texture2D" uid="uid://cjgb7fkcybko" path="res://models/2D/Button.png" id="6_5cfif"]
 [ext_resource type="Script" path="res://scripts/GlobalAudioLibrary.cs" id="7_56yod"]
+[ext_resource type="FontFile" uid="uid://b68tjaeqrw80m" path="res://models/Fonts/Roboto/static/Roboto-Black.ttf" id="7_qctdx"]
 
 [sub_resource type="FontVariation" id="FontVariation_b3cmr"]
 base_font = ExtResource("3_lfxw8")
@@ -35,7 +36,7 @@ texture = ExtResource("5_g1hrq")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_70rid"]
 texture = ExtResource("6_5cfif")
 
-[node name="CharacterUI" type="Control"]
+[node name="CharacterUI" type="Control" node_paths=PackedStringArray("globalAudioLibrary")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -44,6 +45,7 @@ grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 4
 script = ExtResource("1_gq6wj")
+globalAudioLibrary = NodePath("AudioStreamPlayer")
 fullResponseContainer = ExtResource("1_amya3")
 
 [node name="MainContainer" type="MarginContainer" parent="."]
@@ -141,6 +143,29 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_hhk05")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_4g53h")
 theme_override_styles/normal = SubResource("StyleBoxTexture_70rid")
 text = "Roll Dice"
+
+[node name="HealthContainer" type="MarginContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 60
+theme_override_constants/margin_top = 60
+
+[node name="Panel" type="Panel" parent="HealthContainer"]
+layout_mode = 2
+
+[node name="HPRichLabel" type="RichTextLabel" parent="HealthContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 40)
+layout_mode = 2
+theme_override_fonts/normal_font = ExtResource("7_qctdx")
+theme_override_font_sizes/mono_font_size = 50
+theme_override_font_sizes/normal_font_size = 30
+bbcode_enabled = true
+text = "[center][color=red]HP:[/color][/center]"
+scroll_active = false
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 unique_name_in_owner = true

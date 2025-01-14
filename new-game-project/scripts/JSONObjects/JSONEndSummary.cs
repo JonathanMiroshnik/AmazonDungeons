@@ -6,6 +6,11 @@ public partial class JSONEndSummary : GodotObject
     public string text { get; set; }
     public string damage { get; set; }
 
+    public JSONEndSummary() {
+		text = "";
+		damage = "";
+	}
+
     public int getDamage() {
         int ret = 0;
         Int32.TryParse(damage, out ret);

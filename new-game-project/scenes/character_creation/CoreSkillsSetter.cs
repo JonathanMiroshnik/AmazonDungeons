@@ -6,6 +6,9 @@ using System.Linq;
 public partial class CoreSkillsSetter : MarginContainer
 {
 	[Export]
+	public GlobalAudioLibrary globalAudioLibrary;
+
+	[Export]
 	public SkillContainer[] skillContainers;
 	[Export]
 	public int TotalPoints = 2;
@@ -17,6 +20,7 @@ public partial class CoreSkillsSetter : MarginContainer
 	public override async void _Ready() {
 		await GameManager.Instance.IsLoaded();
 		if (skillContainers == null) throw new System.Exception("skillContainers in CoresSkillSetter is null");
+		if (globalAudioLibrary == null) throw new System.Exception("globalAudioLibrary is null in CoreSkillsSetter");
 
 		if (GameManager.Instance.characters.Count <= 0) return;
 		SetSkillsByCharacter(GameManager.Instance.characters[0]);
@@ -56,7 +60,7 @@ public partial class CoreSkillsSetter : MarginContainer
 
 	public void _on_container_add_level() {
 		if (curCharacter == null) return;
-		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		globalAudioLibrary?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
 
 		if (points_used < TotalPoints) {
 			points_used++;
@@ -71,7 +75,7 @@ public partial class CoreSkillsSetter : MarginContainer
 
 	public void _on_container_subtract_level() {
 		if (curCharacter == null) return;
-		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		globalAudioLibrary?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
 
 		if (points_used <= 0) return;
 

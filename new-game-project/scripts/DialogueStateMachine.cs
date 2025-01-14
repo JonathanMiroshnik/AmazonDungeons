@@ -19,6 +19,10 @@ public partial class StartDialogue : DialogueState {
 		dialogueStateMachine.gameStateMachine = curGameStateMachine;
 		dialogueStateMachine.gameStateMachine.characterUI.ClearResponses();
 		dialogueStateMachine.gameStateMachine.characterUI.Visible = true;
+
+		// Change HP in accordance with result in End dialogue response
+		dialogueStateMachine.gameStateMachine.characterUI.SetHP(dialogueStateMachine.character.HealthPoints);
+
 		dialogueStateMachine.gameStateMachine.characterUI.dialogueStateMachine = dialogueStateMachine;
 	}
 
@@ -32,12 +36,9 @@ public partial class StartDialogue : DialogueState {
 
 		dialogueStateMachine.gameStateMachine.characterUI.curDMResponse = resp;
 
-		// await dialogueStateMachine.gameStateMachine.characterUI.DoDMConversation(resp);
-
 		string text = await LLMLibrary.DM_response_summary((Character) resp.respondeeGameEntity);
 		await dialogueStateMachine.gameStateMachine.characterUI.AddResponse(text, resp.responderGameEntity, false);
 		dialogueStateMachine.gameStateMachine.characterUI.ReplyToggle(true);
-		// dialogueStateMachine.gameStateMachine.characterUI.nextContainer.Visible = true;
 
 		dialogueStateMachine.ChangeState(new ResponseDialogue(resp));
 	}
@@ -195,8 +196,21 @@ public partial class EndDialogue : DialogueState {
 
 		dialogueStateMachine.gameStateMachine.characterUI.nextContainer.Visible = false;
 
-		string text = await LLMLibrary.DM_response_summary(respondee);
+		// string text = await LLMLibrary.DM_response_summary(respondee);
+		JSONHurtResponse hurtResp = await LLMLibrary.DMHurtReponse(respondee);
+		string text = hurtResp.text;
 		await dialogueStateMachine.gameStateMachine.characterUI.AddResponse(text, responder, false);
+
+		// Change HP in accordance with result in End dialogue response
+		if (hurtResp.getHurt()) {
+			respondee.HealthPoints -= hurtResp.getDamage();
+		}
+		dialogueStateMachine.gameStateMachine.characterUI.SetHP(respondee.HealthPoints);
+
+		if (respondee.GameEntityType is GameEntityType.Player && respondee.HealthPoints <= 0) {
+			dialogueStateMachine.gameStateMachine.ChangeState(new EndGame());
+			return;
+		}
 
 		dialogueStateMachine.gameStateMachine.characterUI.nextContainer.Visible = true;
 	}

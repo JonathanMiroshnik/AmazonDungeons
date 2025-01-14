@@ -13,10 +13,12 @@ public partial class StartGame : GameState {
 	public async void Enter(GameStateMachine gameStateMachine) {
 		// GD.Print("Enter StartGame");
 
+		gameStateMachine.characterUI.HealthContainer.Visible = false;
 		gameStateMachine.characterUI.Visible = true;
 		string curWorldDesc = await LLMLibrary.WorldPrelude();
+
 		await gameStateMachine.characterUI.AddResponse(curWorldDesc);
-		await Task.Delay(5000);
+		await Task.Delay(3000);
 
 		gameStateMachine.ChangeState(new DMDialogue(gameStateMachine.NextCharacter()));
 	}
@@ -61,6 +63,9 @@ public partial class DMDialogue : GameState {
 			Action(gameStateMachine);
 			return;
 		}
+
+		gameStateMachine.characterUI.HealthContainer.Visible = true;
+		gameStateMachine.characterUI.SetHP(character.HealthPoints);
 
 		DialogueStateMachine dialogueStateMachine = new DialogueStateMachine(gameStateMachine, character);
 
@@ -109,7 +114,6 @@ public partial class GameStateMachine : Node
 	public DiceThrowerMechanism diceThrowerMechanism;
 
 	// Total number of rounds in the game
-	[Export]
 	public int NumberOfRounds = 1;
 	public int CurrentRound = 0;
 
@@ -154,6 +158,9 @@ public partial class GameStateMachine : Node
 	}
 
 	public async void StartGame() {
+		// Getting the true Total number of rounds in the game from the GameManager
+		NumberOfRounds = GameManager.Instance.TotalRounds;
+
 		// Reformatting the personalities of the characters into the shortened form for token conservation
 		foreach (Character character in GameManager.Instance.characters) {
 			character.ShortenedDescription = await LLMLibrary.PersonalitySummary(character);

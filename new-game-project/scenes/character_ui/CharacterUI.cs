@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 public partial class CharacterUI : Control
 {
 	[Export]
+	public GlobalAudioLibrary globalAudioLibrary;
+	[Export]
 	public PackedScene fullResponseContainer;
 
 	// State Machine that controls the pace of the dialogue, it is connected both ways with the CharacterUI
@@ -23,9 +25,14 @@ public partial class CharacterUI : Control
 	public MarginContainer replyContainer;
 	public TextEdit replyEdit;
 
+	public RichTextLabel HPRichLabel;
+	public MarginContainer HealthContainer;
+
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		if (globalAudioLibrary == null) throw new Exception("globalAudioLibrary is null in CharacterUI");
+
 		if (fullResponseContainer == null)	throw new ArgumentException("Add FullResponseContainer to the CharacterUI");
 		vContainer = GetNodeOrNull<VBoxContainer>("%VResponsesContainer");
 		if (vContainer == null) throw new ArgumentException("Add VResponsesContainer to the CharacterUI");
@@ -33,6 +40,11 @@ public partial class CharacterUI : Control
 		if (diceContainer == null) throw new ArgumentException("Add DiceContainer to the CharacterUI");
 		nextContainer = GetNodeOrNull<MarginContainer>("%NextContainer");
 		if (nextContainer == null) throw new ArgumentException("Add NextContainer to the CharacterUI");
+
+		HPRichLabel = GetNodeOrNull<RichTextLabel>("%HPRichLabel");
+		if (HPRichLabel == null) throw new ArgumentException("Add HPRichLabel to the CharacterUI");
+		HealthContainer = GetNodeOrNull<MarginContainer>("%HealthContainer");
+		if (HealthContainer == null) throw new ArgumentException("Add HealthContainer to the CharacterUI");
 
 		// Reply to responses part
 		replyContainer = GetNode<MarginContainer>("%ReplyContainer");
@@ -93,7 +105,7 @@ public partial class CharacterUI : Control
 	}
 
 	public async void _on_dice_button_pressed() {
-		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		globalAudioLibrary?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
 
 		// TODO: null checks?
 		// TODO: how do we make sure that the curDMResponse is really the current one and not a previous one?
@@ -109,7 +121,7 @@ public partial class CharacterUI : Control
 	// The "next" button should activate the Action of the dialogue state machine to further the dialogue along
 	public async void _on_next_button_pressed() {
 		if (curDMResponse == null) return;
-		GetNode<GlobalAudioLibrary>("AudioStreamPlayer")?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		globalAudioLibrary?.PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
 
 		replyContainer.Visible = false;
 		nextContainer.Visible = false;
@@ -125,6 +137,10 @@ public partial class CharacterUI : Control
 		else {
 			nextContainer.Visible = false;
 		}
+	}
+
+	public void SetHP(int health) {
+		HPRichLabel.Text = "[center][color=red]HP:[/color][/center] " + health.ToString();
 	}
 
 	public void ReplyToggle(bool allowReplying) {
