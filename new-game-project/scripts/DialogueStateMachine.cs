@@ -20,6 +20,8 @@ public partial class StartDialogue : DialogueState {
 		dialogueStateMachine.gameStateMachine.characterUI.ClearResponses();
 		dialogueStateMachine.gameStateMachine.characterUI.Visible = true;
 
+		GD.Print("wew1");
+
 		// Change HP in accordance with result in End dialogue response
 		dialogueStateMachine.gameStateMachine.characterUI.SetHP(dialogueStateMachine.character.HealthPoints);
 

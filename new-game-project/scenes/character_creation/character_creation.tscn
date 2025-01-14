@@ -125,7 +125,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="Background" node_paths=PackedStringArray("coreSkillsSetter")]
+[node name="PanelContainer" type="PanelContainer" parent="Background" node_paths=PackedStringArray("globalAudioLibrary", "coreSkillsSetter")]
 unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
@@ -135,6 +135,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_dww54")
 script = ExtResource("1_k25fp")
+globalAudioLibrary = NodePath("../../AudioStreamPlayer")
 coreSkillsSetter = NodePath("HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Background/PanelContainer"]
@@ -261,11 +262,12 @@ theme_override_constants/outline_size = 2
 theme_override_fonts/font = SubResource("FontVariation_ru4fj")
 placeholder_text = "Write Name Here"
 
-[node name="CoreSkillsPresentationContainer" type="MarginContainer" parent="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer" node_paths=PackedStringArray("skillContainers")]
+[node name="CoreSkillsPresentationContainer" type="MarginContainer" parent="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer" node_paths=PackedStringArray("globalAudioLibrary", "skillContainers")]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 script = ExtResource("2_wkhhl")
+globalAudioLibrary = NodePath("../../../../../../AudioStreamPlayer")
 skillContainers = [NodePath("VButtonsContainer/StrengthContainer"), NodePath("VButtonsContainer/ReflexContainer"), NodePath("VButtonsContainer/IntelligenceContainer")]
 
 [node name="VButtonsContainer" type="VBoxContainer" parent="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer"]

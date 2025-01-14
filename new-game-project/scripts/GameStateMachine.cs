@@ -15,6 +15,8 @@ public partial class StartGame : GameState {
 
 		gameStateMachine.characterUI.HealthContainer.Visible = false;
 		gameStateMachine.characterUI.Visible = true;
+
+		GD.Print("wew2");
 		string curWorldDesc = await LLMLibrary.WorldPrelude();
 
 		await gameStateMachine.characterUI.AddResponse(curWorldDesc);
