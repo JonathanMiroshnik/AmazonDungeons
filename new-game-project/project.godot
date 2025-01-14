@@ -10,14 +10,18 @@ config_version=5
 
 [application]
 
-config/name="AWSChallenge"
+config/name="Prompts and perils"
 run/main_scene="res://scenes/main_menu/menu.tscn"
 config/features=PackedStringArray("4.3", "C#", "Forward Plus")
-config/icon="res://textures/icon.svg"
+config/icon="res://models/2D/amazon logo.png"
 
 [autoload]
 
 GameManager="*res://GameManager.cs"
+
+[display]
+
+window/size/mode=2
 
 [dotnet]
 
