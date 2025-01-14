@@ -1,6 +1,7 @@
 using Amazon.BedrockAgentRuntime;
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 public partial class GlobalAudioLibrary : AudioStreamPlayer
@@ -8,6 +9,8 @@ public partial class GlobalAudioLibrary : AudioStreamPlayer
     public const string DICE_PATH = "res://Sounds/Dice/";
     public const string WOOSH_PATH = "res://Sounds/Wooshes/";
     public const string BUTTON_PATH = "res://Sounds/Buttons/";
+
+    public const string TEST = "res://Sounds/Ambiant/Endgame/";
 
     private Random random = new Random();
 
@@ -18,8 +21,18 @@ public partial class GlobalAudioLibrary : AudioStreamPlayer
     public bool PlayRandomSound(string path)
     {
         var files = DirAccess.GetFilesAt(path);
-        var randomFile = files[random.Next(0, DirContents(path))];
+        List<string> oggFiles = new List<string>();
+        foreach (var file in files) {
+            if (file.EndsWith(".ogg")) {
+                oggFiles.Add(file);
+            }
+        }
+
+        if (oggFiles.Count <= 0) return false;
+
+        var randomFile = oggFiles[random.Next(0, oggFiles.Count)];
         Stream = AudioStreamOggVorbis.LoadFromFile(path + randomFile);
+
         Play();
 
         return true;

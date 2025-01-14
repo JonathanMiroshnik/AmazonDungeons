@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dbkejq42vjbjs"]
+[gd_scene load_steps=10 format=3 uid="uid://dbkejq42vjbjs"]
 
 [ext_resource type="Script" path="res://CameraMover.cs" id="1_c3gf3"]
 [ext_resource type="PackedScene" uid="uid://dfq1qqj6cqgyq" path="res://models/mahogany_table/scene.gltf" id="1_fke0y"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://crjb45mbr3xcm" path="res://models/sitting_bernie_ar_meme/scene.gltf" id="2_hbngf"]
 [ext_resource type="PackedScene" uid="uid://bdnumqa7jgfqm" path="res://models/astronomic_map/scene.gltf" id="4_5vxs8"]
 [ext_resource type="PackedScene" uid="uid://bplnut3jd0dps" path="res://scenes/dice_throwing/dice_thrower.tscn" id="5_ng526"]
+[ext_resource type="Script" path="res://scripts/GlobalAudioLibrary.cs" id="9_3pv65"]
 
 [node name="MainGame" type="Node3D"]
 
@@ -66,3 +67,7 @@ transform = Transform3D(-1, 8.74228e-08, 3.82137e-15, 0, -4.37114e-08, 1, 8.7422
 
 [node name="DiceThrower" parent="." instance=ExtResource("5_ng526")]
 transform = Transform3D(0.3, 0.000208348, 4.83623e-05, -0.000208359, 0.3, 7.02951e-05, -4.83135e-05, -7.03287e-05, 0.3, 13.943, 6.86846, -17.4995)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+script = ExtResource("9_3pv65")

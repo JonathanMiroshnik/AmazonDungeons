@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Godot;
 
 public partial class Menu : Control
@@ -20,10 +21,11 @@ public partial class Menu : Control
 		startGameButton.Disabled = false;
 	}
 
-	public void _on_start_game_button_pressed() {
+	public async void _on_start_game_button_pressed() {
 		GD.Print("here");
 
-		GetNode<GlobalAudioLibrary>("AudioStreamPlayer").PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+		GetNode<GlobalAudioLibrary>("AudioStreamPlayer").PlayRandomSound(GlobalAudioLibrary.TEST);
+		await Task.Delay(500);
 
 		try {
 			GetTree().ChangeSceneToFile("res://scenes/character_creation/character_creation.tscn");	
