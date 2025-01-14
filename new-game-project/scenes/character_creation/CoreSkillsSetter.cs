@@ -11,34 +11,11 @@ public partial class CoreSkillsSetter : MarginContainer
 	public int TotalPoints = 2;
 	private int points_used = 0;
 	
-	public CharacterCreation CC;
+	public Character curCharacter;
 
 	public override async void _Ready() {
-		// await GameManager.Instance.IsLoaded();
+		await GameManager.Instance.IsLoaded();
 		if (skillContainers == null) throw new System.Exception("skillContainers in CoresSkillSetter is null");
-		// CC = GetNode<CharacterCreation>("%PanelContainer");
-	}
-
-	public void _on_add_button_pressed() {
-		GD.Print("points: " + points_used);
-		GD.Print("total: " + TotalPoints);
-
-		if (points_used < TotalPoints) {
-			points_used++;
-		}
-
-		if (points_used >= TotalPoints) {
-			foreach (SkillContainer skillContainer in skillContainers) {
-				skillContainer.allowAddition = false;
-			}
-		}
-
-		if (CC == null) return;
-		CC.ShowGameEntity(CC.GetGameEntity());
-
-		// Test print of skill levels
-		// var lines = GetAllSkillLevels().Select(kvp => kvp.Key + ": " + kvp.Value.ToString());
-		// GD.Print(string.Join("\n", lines));
 	}
 
 	public void SetSkillsByCharacter(Character character) {
@@ -47,14 +24,13 @@ public partial class CoreSkillsSetter : MarginContainer
 			return;
 		}
 
-		GD.Print("points: " + points_used);
-		GD.Print("total: " + TotalPoints);
+		curCharacter = character;
 
 		int curPoints = 0;
 		points_used = 0;
 
 		foreach (var container in skillContainers) {
-			curPoints = character.CoreSkills[container.coreSkill];
+			curPoints = curCharacter.CoreSkills[container.coreSkill];
 			// GD.Print(curPoints);
 			container.SetPoints(curPoints);
 			points_used += curPoints;
@@ -65,15 +41,37 @@ public partial class CoreSkillsSetter : MarginContainer
 				skillContainer.allowAddition = false;
 			}
 		}
-		
-		if (CC == null) return;
-		CC.ShowGameEntity(CC.GetGameEntity());
-	}
+		else {
+			foreach (SkillContainer skillContainer in skillContainers) {
+				skillContainer.allowAddition = true;
+			}
+		}
 
-	public void _on_subtract_button_pressed() {
 		GD.Print("points: " + points_used);
 		GD.Print("total: " + TotalPoints);
+	}
 
+	public void _on_container_add_level() {
+		if (curCharacter == null) return;
+
+		if (points_used < TotalPoints) {
+			points_used++;
+		}
+
+		if (points_used >= TotalPoints) {
+			foreach (SkillContainer skillContainer in skillContainers) {
+				skillContainer.allowAddition = false;
+			}
+		}
+		
+		// curCharacter.CoreSkills = GetAllSkillLevels();
+
+		GD.Print("points: " + points_used);
+		GD.Print("total: " + TotalPoints);
+	}
+
+	public void _on_container_subtract_level() {
+		if (curCharacter == null) return;
 		if (points_used <= 0) return;
 
 		foreach (SkillContainer skillContainer in skillContainers) {
@@ -82,8 +80,10 @@ public partial class CoreSkillsSetter : MarginContainer
 		
 		points_used--;
 
-		if (CC == null) return;
-		CC.ShowGameEntity(CC.GetGameEntity());
+		// curCharacter.CoreSkills = GetAllSkillLevels();
+
+		GD.Print("points: " + points_used);
+		GD.Print("total: " + TotalPoints);
 	}
 
 	public Dictionary<CoreSkill, int> GetAllSkillLevels() {
@@ -96,9 +96,6 @@ public partial class CoreSkillsSetter : MarginContainer
 				}
 			}
 		}
-
-		if (CC == null) return allSkillLevels;
-		CC.ShowGameEntity(CC.GetGameEntity());
 
 		return allSkillLevels;
 	}

@@ -80,6 +80,8 @@ public partial class CharacterCreation : Node
 			character.CoreSkills[container.coreSkill] = container.skillPoints;
 		}
 
+		// coreSkillsSetter.SetSkillsByCharacter((Character) gameEntity);
+
 		ShowGameEntity(gameEntity);
 	}
 

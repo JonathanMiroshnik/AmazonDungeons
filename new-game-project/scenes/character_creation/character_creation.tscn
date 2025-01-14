@@ -268,7 +268,6 @@ theme_override_fonts/font = SubResource("FontVariation_ru4fj")
 placeholder_text = "Write Name Here"
 
 [node name="CoreSkillsPresentationContainer" type="MarginContainer" parent="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer" node_paths=PackedStringArray("skillContainers")]
-visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -380,6 +379,12 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_px6uw")
 text = "Start
 Game"
 
+[connection signal="AddLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer" to="Background/PanelContainer" method="_on_container_add_level"]
+[connection signal="SubtractLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer" to="Background/PanelContainer" method="_on_container_subtract_level"]
+[connection signal="AddLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer" to="Background/PanelContainer" method="_on_container_add_level"]
+[connection signal="SubtractLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer" to="Background/PanelContainer" method="_on_container_subtract_level"]
+[connection signal="AddLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer" to="Background/PanelContainer" method="_on_container_add_level"]
+[connection signal="SubtractLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer" to="Background/PanelContainer" method="_on_container_subtract_level"]
 [connection signal="pressed" from="Background/PanelContainer/HBoxContainer/ButtonsContainer/VButtonsContainer/NextButtonContainer/NextCharacterButton" to="Background/PanelContainer" method="_on_next_character_button_pressed"]
 [connection signal="pressed" from="Background/PanelContainer/HBoxContainer/ButtonsContainer/VButtonsContainer/RandomizeButtonContainer/RandomizeCharacterButton" to="Background/PanelContainer" method="_on_randomize_character_button_pressed"]
 [connection signal="pressed" from="Background/PanelContainer/HBoxContainer/ButtonsContainer/VButtonsContainer/SaveContainer/SaveButton" to="Background/PanelContainer" method="_on_save_button_pressed"]
