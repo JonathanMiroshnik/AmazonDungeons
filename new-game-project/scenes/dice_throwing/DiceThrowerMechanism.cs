@@ -36,7 +36,7 @@ public partial class DiceThrowerMechanism : Node3D
 		SIZE_OF_RANDOM_SPAWN_CHANGE = this.Scale.X;
 		MAX_FORCE_PUSH *= this.Scale.X;
 
-		ResetDice();
+		// ResetDice();
 
 		// int final = await ThrowDice();
 		// GD.Print("FINAL " + final.ToString()); // TODO: delete

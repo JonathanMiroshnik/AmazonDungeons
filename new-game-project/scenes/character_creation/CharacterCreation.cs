@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class CharacterCreation : Control
+public partial class CharacterCreation : Node
 {
 	[Export]
 	public CoreSkillsSetter coreSkillsSetter;
@@ -11,8 +11,11 @@ public partial class CharacterCreation : Control
 	// TODO: when do the characters get created really? is the character creation screen just a character "editing" screen? 
 	//  same num of characters always?
 	public override async void _Ready() {
+		GD.Print("sds");
+
 		await GameManager.Instance.IsLoaded();
 
+		GD.Print("sds2");
 		if (GameManager.Instance.gameEntities.Count <= 0) return; // TODO: raise error?
 		ShowGameEntity(GameManager.Instance.gameEntities[gameEntityIndex]);
 	}
@@ -27,19 +30,25 @@ public partial class CharacterCreation : Control
 
 		// If it is a character, there is a point in showing skills
 		if (gameEntity is Character) {
+			GD.Print("wew1");
 			coreSkillsSetter.Visible = true;
 			coreSkillsSetter.SetSkillsByCharacter((Character) gameEntity);
+			GD.Print("wew2");
 		}
 		else {
 			coreSkillsSetter.Visible = false;
 		}
 
+		GD.Print("wew3");
 		// Showing GameEntity Type
 		GetNode<Label>("%GameEntityType").Text = "Type: \n" + gameEntity.GameEntityType.ToString();
 
+		GD.Print("wew4");
 		// Showing the personality of the game entity
 		GetNode<TextEdit>("%PersonalityText").Text = gameEntity.Personality;
 
+
+		GD.Print("wew5");
 		// Showind the name of the game entity
 		GetNode<TextEdit>("%NameEdit").Text = gameEntity.Name;
 	}
@@ -54,6 +63,8 @@ public partial class CharacterCreation : Control
 	}
 
 	public void _on_save_button_pressed() {
+		GD.Print("opop");
+
 		if (GameManager.Instance.gameEntities.Count <= 0) return;
 
 		GameEntity gameEntity = GameManager.Instance.gameEntities[gameEntityIndex];
@@ -75,22 +86,15 @@ public partial class CharacterCreation : Control
 	public async void _on_randomize_character_button_pressed() {
 		if (GameManager.Instance.gameEntities.Count <= 0) return;
 
+		GD.Print(GameManager.Instance.characters.Count);
+
 		GameEntityType curType = GameManager.Instance.gameEntities[gameEntityIndex].GameEntityType;
 		if (curType == GameEntityType.Player || curType == GameEntityType.DungeonMaster) return;
 
-		GameManager.Instance.gameEntities[gameEntityIndex] = null;
-		GameManager.Instance.gameEntities[gameEntityIndex].GameEntityType = curType;
-
 		Character newCharacter = await GameManager.Instance.CreateGameCharacter();
-		GameManager.Instance.gameEntities[gameEntityIndex] = newCharacter;
+		GameManager.Instance.ExchangeGameEntity(gameEntityIndex, newCharacter);
 
-		int checker = indInCharacters();
-		if (checker > -1) {
-			GameManager.Instance.characters[checker] = null;
-			GameManager.Instance.characters[checker] = newCharacter;
-		}
-
-		GameManager.Instance.gameEntities[gameEntityIndex].GameEntityType = curType;
+		GD.Print(GameManager.Instance.characters.Count);
 
 		ShowGameEntity(GameManager.Instance.gameEntities[gameEntityIndex]);
 	}
@@ -112,6 +116,6 @@ public partial class CharacterCreation : Control
 	}
 
 	public void _on_start_button_pressed() {
-		GetTree().ChangeSceneToFile("res://scenes/main_game/main_game.tscn");
+		GetTree().ChangeSceneToFile("res://scenes/main_game/Scott_Interior_game.tscn");
 	}
 }

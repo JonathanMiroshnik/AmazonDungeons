@@ -210,6 +210,7 @@ public partial class LLMLibrary : Node
 			result = JsonConvert.DeserializeObject<JSONDMResponse>(retStr);
 		}
 		catch (Exception e) {
+			GD.Print(e.Message);
 			return await DM_response(character);
 		}
 
@@ -316,6 +317,7 @@ public partial class LLMLibrary : Node
 			result = JsonConvert.DeserializeObject<string>(retStr);
 		}
 		catch (Exception e) {
+			GD.Print(e.Message);
 			return null;
 		}
 
@@ -346,6 +348,7 @@ public partial class LLMLibrary : Node
 			result = JsonConvert.DeserializeObject<JSONRiskAction>(retStr);
 		}
 		catch (Exception e) {
+			GD.Print(e.Message);
 			return null;
 		}
 

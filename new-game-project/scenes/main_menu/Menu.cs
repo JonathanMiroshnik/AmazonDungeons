@@ -21,7 +21,14 @@ public partial class Menu : Control
 	}
 
 	public void _on_start_game_button_pressed() {
-		GetTree().ChangeSceneToFile("res://scenes/character_creation/character_creation.tscn");
+		GD.Print("here");
+
+		try {
+			GetTree().ChangeSceneToFile("res://scenes/character_creation/character_creation.tscn");	
+		}
+		catch (System.Exception e) {
+			GD.PrintErr(e);
+		}
 	}
 
 	public void _on_exit_game_button_pressed() {

@@ -81,19 +81,24 @@ public partial class GameManager : Node
 		// 	await CreateGameCharacter();
 		// }
 
-		await CreateGameCharacter(); // TODO: delete this part and replace with above in real-game
+		AddCharacterToLists(await CreateGameCharacter()); // TODO: delete this part and replace with above in real-game
 		// CreateExampleCharacter(LLMLibrary.EXAMPLE_CHARACTER_1[0], LLMLibrary.EXAMPLE_CHARACTER_1[1], LLMLibrary.EXAMPLE_CHARACTER_1[2]);
 
 		// Create new dungeon master
 		DungeonMaster = new GameEntity("Dungeon Master", GameEntityType.DungeonMaster, "prompt2");
 		gameEntities.Add(DungeonMaster);
 
-		await CreateGameCharacter(); // TODO: delete this part and replace with above in real-game
+		AddCharacterToLists(await CreateGameCharacter()); // TODO: delete this part and replace with above in real-game
 		// CreateExampleCharacter(LLMLibrary.EXAMPLE_CHARACTER_2[0], LLMLibrary.EXAMPLE_CHARACTER_2[1], LLMLibrary.EXAMPLE_CHARACTER_2[2]);
 		
+		GD.Print("CH " + characters.Count);
+		GD.Print("GE " + gameEntities.Count);
+
 		// IMPORTANT, must be kept at the end of this Ready function 
 		//  because other parts of the game rely on it through the IsLoaded function
 		Loaded = true;
+
+		GD.Print("HERE2");
 	}
 
 	public async Task<JSONWorld> CreateWorldDesc()
@@ -152,10 +157,18 @@ public partial class GameManager : Node
 
 		// Creating the character and adding it to the total
 		Character character = new Character(charName, personality, shortDesc, curCreationPrompt, strength, reflex, intelligence);
-		gameEntities.Add(character);
-		characters.Add(character);
 
 		return character;
+	}
+
+	public void AddCharacterToLists(Character c) {
+		if (characters == null || gameEntities == null) {
+			GD.PrintErr("Error: characters or gameEntities is null");
+			return;
+		}
+
+		gameEntities.Add(c);
+		characters.Add(c);
 	}
 
 	public Character CreateExampleCharacter(string charName, string personality, string shortDesc) {
@@ -173,9 +186,49 @@ public partial class GameManager : Node
 			await Task.Delay(1000);
 		}
 
-		GD.Print("wew");
+		GD.Print("wewstart");
 
 		return true;
+	}
+
+	public void ExchangeGameEntity(int gameEntityInd, GameEntity gameEntity) {
+		if (gameEntities == null || characters == null) {
+			GD.PrintErr("Error: gameEntities or characters is null");
+			return;
+		}
+		if (gameEntities.Count <= gameEntityInd) {
+			GD.PrintErr("Error: gameEntityInd is out of range");
+			return;
+		}
+
+		GameEntity curGE = gameEntities[gameEntityInd];
+		if (curGE == null) {
+			GD.PrintErr("Error: curGE is null");
+			return;
+		}
+
+		GameEntityType curGEType = curGE.GameEntityType;
+
+		if (curGE is Character && gameEntity is Character) {
+			Character curChar = (Character) curGE;
+
+			int charInd = 0;
+			foreach (Character character in characters) {
+				if (character == curChar) {
+					break;
+				}
+
+				charInd++;
+			}
+
+			characters.RemoveAt(charInd);
+			characters.Insert(charInd, (Character) gameEntity);
+		}
+
+		gameEntities.RemoveAt(gameEntityInd);
+		gameEntities.Insert(gameEntityInd, gameEntity);
+
+		gameEntities[gameEntityInd].GameEntityType = curGEType;
 	}
 
 	// Makes the given game the current game that is effected by the actions of the GameManager

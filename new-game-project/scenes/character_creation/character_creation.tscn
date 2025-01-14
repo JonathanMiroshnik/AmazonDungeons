@@ -105,15 +105,13 @@ texture = ExtResource("8_4ctq8")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_px6uw"]
 texture = ExtResource("8_xlbws")
 
-[node name="CharacterCreation" type="Control" node_paths=PackedStringArray("coreSkillsSetter")]
+[node name="CharacterCreation" type="Control"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_k25fp")
-coreSkillsSetter = NodePath("Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer")
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1
@@ -133,7 +131,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="PanelContainer" type="PanelContainer" parent="Background"]
+[node name="PanelContainer" type="PanelContainer" parent="Background" node_paths=PackedStringArray("coreSkillsSetter")]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -141,6 +140,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxEmpty_dww54")
+script = ExtResource("1_k25fp")
+coreSkillsSetter = NodePath("HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Background/PanelContainer"]
 layout_mode = 2
@@ -267,6 +268,7 @@ theme_override_fonts/font = SubResource("FontVariation_ru4fj")
 placeholder_text = "Write Name Here"
 
 [node name="CoreSkillsPresentationContainer" type="MarginContainer" parent="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer" node_paths=PackedStringArray("skillContainers")]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
@@ -378,10 +380,10 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_px6uw")
 text = "Start
 Game"
 
-[connection signal="pressed" from="Background/PanelContainer/HBoxContainer/ButtonsContainer/VButtonsContainer/NextButtonContainer/NextCharacterButton" to="." method="_on_next_character_button_pressed"]
-[connection signal="pressed" from="Background/PanelContainer/HBoxContainer/ButtonsContainer/VButtonsContainer/RandomizeButtonContainer/RandomizeCharacterButton" to="." method="_on_randomize_character_button_pressed"]
-[connection signal="pressed" from="Background/PanelContainer/HBoxContainer/ButtonsContainer/VButtonsContainer/SaveContainer/SaveButton" to="." method="_on_save_button_pressed"]
-[connection signal="pressed" from="Background/PanelContainer/HBoxContainer/ButtonsContainer/VButtonsContainer/StartContainer/StartButton" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="Background/PanelContainer/HBoxContainer/ButtonsContainer/VButtonsContainer/NextButtonContainer/NextCharacterButton" to="Background/PanelContainer" method="_on_next_character_button_pressed"]
+[connection signal="pressed" from="Background/PanelContainer/HBoxContainer/ButtonsContainer/VButtonsContainer/RandomizeButtonContainer/RandomizeCharacterButton" to="Background/PanelContainer" method="_on_randomize_character_button_pressed"]
+[connection signal="pressed" from="Background/PanelContainer/HBoxContainer/ButtonsContainer/VButtonsContainer/SaveContainer/SaveButton" to="Background/PanelContainer" method="_on_save_button_pressed"]
+[connection signal="pressed" from="Background/PanelContainer/HBoxContainer/ButtonsContainer/VButtonsContainer/StartContainer/StartButton" to="Background/PanelContainer" method="_on_start_button_pressed"]
 
 [editable path="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer"]
 [editable path="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer"]
