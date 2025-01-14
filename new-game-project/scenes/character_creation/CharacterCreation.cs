@@ -32,7 +32,7 @@ public partial class CharacterCreation : Node
 		if (gameEntity is Character) {
 			GD.Print("wew1");
 			coreSkillsSetter.Visible = true;
-			coreSkillsSetter.SetSkillsByCharacter((Character) gameEntity);
+			coreSkillsSetter.SetSkillsByCharacter((Character) gameEntity, this);
 			GD.Print("wew2");
 		}
 		else {

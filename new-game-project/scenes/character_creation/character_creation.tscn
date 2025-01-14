@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://bd8x1ir4ic430"]
+[gd_scene load_steps=36 format=3 uid="uid://bd8x1ir4ic430"]
 
 [ext_resource type="Script" path="res://scenes/character_creation/CharacterCreation.cs" id="1_k25fp"]
 [ext_resource type="Texture2D" uid="uid://1wpwqo08oykn" path="res://models/2D/SplashScreenBlur.png" id="2_822i5"]
@@ -46,15 +46,6 @@ content_margin_bottom = 30.0
 base_font = ExtResource("5_wcxg5")
 
 [sub_resource type="FontVariation" id="FontVariation_ru4fj"]
-base_font = ExtResource("5_wcxg5")
-
-[sub_resource type="FontVariation" id="FontVariation_8w26e"]
-base_font = ExtResource("5_wcxg5")
-
-[sub_resource type="FontVariation" id="FontVariation_a75wy"]
-base_font = ExtResource("5_wcxg5")
-
-[sub_resource type="FontVariation" id="FontVariation_786ov"]
 base_font = ExtResource("5_wcxg5")
 
 [sub_resource type="FontVariation" id="FontVariation_y7bvg"]
@@ -281,32 +272,13 @@ size_flags_vertical = 4
 [node name="StrengthContainer" parent="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
 layout_mode = 2
 
-[node name="SkillLabel" parent="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer/HSkillContainer" index="0"]
-theme_override_constants/outline_size = 4
-theme_override_fonts/font = SubResource("FontVariation_8w26e")
-text = "      Strength
-"
-
 [node name="ReflexContainer" parent="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
 layout_mode = 2
 coreSkill = 1
 
-[node name="SkillLabel" parent="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer/HSkillContainer" index="0"]
-theme_override_constants/outline_size = 4
-theme_override_fonts/font = SubResource("FontVariation_a75wy")
-text = "          Reflex
-"
-horizontal_alignment = 1
-
 [node name="IntelligenceContainer" parent="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer" instance=ExtResource("3_buskf")]
 layout_mode = 2
 coreSkill = 2
-
-[node name="SkillLabel" parent="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer/HSkillContainer" index="0"]
-theme_override_constants/outline_size = 4
-theme_override_fonts/font = SubResource("FontVariation_786ov")
-text = "Intelligence
-"
 
 [node name="ButtonsContainer" type="MarginContainer" parent="Background/PanelContainer/HBoxContainer"]
 layout_mode = 2
@@ -379,17 +351,13 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_px6uw")
 text = "Start
 Game"
 
-[connection signal="AddLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer" to="Background/PanelContainer" method="_on_container_add_level"]
-[connection signal="SubtractLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer" to="Background/PanelContainer" method="_on_container_subtract_level"]
-[connection signal="AddLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer" to="Background/PanelContainer" method="_on_container_add_level"]
-[connection signal="SubtractLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer" to="Background/PanelContainer" method="_on_container_subtract_level"]
-[connection signal="AddLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer" to="Background/PanelContainer" method="_on_container_add_level"]
-[connection signal="SubtractLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer" to="Background/PanelContainer" method="_on_container_subtract_level"]
+[connection signal="AddLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer" to="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer" method="_on_container_add_level"]
+[connection signal="SubtractLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer" to="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer" method="_on_container_subtract_level"]
+[connection signal="AddLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer" to="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer" method="_on_container_add_level"]
+[connection signal="SubtractLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer" to="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer" method="_on_container_subtract_level"]
+[connection signal="AddLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer" to="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer" method="_on_container_add_level"]
+[connection signal="SubtractLevel" from="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer" to="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer" method="_on_container_subtract_level"]
 [connection signal="pressed" from="Background/PanelContainer/HBoxContainer/ButtonsContainer/VButtonsContainer/NextButtonContainer/NextCharacterButton" to="Background/PanelContainer" method="_on_next_character_button_pressed"]
 [connection signal="pressed" from="Background/PanelContainer/HBoxContainer/ButtonsContainer/VButtonsContainer/RandomizeButtonContainer/RandomizeCharacterButton" to="Background/PanelContainer" method="_on_randomize_character_button_pressed"]
 [connection signal="pressed" from="Background/PanelContainer/HBoxContainer/ButtonsContainer/VButtonsContainer/SaveContainer/SaveButton" to="Background/PanelContainer" method="_on_save_button_pressed"]
 [connection signal="pressed" from="Background/PanelContainer/HBoxContainer/ButtonsContainer/VButtonsContainer/StartContainer/StartButton" to="Background/PanelContainer" method="_on_start_button_pressed"]
-
-[editable path="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/StrengthContainer"]
-[editable path="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/ReflexContainer"]
-[editable path="Background/PanelContainer/HBoxContainer/CharacterContainer/VBoxContainer/CoreSkillsPresentationContainer/VButtonsContainer/IntelligenceContainer"]

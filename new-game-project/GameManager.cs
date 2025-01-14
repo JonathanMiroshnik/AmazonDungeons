@@ -31,12 +31,12 @@ public partial class GameManager : Node
 
 	// These two lists will point to the same entities but each will have a different purpose as
 	//  GameEntities and Characters serve slightly different purposes.
-	public List<GameEntity> gameEntities = new List<GameEntity>();
-	public List<Character> characters = new List<Character>();
+	public List<GameEntity> gameEntities;
+	public List<Character> characters;
 
 
 	// Represents the Dungeon Master for the game, of which there is only one per game
-	public GameEntity DungeonMaster = new GameEntity("Dungeon Master", GameEntityType.DungeonMaster, "prompter");
+	public GameEntity DungeonMaster;
 
 	// Description of the DnD-like world
 	public JSONWorld worldDesc;
@@ -53,7 +53,7 @@ public partial class GameManager : Node
 	public const float TIME_TO_MOVE_CAMERA_POSITIONS = 2f;
 	
 	// Used wherever a random value is needed in the project
-	public Random random = new Random();
+	public Random random;
 
 	[Signal]
 	public delegate void NextActionEventHandler();
@@ -62,9 +62,13 @@ public partial class GameManager : Node
 	public override async void _Ready()
 	{
 		Instance = this;
+		Loaded = false;
 
-		// Creating the world
-		// worldDesc = await CreateWorldDesc();
+		random = new Random();
+		gameEntities = new List<GameEntity>();
+		characters = new List<Character>();
+		DungeonMaster = new GameEntity("Dungeon Master", GameEntityType.DungeonMaster, "prompter");
+
 
 		// TODO: delete this part and replace with above in real-game
 		worldDesc = new JSONWorld();
@@ -113,6 +117,8 @@ public partial class GameManager : Node
 										  "The input in the categories are only string, not lists, not anything else.\n" + // FIXME: problems with this depth thing
 										  "Don't write something long but make sure that the JSON is valid and closed properly.",
 										  0.5f, 1000);
+
+		GD.Print(worldSerializedJSON); // TODO: delete
 		worldSerializedJSON = GlobalStringLibrary.JSONStringBrackets(worldSerializedJSON);
 		
 		return JsonConvert.DeserializeObject<JSONWorld>(worldSerializedJSON);

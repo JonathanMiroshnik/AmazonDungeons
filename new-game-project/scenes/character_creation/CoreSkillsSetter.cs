@@ -11,22 +11,26 @@ public partial class CoreSkillsSetter : MarginContainer
 	public int TotalPoints = 2;
 	private int points_used = 0;
 	
-	public Character curCharacter;
+	public Character curCharacter = null;
+	public CharacterCreation CC = null;
 
 	public override async void _Ready() {
 		await GameManager.Instance.IsLoaded();
 		if (skillContainers == null) throw new System.Exception("skillContainers in CoresSkillSetter is null");
 
 		if (GameManager.Instance.characters.Count <= 0) return;
-		curCharacter = GameManager.Instance.characters[0];
+		SetSkillsByCharacter(GameManager.Instance.characters[0]);
 	}
 
-	public void SetSkillsByCharacter(Character character) {
+	public void SetSkillsByCharacter(Character character, CharacterCreation cc = null) {
 		if (character == null) {
 			GD.Print("character is null");
 			return;
 		}
 
+		if (cc != null) {
+			CC = cc;
+		}
 		curCharacter = character;
 
 		int curPoints = 0;

@@ -23,6 +23,8 @@ public partial class Menu : Control
 	public void _on_start_game_button_pressed() {
 		GD.Print("here");
 
+		GetNode<GlobalAudioLibrary>("AudioStreamPlayer").PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+
 		try {
 			GetTree().ChangeSceneToFile("res://scenes/character_creation/character_creation.tscn");	
 		}
@@ -32,6 +34,8 @@ public partial class Menu : Control
 	}
 
 	public void _on_exit_game_button_pressed() {
+		GetNode<GlobalAudioLibrary>("AudioStreamPlayer").PlayRandomSound(GlobalAudioLibrary.BUTTON_PATH);
+
 		GetTree().Quit();
 	}
 }

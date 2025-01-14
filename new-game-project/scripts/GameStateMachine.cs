@@ -1,5 +1,6 @@
 using Godot;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public interface GameState
 {
@@ -9,10 +10,14 @@ public interface GameState
 }
 
 public partial class StartGame : GameState {
-	public void Enter(GameStateMachine gameStateMachine) {
+	public async void Enter(GameStateMachine gameStateMachine) {
 		GD.Print("Enter StartGame");
 
-		DoPrelude();
+		gameStateMachine.characterUI.Visible = true;
+		string curWorldDesc = await LLMLibrary.WorldPrelude();
+		await gameStateMachine.characterUI.AddResponse(curWorldDesc);
+		await Task.Delay(5000);
+
 		gameStateMachine.ChangeState(new DMDialogue(gameStateMachine.NextCharacter()));
 	}
 
@@ -21,21 +26,22 @@ public partial class StartGame : GameState {
 	}
 	
 	public void Action(GameStateMachine gameStateMachine) {
-		return;
+		GD.Print("Exit ActionGame");
 	}
 
-	public void DoPrelude() {
-		GD.Print("Describing the world....\n\n");
-		GD.Print(GameManager.Instance.worldDesc.world + "\n\n");
+	// TODO: delete
+	// public void DoPrelude() {
+	// 	GD.Print("Describing the world....\n\n");
+	// 	GD.Print(GameManager.Instance.worldDesc.world + "\n\n");
 
-		GD.Print("Describing the characters....\n\n");
-		foreach (GameEntity curGameEntity in GameManager.Instance.gameEntities) {
-			if (curGameEntity is not Character) continue;
-			Character curCharDown = (Character) curGameEntity;
+	// 	GD.Print("Describing the characters....\n\n");
+	// 	foreach (GameEntity curGameEntity in GameManager.Instance.gameEntities) {
+	// 		if (curGameEntity is not Character) continue;
+	// 		Character curCharDown = (Character) curGameEntity;
 
-			GD.Print(curCharDown.ShortenedDescription + "\n");
-		}
-	}
+	// 		GD.Print(curCharDown.ShortenedDescription + "\n");
+	// 	}
+	// }
 }
  
  
@@ -45,7 +51,7 @@ public partial class StartGame : GameState {
 		await gameStateMachine.cameraMover.MoveCameraByNode3D(GameManager.Instance.characters[0].worldSpacePosition, 
 																GameStateMachine.TIME_TO_MOVE);
 
-		GameManager.Instance.SceneChange("res://scenes/end_scene/end_ui.tscn");
+		GameManager.Instance.SceneChange("res://scenes/EndScreen.tscn");
 	}
 
 	public void Exit(GameStateMachine gameStateMachine) {
@@ -161,7 +167,13 @@ public partial class GameStateMachine : Node
 		StartGame();
 	}
 
-	public void StartGame() {
+	public async void StartGame() {
+		// Reformatting the personalities of the characters into the shortened form for token conservation
+		foreach (Character character in GameManager.Instance.characters) {
+			character.ShortenedDescription = await LLMLibrary.PersonalitySummary(character);
+		}
+
+		// Starting the game loop
 		ChangeState(new StartGame());
 	}
 

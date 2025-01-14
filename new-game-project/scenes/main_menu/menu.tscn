@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://dlge21n36tbmn"]
+[gd_scene load_steps=19 format=3 uid="uid://dlge21n36tbmn"]
 
 [ext_resource type="Script" path="res://scenes/main_menu/Menu.cs" id="1_woop4"]
 [ext_resource type="Texture2D" uid="uid://c7j6xj5mhrroi" path="res://models/2D/SplashScreen.png" id="2_q1oh0"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://c4go0ggknants" path="res://models/2D/Button_disabled.png" id="4_uxakj"]
 [ext_resource type="Texture2D" uid="uid://1jfapd21k8cs" path="res://models/2D/Button_hover.png" id="5_ep7ga"]
 [ext_resource type="Texture2D" uid="uid://bhy6ljqr1s7jc" path="res://models/2D/Button_Activating.png" id="6_sdsib"]
+[ext_resource type="Script" path="res://scripts/GlobalAudioLibrary.cs" id="8_7km2h"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_xgrmf"]
 font_size = 90
@@ -130,6 +131,10 @@ theme_override_styles/hover = SubResource("StyleBoxTexture_6gs2c")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_ji5ni")
 theme_override_styles/normal = SubResource("StyleBoxTexture_5i301")
 text = "Exit"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+unique_name_in_owner = true
+script = ExtResource("8_7km2h")
 
 [connection signal="pressed" from="Background/MenuContainer/ButtonsContainer/VButtonsContainer/StartGameButton" to="." method="_on_start_game_button_pressed"]
 [connection signal="pressed" from="Background/MenuContainer/ButtonsContainer/VButtonsContainer/ExitGameButton" to="." method="_on_exit_game_button_pressed"]

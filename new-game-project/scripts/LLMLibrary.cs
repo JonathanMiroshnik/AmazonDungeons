@@ -78,8 +78,10 @@ public partial class LLMLibrary : Node
 	// NOTICE: when it is short text responses, it doesn't do anything creative enough(often only one big tag), so use this for long strings of text output
 
 	public static string WORLD_CREATION = "Create a Dungeons and Dragons game world, with city names, geographical features, etc.\n ";
-	public static string REWRITE_WORLD_SUM = "Summarizes the following description of a fantasy Dungeons and Dragons style " + 
-										"world so that it contains all the relevant information and is easily understandable.\n ";
+	public static string REWRITE_WORLD_SUM = "Summarize the following description of a fantasy Dungeons and Dragons style " + 
+										"world so that it contains all the relevant information and is easily understandable. \n"+
+										"However, write it in a way that is pleasent for people to read, as non-fiction, not as a list of things.\n " + 
+										"Make sure that the summary isn't too long\n";
 	public static string CHARACTER_DM_HISTORY_PREFIX = "The following is a chat history between you and the character you are responding to(notice that it also contains the actions that were successful/failed):\n ";
 	public static string PARTY_TOGETHER = "The heroes are partied together and always move together in the game world.\n ";
 
@@ -229,6 +231,20 @@ public partial class LLMLibrary : Node
 		return retStr;
 	}
 
+	public static Task<string> WorldPrelude() {
+		string charactersDesc = "";
+		foreach (Character character in GameManager.Instance.characters) {
+			charactersDesc += character.GetDescription() + "\n";
+		}
+
+		// Construct the input for the LLM
+		string input = LLMLibrary.REWRITE_WORLD_SUM + " The world is described here:\n" + 
+						GameManager.Instance.worldDesc + "\n The characters are described thus:\n" +
+						charactersDesc + "\n\n Describe this without any further commentary beyond the description of the world/fantasy.";
+
+		return GameManager.AskLlama(input);
+	}
+
 	public static async Task<string> DMResponseSummaryWithHealth(Character character) {
 		// Construct the input for the LLM
 		string input = LLMLibrary.ConstructLLMInput(true, false, false, character, true);
@@ -293,7 +309,7 @@ public partial class LLMLibrary : Node
 		string input = DM_PREFIX + LLMLibrary.LOCATION_PREFIX + GameManager.Instance.worldDesc.location +
 						"The whole history of the conversations between the DM and the players are written here:\n " + 
 						allConvos + "\n Write an epic poem that will summarize the whole game that was played, according to all this data. " +
-						"write it as a JSON file, it holds two categories, the first text, which will hold the poem, the second name, which will represent the name of the song, which is related to its content.\n" +
+						"write it as a JSON file, it has two categories, the first text, which will hold the poem, the second name, which will be the name of the song.\n" +
 						"write only the JSON file without any further commentary." +
 						"\nWrite it up to 500 words.";
  
